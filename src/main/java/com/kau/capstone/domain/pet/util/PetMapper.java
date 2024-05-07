@@ -4,13 +4,13 @@ import com.kau.capstone.domain.pet.dto.request.PetRegistRequest;
 import com.kau.capstone.domain.pet.entity.Pet;
 import com.kau.capstone.global.common.Gender;
 import com.kau.capstone.global.common.PetType;
-import jdk.jfr.ContentType;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PetMapper {
-    public static Pet toPet(PetRegistRequest petRegistRequest){
+
+    public static Pet toPet(PetRegistRequest petRegistRequest) {
         Gender gender = Gender.fromInt(petRegistRequest.gender());
         PetType petType = PetType.fromInt(petRegistRequest.gender());
 

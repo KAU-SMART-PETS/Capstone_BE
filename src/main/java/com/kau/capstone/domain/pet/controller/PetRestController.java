@@ -2,6 +2,7 @@ package com.kau.capstone.domain.pet.controller;
 
 import com.kau.capstone.domain.pet.dto.request.PetRegistRequest;
 import com.kau.capstone.domain.pet.service.PetService;
+import com.kau.capstone.global.common.ResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("v1/pet")
 @RequiredArgsConstructor
 public class PetRestController {
+
     private final PetService petService;
 
     @PostMapping("/regist")

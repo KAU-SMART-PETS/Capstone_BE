@@ -1,7 +1,5 @@
 package com.kau.capstone.domain.pet.dto.request;
 
-import com.kau.capstone.global.common.Gender;
-import com.kau.capstone.global.common.PetType;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
