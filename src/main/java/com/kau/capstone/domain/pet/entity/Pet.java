@@ -22,20 +22,20 @@ import org.hibernate.annotations.Comment;
 public class Pet extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Comment("반려동물 식별자")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(length = 10)
     @Comment("반려동물 이름")
     private String name;
 
-    @Enumerated(EnumType.STRING)
     @Comment("종류")
+    @Enumerated(EnumType.STRING)
     private PetType petType;
 
-    @Enumerated(EnumType.STRING)
     @Comment("성별")
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
     @Comment("체중")
