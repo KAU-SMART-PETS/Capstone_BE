@@ -6,6 +6,7 @@ import com.kau.capstone.domain.pet.util.PetMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -14,6 +15,7 @@ public class PetService {
 
     private final PetRepository petRepository;
 
+    @Transactional
     public void registPet(PetRegistRequest petRegistRequest) {
         petRepository.save(PetMapper.toPet(petRegistRequest));
     }
