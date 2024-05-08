@@ -11,8 +11,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-@MappedSuperclass
 @Getter
+@MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntity {
 
@@ -21,13 +21,13 @@ public abstract class BaseEntity {
     @Comment("생성일")
     private LocalDateTime createdAt;
 
-    @Column(insertable = false)
     @LastModifiedDate
     @Comment("업데이트일")
+    @Column(insertable = false)
     private LocalDateTime updatedAt;
 
-    @Column(insertable = false)
     @Comment("삭제일")
+    @Column(insertable = false)
     private LocalDateTime deletedAt;
 
     protected void delete(LocalDateTime currentTime) {
