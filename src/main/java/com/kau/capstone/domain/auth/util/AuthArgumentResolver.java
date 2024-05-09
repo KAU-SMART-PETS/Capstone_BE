@@ -15,6 +15,8 @@ import java.util.Objects;
 @Component
 public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
 
+    private static final String LOGIN_SESSION_ATTRIBUTE_NAME = "memberId";
+
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         return parameter.hasParameterAnnotation(LoginUser.class);
@@ -25,7 +27,7 @@ public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
         HttpSession session = Objects.requireNonNull(request).getSession(false);
-        String memberId = String.valueOf(session.getAttribute("member"));
+        String memberId = String.valueOf(session.getAttribute(LOGIN_SESSION_ATTRIBUTE_NAME));
 
         return new LoginInfo(Long.valueOf(memberId));
     }
