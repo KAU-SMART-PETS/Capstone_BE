@@ -1,5 +1,6 @@
 package com.kau.capstone.domain.auth.controller;
 
+import com.kau.capstone.domain.auth.dto.LoginInfo;
 import com.kau.capstone.domain.auth.service.AuthService;
 import com.kau.capstone.domain.auth.util.LoginUser;
 import jakarta.servlet.http.Cookie;
@@ -30,7 +31,7 @@ public class AuthController {
     }
 
     @PostMapping("/api/v1/logout")
-    public ResponseEntity<Void> logout(@LoginUser Long memberId,
+    public ResponseEntity<Void> logout(@LoginUser LoginInfo loginInfo,
                                        HttpServletRequest request, HttpServletResponse response) {
         request.getSession().removeAttribute(LOGIN_ATTRIBUTE_NAME);
 
