@@ -5,10 +5,12 @@ import com.kau.capstone.global.exception.ErrorCode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.util.Objects;
 
+@Component
 public class AuthHandlerInterceptor implements HandlerInterceptor {
 
     @Override
