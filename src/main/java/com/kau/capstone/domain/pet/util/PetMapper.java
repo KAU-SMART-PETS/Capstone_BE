@@ -11,16 +11,16 @@ import lombok.NoArgsConstructor;
 public class PetMapper {
 
     public static Pet toPet(PetRegistRequest petRegistRequest) {
-        Gender gender = Gender.fromInt(petRegistRequest.gender());
-        PetType petType = PetType.fromInt(petRegistRequest.gender());
+        Gender gender = Gender.fromInt(petRegistRequest.getGender());
+        PetType petType = PetType.fromInt(petRegistRequest.getPetType());
 
         return Pet.builder()
-            .name(petRegistRequest.name())
+            .name(petRegistRequest.getName())
             .petType(petType)
             .gender(gender)
-            .age(petRegistRequest.age())
-            .weight(petRegistRequest.weight())
-            .imageUrl(petRegistRequest.imageUrl())
+            .age(petRegistRequest.getAge())
+            .weight(petRegistRequest.getWeight())
+            .imageUrl(petRegistRequest.getImageUrl())
             .build();
     }
 
