@@ -2,6 +2,21 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.2.5'
 	id 'io.spring.dependency-management' version '1.1.4'
+	id 'com.google.cloud.tools.jib' version '3.4.2'
+}
+
+jib{
+	from {
+		image = 'amazoncorretto:17'
+	}
+	to {
+		image = 'jun23314/capstone'
+		auth {
+			username = project.findProperty(' jibUsername ') ?: ''
+			password = project.findProperty('jibPassword') ?: ''
+		}
+
+	}
 }
 
 group = 'com.kau'
