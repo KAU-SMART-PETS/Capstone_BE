@@ -7,7 +7,9 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
 
     // MEMBER
-    ALREADY_EXIST_ID_EXCEPTION(HttpStatus.BAD_REQUEST, "이미 사용중인 아이디입니다.")
+    ALREADY_EXIST_ID_EXCEPTION(HttpStatus.BAD_REQUEST, "이미 사용중인 아이디입니다."),
+    NOT_EXIST_PET_TYPE(HttpStatus.BAD_REQUEST, "존재하지 않는 반려동물 종류입니다."),
+    INVALID_GENDER(HttpStatus.BAD_REQUEST, "유효하지 않은 성별입니다.")
     ;//Error Code를 작성한 마지막에 ;를 추가합니다.
 
 

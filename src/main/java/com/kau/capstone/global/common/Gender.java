@@ -1,5 +1,8 @@
 package com.kau.capstone.global.common;
 
+import com.kau.capstone.global.exception.ErrorCode;
+import com.kau.capstone.global.exception.InvalidGenderException;
+
 public enum Gender {
     MALE(1), FEMALE(2);
 
@@ -9,14 +12,14 @@ public enum Gender {
         this.value = value;
     }
 
-    // 정수를 ENUM으로 변환하는 메서드
     public static Gender fromInt(int value) {
         if (value == 1) {
             return MALE;
         } else if (value == 2) {
             return FEMALE;
-        } else {
-            throw new IllegalArgumentException("유효하지 않은 성별입니다.");
         }
+
+        throw new InvalidGenderException(ErrorCode.INVALID_GENDER);
+
     }
 }
