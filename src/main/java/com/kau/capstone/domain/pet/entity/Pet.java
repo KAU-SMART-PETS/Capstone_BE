@@ -18,6 +18,7 @@ import org.hibernate.annotations.Comment;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Pet extends BaseEntity {
 
@@ -26,8 +27,8 @@ public class Pet extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 10)
     @Comment("반려동물 이름")
+    @Column(length = 10, nullable = false)
     private String name;
 
     @Comment("종류")
@@ -42,12 +43,12 @@ public class Pet extends BaseEntity {
     private float weight;
 
     @Comment("나이")
+    @Column(nullable = false)
     private Integer age;
 
     @Comment("반려동물 이미지")
     private String imageUrl;
 
-    @Builder
     public Pet(Long id, String name, PetType petType, Gender gender, float weight, Integer age,
         String imageUrl) {
         this.id = id;
