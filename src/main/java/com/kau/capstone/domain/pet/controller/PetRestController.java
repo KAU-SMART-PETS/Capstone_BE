@@ -5,6 +5,7 @@ import com.kau.capstone.domain.pet.service.PetService;
 import com.kau.capstone.global.common.ResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -19,9 +20,9 @@ public class PetRestController {
 
     @PostMapping("/regist")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseDTO<String> createPetRegist(PetRegistRequest petRegistRequest) {
+    public ResponseEntity<String> createPetRegist(PetRegistRequest petRegistRequest) {
         petService.registPet(petRegistRequest);
-        return ResponseDTO.res("성공적으로 반려동물 정보를 저장하였습니다.");
+        return ResponseEntity.ok().build();
     }
 
 }
