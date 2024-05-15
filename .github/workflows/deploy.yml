@@ -13,10 +13,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: "adopt"
@@ -30,7 +30,6 @@ jobs:
           echo "${{ secrets.PROPERTIES }}" | base64 --decode > src/main/resources/application.yml
           echo "${{ secrets.PROD_PROPERTIES }}" | base64 --decode > src/main/resources/application-prod.yml
           echo "${{ secrets.TEST_PROPERTIES }}" | base64 --decode > src/test/resources/application.yml
-          echo "${{ secrets.GRADLE }}" | base64 --decode > build.gradle
           
 
       - name: Grant execute permission for gradlew
@@ -38,7 +37,7 @@ jobs:
           chmod +x gradlew
 
       - name: Build with Gradle
-        uses: gradle/gradle-build-action@v2.6.0
+        uses: gradle/gradle-build-action@v3
         with:
           arguments: build
           
