@@ -59,7 +59,8 @@ jobs:
           port : 22
           envs: GITHUB_SHA
           script: |
-            sudo docker rm -f $(docker ps -qa) 
-            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_REPO }}:${GITHUB_REF##*/}
-            sudo docker run -d --name capstone -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_REPO }}:develop
-            sudo docker image prune -f
+            docker rm -f $(docker ps -qa) 
+            docker image prune -af
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_REPO }}:develop
+            docker run -d --name capstone -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_REPO }}:develop
+            
