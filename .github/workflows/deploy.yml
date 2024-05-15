@@ -42,13 +42,18 @@ jobs:
         with:
           arguments: build
           
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          
       - name: Build with jib
         run: |
-          echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u jun23314 --password-stdin
           ./gradlew clean jib \
-          -Djib.to.auth.username='jun23314' \
+          -Djib.to.auth.username=${{ secrets.DOCKERHUB_USERNAME }} \
           -Djib.to.auth.password=${{ secrets.DOCKERHUB_PASSWORD }} \
-          -Djib.to.image="jun23314/${{ secrets.DOCKER_REPO }}:develop" 
+          -Djib.to.image="${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_REPO }}:develop" 
 
       - name: Deploy to server
         uses: appleboy/ssh-action@master
@@ -60,7 +65,6 @@ jobs:
           port : 22
           envs: GITHUB_SHA
           script: |
-            echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
             sudo docker rm -f $(docker ps -qa) 
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_REPO }}:${GITHUB_REF##*/}
             sudo docker run -d --name capstone-p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_REPO }}:develop
