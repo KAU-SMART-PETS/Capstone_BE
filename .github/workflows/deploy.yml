@@ -45,12 +45,15 @@ jobs:
         run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
           
       - name: Build with jib
-      
         run: |
           ./gradlew clean jibDockerBuild \
           -Djib.to.auth.username=${{ secrets.DOCKERHUB_USERNAME }} \
           -Djib.to.auth.password=${{ secrets.DOCKERHUB_PASSWORD }} \
           -Djib.to.image="${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_REPO }}:${GITHUB_REF##*/}" 
+          
+      - name: Show images
+        run: |
+          sudo docker images
           
       - name: Push to DockerHub
         run : |
