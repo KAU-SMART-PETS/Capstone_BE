@@ -56,6 +56,7 @@ jobs:
       - name: Push to DockerHub
         run : |
           echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u jun23314 --password-stdin
+          sudo docker image tag 45234dc5f898 jun23314/${{ secrets.DOCKER_REPO }}:develop
           sudo docker push jun23314/${{ secrets.DOCKER_REPO }}:develop
 
       - name: Deploy to server
