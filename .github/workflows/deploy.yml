@@ -41,8 +41,6 @@ jobs:
         uses: gradle/gradle-build-action@v3
         with:
           arguments: build
-      - name : Login to DockerHub
-        run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
           
       - name: Build with jib
         run: |
@@ -57,6 +55,7 @@ jobs:
           
       - name: Push to DockerHub
         run : |
+          echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
           sudo docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_REPO }}:develop
 
       - name: Deploy to server
@@ -69,6 +68,7 @@ jobs:
           port : 22
           envs: GITHUB_SHA
           script: |
+            echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
             sudo docker rm -f $(docker ps -qa) 
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_REPO }}:${GITHUB_REF##*/}
             sudo docker run -d --name capstone-p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_REPO }}:develop
