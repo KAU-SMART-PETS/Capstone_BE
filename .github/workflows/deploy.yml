@@ -45,9 +45,9 @@ jobs:
       - name: Build with jib
         run: |
           ./gradlew clean jibDockerBuild \
-          -Djib.to.auth.username=${{ secrets.DOCKERHUB_USERNAME }} \
+          -Djib.to.auth.username='jun23314' \
           -Djib.to.auth.password=${{ secrets.DOCKERHUB_PASSWORD }} \
-          -Djib.to.image="${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_REPO }}:${GITHUB_REF##*/}" 
+          -Djib.to.image="jun23314/${{ secrets.DOCKER_REPO }}:develop" 
           
       - name: Show images
         run: |
@@ -55,10 +55,8 @@ jobs:
           
       - name: Push to DockerHub
         run : |
-          echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-          sudo docker image tag ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_REPO }}:develop
-          sudo docker images
-          sudo docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_REPO }}:develop
+          echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u jun23314 --password-stdin
+          sudo docker push jun23314/${{ secrets.DOCKER_REPO }}:develop
 
       - name: Deploy to server
         uses: appleboy/ssh-action@master
