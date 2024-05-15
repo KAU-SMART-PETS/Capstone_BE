@@ -42,7 +42,7 @@ jobs:
         with:
           arguments: build
       - name : Login to DockerHub
-        run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+        run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
           
       - name: Build with jib
       
@@ -54,7 +54,7 @@ jobs:
           
       - name: Push to DockerHub
         run : |
-          sudo docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_REPO }}:${GITHUB_REF##*/}
+          sudo docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_REPO }}:develop
 
       - name: Deploy to server
         uses: appleboy/ssh-action@master
