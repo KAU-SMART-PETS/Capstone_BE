@@ -30,7 +30,7 @@ jobs:
           echo "${{ secrets.PROPERTIES }}" | base64 --decode > src/main/resources/application.yml
           echo "${{ secrets.PROD_PROPERTIES }}" | base64 --decode > src/main/resources/application-prod.yml
           echo "${{ secrets.TEST_PROPERTIES }}" | base64 --decode > src/test/resources/application.yml
-          echo "${{ secrets.GRADLE }}" | base64 --decode > build.gradle
+          
 
       - name: Grant execute permission for gradlew
         run: |
@@ -40,10 +40,10 @@ jobs:
         uses: gradle/gradle-build-action@v3
         with:
           arguments: build
-
+          
       - name: Build with jib
         run: |
-          ./gradlew clean jibDockerBuild \
+          ./gradlew clean jib \
           -Djib.to.auth.username=${{ secrets.DOCKERHUB_USERNAME }} \
           -Djib.to.auth.password=${{ secrets.DOCKERHUB_PASSWORD }} \
           -Djib.to.image="${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKER_REPO }}:${GITHUB_REF##*/}"
