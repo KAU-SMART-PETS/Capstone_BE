@@ -1,6 +1,7 @@
 package com.kau.capstone.domain.pet.util;
 
 import com.kau.capstone.domain.pet.dto.request.PetRegistRequest;
+import com.kau.capstone.domain.pet.dto.response.PetInfoResponse;
 import com.kau.capstone.domain.pet.entity.Pet;
 import com.kau.capstone.global.common.Gender;
 import com.kau.capstone.global.common.PetType;
@@ -24,4 +25,14 @@ public class PetMapper {
             .build();
     }
 
+    public static PetInfoResponse toGetResponseDTO(Pet pet) {
+        return PetInfoResponse.builder()
+            .age(pet.getAge())
+            .petType(pet.getPetType())
+            .gender(pet.getGender())
+            .name(pet.getName())
+            .weight(pet.getWeight())
+            .imageUrl(pet.getImageUrl())
+            .build();
+    }
 }
