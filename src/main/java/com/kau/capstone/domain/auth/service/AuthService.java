@@ -5,12 +5,14 @@ import com.kau.capstone.domain.auth.dto.UserInfoDto;
 import com.kau.capstone.domain.auth.util.SocialSite;
 import com.kau.capstone.domain.auth.util.provider.OAuthProvider;
 import com.kau.capstone.domain.auth.util.provider.OAuthProviders;
+import com.kau.capstone.domain.member.service.MemberService;
 import jakarta.servlet.http.Cookie;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
-@Slf4j
+@RequiredArgsConstructor
 public class AuthService {
 
     private static final String COOKIE_NAME = "JSESSIONID";
@@ -18,10 +20,7 @@ public class AuthService {
     private static final String HOME_PATH = "/";
 
     private final OAuthProviders oAuthProviders;
-
-    public AuthService(OAuthProviders oAuthProviders) {
-        this.oAuthProviders = oAuthProviders;
-    }
+    private final MemberService memberService;
 
     public Cookie expireCookie() {
         Cookie cookie = new Cookie(COOKIE_NAME, null);
@@ -43,6 +42,6 @@ public class AuthService {
         OAuthProvider oAuthProvider = oAuthProviders.getClient(socialSite);
         UserInfoDto userInfoDto = oAuthProvider.getUserInfo(code);
 
-        return SignUserDto.from(false, 1L);
+        return memberService.findOrCreateMember(userInfoDto);
     }
 }

@@ -22,6 +22,7 @@ import java.net.URI;
 public class AuthController {
 
     private static final String LOGIN_ATTRIBUTE_NAME = "memberId";
+    public static final String HOME = "/";
 
     private final AuthService authService;
 
@@ -46,7 +47,9 @@ public class AuthController {
     public ResponseEntity<Void> oauthLoginCode(@PathVariable String site,
                                                @RequestParam("code") String code) {
         authService.loginAuthorizeUser(site, code);
+
         return ResponseEntity.ok()
+                .location(URI.create(HOME))
                 .build();
     }
 

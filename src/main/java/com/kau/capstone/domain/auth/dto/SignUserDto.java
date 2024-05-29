@@ -8,7 +8,7 @@ public record SignUserDto (
     Long memberId
 ) {
 
-    public static SignUserDto from(Boolean isSignUp, Long memberId) {
+    public static SignUserDto of(Boolean isSignUp, Long memberId) {
         return SignUserDto.builder()
                 .isSignUp(isSignUp)
                 .memberId(memberId)

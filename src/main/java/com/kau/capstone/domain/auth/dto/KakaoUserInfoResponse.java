@@ -9,7 +9,7 @@ public record KakaoUserInfoResponse(
 ) {
     public UserInfoDto toUserInfo() {
         return UserInfoDto.builder()
-                .id(Long.valueOf(id))
+                .id(id)
                 .nickname(account.profile.nickname)
                 .email(account.email)
                 .build();
