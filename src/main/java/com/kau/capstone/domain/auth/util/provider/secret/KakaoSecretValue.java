@@ -8,12 +8,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class KakaoSecretValue {
 
-    @Value("${kakao.rest-api-key}")
-    private String restApiKey;
+    private final String restApiKey;
+    private final String redirectUri;
+    private final String adminKey;
 
-    @Value("${kakao.redirect-uri}")
-    private String redirectUri;
-
-    @Value("${kakao.admin-key}")
-    private String adminKey;
+    public KakaoSecretValue(
+            @Value("${kakao.rest-api-key}") String restApiKey,
+            @Value("${kakao.redirect-uri}") String redirectUri,
+            @Value("${kakao.admin-key}") String adminKey) {
+        this.restApiKey = restApiKey;
+        this.redirectUri = redirectUri;
+        this.adminKey = adminKey;
+    }
 }
