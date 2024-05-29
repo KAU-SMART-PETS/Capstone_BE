@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 public record KakaoUserInfoResponse(
-        @JsonProperty("id") String id,
+        String id,
         @JsonProperty("kakao_account") KakaoAccount account
 ) {
     public UserInfoDto toUserInfo() {
