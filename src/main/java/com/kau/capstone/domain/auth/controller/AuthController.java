@@ -23,8 +23,8 @@ import java.net.URI;
 public class AuthController {
 
     private static final String LOGIN_ATTRIBUTE_NAME = "memberId";
-    public static final String HOME = "/";
-    public static final String MYPAGE = "/mypage";
+    private static final String HOME = "/";
+    private static final String MYPAGE = "/mypage";
 
     private final AuthService authService;
 
