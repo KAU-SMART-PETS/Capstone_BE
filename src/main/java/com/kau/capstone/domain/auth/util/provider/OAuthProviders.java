@@ -1,11 +1,15 @@
 package com.kau.capstone.domain.auth.util.provider;
 
+import com.kau.capstone.domain.auth.exception.AuthException;
 import com.kau.capstone.domain.auth.util.SocialSite;
+import com.kau.capstone.global.exception.ErrorCode;
 
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import static com.kau.capstone.global.exception.ErrorCode.*;
 
 public class OAuthProviders {
 
@@ -20,6 +24,6 @@ public class OAuthProviders {
 
     public OAuthProvider getClient(SocialSite site) {
         return Optional.ofNullable(oAuthRedirectProviderMap.get(site))
-                .orElseThrow(() -> new RuntimeException("지원하지 않는 소셜 로그인 사이트입니다"));
+                .orElseThrow(() -> new AuthException(SOCIAL_SITE_NOT_SUPPORTED));
     }
 }

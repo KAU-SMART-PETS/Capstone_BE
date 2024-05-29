@@ -1,6 +1,10 @@
 package com.kau.capstone.domain.auth.util;
 
+import com.kau.capstone.domain.auth.exception.AuthException;
+
 import java.util.Arrays;
+
+import static com.kau.capstone.global.exception.ErrorCode.SOCIAL_SITE_NOT_SUPPORTED;
 
 public enum SocialSite {
 
@@ -16,6 +20,6 @@ public enum SocialSite {
         return Arrays.stream(SocialSite.values())
                 .filter(socialSite -> socialSite.site.equals(site))
                 .findAny()
-                .orElseThrow(() -> new RuntimeException("지원하지 않는 소셜 로그인 사이트입니다."));
+                .orElseThrow(() -> new AuthException(SOCIAL_SITE_NOT_SUPPORTED));
     }
 }

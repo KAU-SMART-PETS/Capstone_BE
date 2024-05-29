@@ -3,14 +3,16 @@ package com.kau.capstone.domain.member.service;
 import com.kau.capstone.domain.auth.dto.SignUserDto;
 import com.kau.capstone.domain.auth.dto.UserInfoDto;
 import com.kau.capstone.domain.member.entity.Member;
+import com.kau.capstone.domain.member.exception.MemberNotFoundException;
 import com.kau.capstone.domain.member.repository.MemberRepository;
 import com.kau.capstone.domain.member.util.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static java.lang.Boolean.TRUE;
+import static com.kau.capstone.global.exception.ErrorCode.MEMBER_NOT_FOUND;
 import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
 
 @Service
@@ -38,6 +40,6 @@ public class MemberService {
 
     public Member findById(Long memberId) {
         return memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다."));
+                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
     }
 }
