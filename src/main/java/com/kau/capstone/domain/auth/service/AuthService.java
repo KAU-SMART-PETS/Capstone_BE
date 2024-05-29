@@ -1,22 +1,26 @@
 package com.kau.capstone.domain.auth.service;
 
+import com.kau.capstone.domain.auth.dto.SignUserDto;
+import com.kau.capstone.domain.auth.dto.UserInfoDto;
 import com.kau.capstone.domain.auth.util.SocialSite;
-import com.kau.capstone.domain.auth.util.redirect.OAuthRedirectProvider;
-import com.kau.capstone.domain.auth.util.redirect.OAuthRedirectProviders;
+import com.kau.capstone.domain.auth.util.provider.OAuthProvider;
+import com.kau.capstone.domain.auth.util.provider.OAuthProviders;
 import jakarta.servlet.http.Cookie;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class AuthService {
 
     private static final String COOKIE_NAME = "JSESSIONID";
     private static final int EXPIRE_TIME = 0;
     private static final String HOME_PATH = "/";
 
-    private final OAuthRedirectProviders oAuthRedirectProviders;
+    private final OAuthProviders oAuthProviders;
 
-    public AuthService(OAuthRedirectProviders oAuthRedirectProviders) {
-        this.oAuthRedirectProviders = oAuthRedirectProviders;
+    public AuthService(OAuthProviders oAuthProviders) {
+        this.oAuthProviders = oAuthProviders;
     }
 
     public Cookie expireCookie() {
@@ -29,9 +33,16 @@ public class AuthService {
 
     public String getLoginRedirectURL(String site) {
         SocialSite socialSite = SocialSite.findBySocialSite(site);
-        OAuthRedirectProvider oAuthRedirectProvider = oAuthRedirectProviders.getClient(socialSite);
+        OAuthProvider oAuthProvider = oAuthProviders.getClient(socialSite);
 
-        return oAuthRedirectProvider.getRedirectURL();
+        return oAuthProvider.getRedirectURL();
     }
 
+    public SignUserDto loginAuthorizeUser(String site, String code) {
+        SocialSite socialSite = SocialSite.findBySocialSite(site);
+        OAuthProvider oAuthProvider = oAuthProviders.getClient(socialSite);
+        UserInfoDto userInfoDto = oAuthProvider.getUserInfo(code);
+
+        return SignUserDto.from(false, 1L);
+    }
 }

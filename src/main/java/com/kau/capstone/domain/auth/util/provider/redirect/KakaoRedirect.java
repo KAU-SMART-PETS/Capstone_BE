@@ -1,13 +1,12 @@
-package com.kau.capstone.domain.auth.util.redirect;
+package com.kau.capstone.domain.auth.util.provider.redirect;
 
-import com.kau.capstone.domain.auth.util.SocialSite;
-import org.springframework.beans.factory.annotation.Value;
+import com.kau.capstone.domain.auth.util.provider.secret.KakaoSecretValue;
 import org.springframework.stereotype.Component;
 
 import java.util.StringJoiner;
 
 @Component
-public class KakaoRedirectProvider implements OAuthRedirectProvider {
+public class KakaoRedirect {
 
     private static final String AUTHORIZATION_BASE_URL = "https://kauth.kakao.com";
     private static final String OAUTH_URI = "/oauth/authorize";
@@ -20,24 +19,21 @@ public class KakaoRedirectProvider implements OAuthRedirectProvider {
     private static final String DELIMITER = "&";
     private static final String QUESTION_MARK = "?";
 
-    @Value("${kakao.rest-api-key}")
-    private String restApiKey;
+    private final KakaoSecretValue secretValue;
 
-    @Value("${kakao.redirect-uri")
-    private String redirectUri;
+    public KakaoRedirect(KakaoSecretValue secretValue) {
+        this.secretValue = secretValue;
+    }
 
-    @Override
     public String getRedirectURL() {
+        String restApiKey = secretValue.getRestApiKey();
+        String redirectUri = secretValue.getRedirectUri();
+
         final StringJoiner joiner = new StringJoiner(DELIMITER)
                 .add(RESPONSE_TYPE_CODE)
                 .add(CLIENT_ID + restApiKey)
                 .add(REDIRECT_URI + redirectUri);
 
         return AUTHORIZATION_BASE_URL + OAUTH_URI + QUESTION_MARK + joiner;
-    }
-
-    @Override
-    public SocialSite getSocialSite() {
-        return SocialSite.KAKAO;
     }
 }

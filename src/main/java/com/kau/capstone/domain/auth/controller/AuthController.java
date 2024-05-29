@@ -3,7 +3,6 @@ package com.kau.capstone.domain.auth.controller;
 import com.kau.capstone.domain.auth.dto.LoginInfo;
 import com.kau.capstone.domain.auth.service.AuthService;
 import com.kau.capstone.domain.auth.util.LoginUser;
-import com.kau.capstone.domain.auth.util.SocialSite;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -46,6 +45,7 @@ public class AuthController {
     @GetMapping("/api/v1/oauth2/{site}/code")
     public ResponseEntity<Void> oauthLoginCode(@PathVariable String site,
                                                @RequestParam("code") String code) {
+        authService.loginAuthorizeUser(site, code);
         return ResponseEntity.ok()
                 .build();
     }

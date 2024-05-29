@@ -4,8 +4,7 @@ import java.util.Arrays;
 
 public enum SocialSite {
 
-    KAKAO("kakao")
-    ;
+    KAKAO("kakao");
 
     private String site;
 
