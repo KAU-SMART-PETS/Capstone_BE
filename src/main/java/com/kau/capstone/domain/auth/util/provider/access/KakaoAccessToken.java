@@ -4,17 +4,14 @@ import com.kau.capstone.domain.auth.dto.KakaoAccessTokenResponse;
 import com.kau.capstone.domain.auth.dto.KakaoUserInfoResponse;
 import com.kau.capstone.domain.auth.dto.UserInfoDto;
 import com.kau.capstone.domain.auth.util.provider.secret.KakaoSecretValue;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 @Component
-@Slf4j
 public class KakaoAccessToken {
 
     private static final String ACCESS_TOKEN_URL = "https://kauth.kakao.com/oauth/token";

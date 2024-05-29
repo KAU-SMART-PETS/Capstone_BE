@@ -9,7 +9,6 @@ import com.kau.capstone.domain.member.entity.Member;
 import com.kau.capstone.domain.member.service.MemberService;
 import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service

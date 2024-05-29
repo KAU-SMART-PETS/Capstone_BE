@@ -3,9 +3,9 @@ package com.kau.capstone.domain.auth.dto;
 import lombok.Builder;
 
 @Builder
-public record SignUserDto (
-    Boolean isSignUp,
-    Long memberId
+public record SignUserDto(
+        Boolean isSignUp,
+        Long memberId
 ) {
 
     public static SignUserDto of(Boolean isSignUp, Long memberId) {
