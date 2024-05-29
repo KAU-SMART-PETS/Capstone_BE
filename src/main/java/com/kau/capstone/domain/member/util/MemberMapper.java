@@ -8,9 +8,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MemberMapper {
 
-    public static Member toMember(UserInfoDto userInfoDto) {
+    public static Member toMember(String site, UserInfoDto userInfoDto) {
         return Member.builder()
                 .platformId(String.valueOf(userInfoDto.id()))
+                .socialSite(site)
                 .name(userInfoDto.nickname())
                 .email(userInfoDto.email())
                 .build();

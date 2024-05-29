@@ -9,5 +9,7 @@ public interface OAuthProvider {
 
     UserInfoDto getUserInfo(String code);
 
+    void logout(String platformId);
+
     SocialSite getSocialSite();
 }

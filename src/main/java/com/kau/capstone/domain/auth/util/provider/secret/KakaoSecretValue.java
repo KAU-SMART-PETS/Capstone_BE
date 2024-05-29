@@ -13,4 +13,7 @@ public class KakaoSecretValue {
 
     @Value("${kakao.redirect-uri}")
     private String redirectUri;
+
+    @Value("${kakao.admin-key}")
+    private String adminKey;
 }

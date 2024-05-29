@@ -21,18 +21,23 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     @Transactional(propagation = REQUIRES_NEW)
-    public SignUserDto findOrCreateMember(UserInfoDto userInfoDto) {
+    public SignUserDto findOrCreateMember(String site, UserInfoDto userInfoDto) {
         String platformId = String.valueOf(userInfoDto.id());
 
         return memberRepository.findByPlatformId(platformId)
                 .map(member -> SignUserDto.of(FALSE, member.getId()))
-                .orElseGet(() -> save(userInfoDto));
+                .orElseGet(() -> save(site, userInfoDto));
     }
 
-    private SignUserDto save(UserInfoDto userInfoDto) {
-        Member member = MemberMapper.toMember(userInfoDto);
+    private SignUserDto save(String site, UserInfoDto userInfoDto) {
+        Member member = MemberMapper.toMember(site, userInfoDto);
         memberRepository.save(member);
 
         return SignUserDto.of(TRUE, member.getId());
+    }
+
+    public Member findById(Long memberId) {
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다."));
     }
 }

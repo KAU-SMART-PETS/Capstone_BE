@@ -1,6 +1,7 @@
 package com.kau.capstone.domain.auth.controller;
 
 import com.kau.capstone.domain.auth.dto.LoginInfo;
+import com.kau.capstone.domain.auth.dto.SignUserDto;
 import com.kau.capstone.domain.auth.service.AuthService;
 import com.kau.capstone.domain.auth.util.LoginUser;
 import jakarta.servlet.http.Cookie;
@@ -23,6 +24,7 @@ public class AuthController {
 
     private static final String LOGIN_ATTRIBUTE_NAME = "memberId";
     public static final String HOME = "/";
+    public static final String MYPAGE = "/mypage";
 
     private final AuthService authService;
 
@@ -45,10 +47,32 @@ public class AuthController {
 
     @GetMapping("/api/v1/oauth2/{site}/code")
     public ResponseEntity<Void> oauthLoginCode(@PathVariable String site,
-                                               @RequestParam("code") String code) {
-        authService.loginAuthorizeUser(site, code);
+                                               @RequestParam("code") String code,
+                                               HttpServletRequest request) {
+        SignUserDto signUserDto = authService.loginAuthorizeUser(site, code);
+        request.getSession().setAttribute(LOGIN_ATTRIBUTE_NAME, signUserDto.memberId());
 
-        return ResponseEntity.ok()
+        if (signUserDto.isSignUp()) {
+            ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY)
+                    .location(URI.create(MYPAGE))
+                    .build();
+        }
+        return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY)
+                .location(URI.create(HOME))
+                .build();
+    }
+
+    @GetMapping("/api/v1/oauth2/logout")
+    public ResponseEntity<Void> oauthLogout(@LoginUser LoginInfo loginInfo,
+                                            HttpServletRequest request, HttpServletResponse response) {
+        authService.logout(loginInfo.memberId());
+
+        request.getSession().removeAttribute(LOGIN_ATTRIBUTE_NAME);
+
+        Cookie cookie = authService.expireCookie();
+        response.addCookie(cookie);
+
+        return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY)
                 .location(URI.create(HOME))
                 .build();
     }

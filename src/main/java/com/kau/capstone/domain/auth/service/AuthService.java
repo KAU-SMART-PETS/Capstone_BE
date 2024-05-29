@@ -5,6 +5,7 @@ import com.kau.capstone.domain.auth.dto.UserInfoDto;
 import com.kau.capstone.domain.auth.util.SocialSite;
 import com.kau.capstone.domain.auth.util.provider.OAuthProvider;
 import com.kau.capstone.domain.auth.util.provider.OAuthProviders;
+import com.kau.capstone.domain.member.entity.Member;
 import com.kau.capstone.domain.member.service.MemberService;
 import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +43,13 @@ public class AuthService {
         OAuthProvider oAuthProvider = oAuthProviders.getClient(socialSite);
         UserInfoDto userInfoDto = oAuthProvider.getUserInfo(code);
 
-        return memberService.findOrCreateMember(userInfoDto);
+        return memberService.findOrCreateMember(site, userInfoDto);
+    }
+
+    public void logout(Long memberId) {
+        Member member = memberService.findById(memberId);
+        SocialSite socialSite = SocialSite.findBySocialSite(member.getSocialSite());
+        OAuthProvider oAuthProvider = oAuthProviders.getClient(socialSite);
+        oAuthProvider.logout(member.getPlatformId());
     }
 }
