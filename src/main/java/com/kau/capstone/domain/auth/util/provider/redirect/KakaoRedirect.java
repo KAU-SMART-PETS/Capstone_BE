@@ -27,7 +27,7 @@ public class KakaoRedirect {
         String restApiKey = secretValue.getRestApiKey();
         String redirectUri = secretValue.getRedirectUri();
 
-        final StringJoiner joiner = new StringJoiner(DELIMITER)
+        StringJoiner joiner = new StringJoiner(DELIMITER)
                 .add(RESPONSE_TYPE_CODE)
                 .add(CLIENT_ID + restApiKey)
                 .add(REDIRECT_URI + redirectUri);

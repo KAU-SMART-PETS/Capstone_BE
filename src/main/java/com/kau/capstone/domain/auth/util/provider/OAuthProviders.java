@@ -2,14 +2,13 @@ package com.kau.capstone.domain.auth.util.provider;
 
 import com.kau.capstone.domain.auth.exception.AuthException;
 import com.kau.capstone.domain.auth.util.SocialSite;
-import com.kau.capstone.global.exception.ErrorCode;
 
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.kau.capstone.global.exception.ErrorCode.*;
+import static com.kau.capstone.global.exception.ErrorCode.SOCIAL_SITE_NOT_SUPPORTED;
 
 public class OAuthProviders {
 

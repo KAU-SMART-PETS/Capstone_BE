@@ -34,7 +34,7 @@ public class KakaoLogout {
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.add(AUTHORIZATION, KAKAO_AK + secretValue.getAdminKey());
 
-        final MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add(TARGET_ID_TYPE, USER_ID);
         body.add(TARGET_ID, platformId);
 
