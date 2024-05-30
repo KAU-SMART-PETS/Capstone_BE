@@ -13,12 +13,13 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class KakaoLogout {
 
+    private static final String LOGOUT_URL = "https://kapi.kakao.com/v1/user/logout";
+
     private static final String AUTHORIZATION = "Authorization";
     private static final String KAKAO_AK = "KakaoAK ";
     private static final String TARGET_ID_TYPE = "target_id_type";
     private static final String USER_ID = "user_id";
     private static final String TARGET_ID = "target_id";
-    private static final String LOGOUT_URL = "https://kapi.kakao.com/v1/user/logout";
 
     private final RestTemplate restTemplate;
     private final KakaoSecretValue secretValue;

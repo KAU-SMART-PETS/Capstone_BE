@@ -8,10 +8,8 @@ import java.util.StringJoiner;
 @Component
 public class KakaoRedirect {
 
-    private static final String AUTHORIZATION_BASE_URL = "https://kauth.kakao.com";
-    private static final String OAUTH_URI = "/oauth/authorize";
+    private static final String AUTHORIZATION_URL = "https://kauth.kakao.com/oauth/authorize";
 
-    // redirect uri 관련 상수
     private static final String RESPONSE_TYPE_CODE = "response_type=code";
     private static final String REDIRECT_URI = "redirect_uri=";
     private static final String CLIENT_ID = "client_id=";
@@ -34,6 +32,6 @@ public class KakaoRedirect {
                 .add(CLIENT_ID + restApiKey)
                 .add(REDIRECT_URI + redirectUri);
 
-        return AUTHORIZATION_BASE_URL + OAUTH_URI + QUESTION_MARK + joiner;
+        return AUTHORIZATION_URL + QUESTION_MARK + joiner;
     }
 }
