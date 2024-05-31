@@ -14,3 +14,8 @@ kakao:
   rest-api-key: ${LOCAL_KAKAO_REST_API_KEY}
   redirect-uri: ${LOCAL_KAKAO_REDIRECT_URI}
   admin-key: ${LOCAL_KAKAO_ADMIN_KEY}
+
+naver:
+  client-id: ${LOCAL_NAVER_CLIENT_ID}
+  client-secret: ${LOCAL_NAVER_CLIENT_SECRET}
+  redirect-uri: ${LOCAL_NAVER_REDIRECT_URI}

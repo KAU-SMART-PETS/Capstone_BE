@@ -16,3 +16,8 @@ kakao:
   rest-api-key: ${PROD_KAKAO_REST_API_KEY}
   redirect-uri: ${PROD_KAKAO_REDIRECT_URI}
   admin-key: ${PROD_KAKAO_ADMIN_KEY}
+
+naver:
+  client-id: ${PROD_NAVER_CLIENT_ID}
+  client-secret: ${PROD_NAVER_CLIENT_SECRET}
+  redirect-uri: ${PROD_NAVER_REDIRECT_URI}

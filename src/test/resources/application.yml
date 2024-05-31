@@ -17,3 +17,8 @@ kakao:
   rest-api-key: test
   redirect-uri: test
   admin-key: test
+
+naver:
+  client-id: test
+  client-secret: test
+  redirect-uri: test
