@@ -1,6 +1,7 @@
 package com.kau.capstone.domain.auth.service;
 
 import com.kau.capstone.domain.auth.dto.SignUserDto;
+import com.kau.capstone.domain.auth.dto.TokenInfo;
 import com.kau.capstone.domain.auth.dto.UserInfoDto;
 import com.kau.capstone.domain.auth.util.SocialSite;
 import com.kau.capstone.domain.auth.util.provider.OAuthProvider;
@@ -10,6 +11,8 @@ import com.kau.capstone.domain.member.service.MemberService;
 import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -49,6 +52,12 @@ public class AuthService {
         Member member = memberService.findById(memberId);
         SocialSite socialSite = SocialSite.findBySocialSite(member.getSocialSite());
         OAuthProvider oAuthProvider = oAuthProviders.getClient(socialSite);
-        oAuthProvider.logout(member.getPlatformId());
+
+        TokenInfo tokenInfo = oAuthProvider.updateToken(member.getRefreshToken());
+        Optional<String> refreshToken = Optional.ofNullable(tokenInfo.refreshToken());
+        if (refreshToken.isPresent()) {
+            memberService.updateRefreshToken(memberId, tokenInfo.refreshToken());
+        }
+        oAuthProvider.logout(tokenInfo.accessToken());
     }
 }

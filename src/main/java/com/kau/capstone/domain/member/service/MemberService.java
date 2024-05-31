@@ -42,4 +42,9 @@ public class MemberService {
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
     }
+
+    @Transactional(propagation = REQUIRES_NEW)
+    public void updateRefreshToken(Long memberId, String refreshToken) {
+        memberRepository.updateRefreshTokenByMemberId(memberId, refreshToken);
+    }
 }

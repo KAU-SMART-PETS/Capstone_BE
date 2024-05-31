@@ -14,6 +14,7 @@ public class MemberMapper {
                 .socialSite(site)
                 .name(userInfoDto.nickname())
                 .email(userInfoDto.email())
+                .refreshToken(userInfoDto.refreshToken())
                 .build();
     }
 }

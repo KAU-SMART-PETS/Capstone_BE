@@ -7,13 +7,6 @@ public record KakaoUserInfoResponse(
         String id,
         @JsonProperty("kakao_account") KakaoAccount account
 ) {
-    public UserInfoDto toUserInfo() {
-        return UserInfoDto.builder()
-                .id(id)
-                .nickname(account.profile.nickname)
-                .email(account.email)
-                .build();
-    }
 
     public record KakaoAccount(
             KakaoProfile profile,
