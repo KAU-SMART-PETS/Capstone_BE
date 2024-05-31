@@ -1,7 +1,7 @@
 package com.kau.capstone.domain.auth.util.provider.refresh;
 
 import com.kau.capstone.domain.auth.dto.KakaoAccessTokenResponse;
-import com.kau.capstone.domain.auth.dto.TokenResponse;
+import com.kau.capstone.domain.auth.dto.TokenInfo;
 import com.kau.capstone.domain.auth.util.provider.secret.KakaoSecretValue;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpHeaders;
@@ -25,7 +25,7 @@ public class KakaoRefreshToken {
         this.secretValue = secretValue;
     }
 
-    public TokenResponse updateToken(String refreshToken) {
+    public TokenInfo updateToken(String refreshToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.set(GRANT_TYPE, REFRESH_TOKEN);
@@ -35,6 +35,6 @@ public class KakaoRefreshToken {
         KakaoAccessTokenResponse response = restTemplate.postForEntity(UPDATE_TOKEN_URL, headers,
                 KakaoAccessTokenResponse.class).getBody();
 
-        return TokenResponse.toResponse(response);
+        return TokenInfo.toResponse(response);
     }
 }

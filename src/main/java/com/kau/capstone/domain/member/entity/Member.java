@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ import org.hibernate.annotations.Comment;
 @Entity
 @Getter
 @Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseEntity {
 
@@ -28,6 +30,9 @@ public class Member extends BaseEntity {
     @Comment("소셜 로그인 사이트")
     private String socialSite;
 
+    @Comment("소셜 사이트 리프레시 토큰값")
+    private String refreshToken;
+
     @Comment("회원 이름")
     private String name;
 
@@ -36,13 +41,4 @@ public class Member extends BaseEntity {
 
     @Comment("회원 포인트")
     private Long point;
-
-    public Member(Long id, String platformId, String socialSite, String name, String email, Long point) {
-        this.id = id;
-        this.platformId = platformId;
-        this.socialSite = socialSite;
-        this.name = name;
-        this.email = email;
-        this.point = point;
-    }
 }

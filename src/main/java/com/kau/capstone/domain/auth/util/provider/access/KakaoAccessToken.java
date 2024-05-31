@@ -2,6 +2,7 @@ package com.kau.capstone.domain.auth.util.provider.access;
 
 import com.kau.capstone.domain.auth.dto.KakaoAccessTokenResponse;
 import com.kau.capstone.domain.auth.dto.KakaoUserInfoResponse;
+import com.kau.capstone.domain.auth.dto.TokenInfo;
 import com.kau.capstone.domain.auth.dto.UserInfoDto;
 import com.kau.capstone.domain.auth.util.provider.secret.KakaoSecretValue;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -33,11 +34,11 @@ public class KakaoAccessToken {
     }
 
     public UserInfoDto getPlatformUser(String code) {
-        String accessToken = requestAccessToken(code);
-        return getUserInfo(accessToken);
+        TokenInfo tokenInfo = requestAccessToken(code);
+        return getUserInfo(tokenInfo);
     }
 
-    private String requestAccessToken(String code) {
+    private TokenInfo requestAccessToken(String code) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.set(GRANT_TYPE, AUTHORIZATION_CODE);
@@ -48,17 +49,17 @@ public class KakaoAccessToken {
         KakaoAccessTokenResponse response = restTemplate.postForEntity(ACCESS_TOKEN_URL, headers,
                 KakaoAccessTokenResponse.class).getBody();
 
-        return response.accessToken();
+        return TokenInfo.toResponse(response);
     }
 
-    private UserInfoDto getUserInfo(String accessToken) {
+    private UserInfoDto getUserInfo(TokenInfo tokenInfo) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        headers.setBearerAuth(accessToken);
+        headers.setBearerAuth(tokenInfo.accessToken());
 
         KakaoUserInfoResponse response = restTemplate.postForEntity(USER_INFO_URL, new HttpEntity<>(headers),
                 KakaoUserInfoResponse.class).getBody();
 
-        return response.toUserInfo();
+        return UserInfoDto.toDto(response, tokenInfo.refreshToken());
     }
 }

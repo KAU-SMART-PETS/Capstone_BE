@@ -1,6 +1,6 @@
 package com.kau.capstone.domain.auth.util.provider;
 
-import com.kau.capstone.domain.auth.dto.TokenResponse;
+import com.kau.capstone.domain.auth.dto.TokenInfo;
 import com.kau.capstone.domain.auth.dto.UserInfoDto;
 import com.kau.capstone.domain.auth.util.SocialSite;
 
@@ -10,7 +10,7 @@ public interface OAuthProvider {
 
     UserInfoDto getUserInfo(String code);
 
-    TokenResponse updateToken(String beforeRefreshToken);
+    TokenInfo updateToken(String beforeRefreshToken);
 
     void logout(String platformId);
 
