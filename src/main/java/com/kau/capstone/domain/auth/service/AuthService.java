@@ -12,6 +12,8 @@ import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -52,7 +54,10 @@ public class AuthService {
         OAuthProvider oAuthProvider = oAuthProviders.getClient(socialSite);
 
         TokenInfo tokenInfo = oAuthProvider.updateToken(member.getRefreshToken());
-        memberService.updateRefreshToken(memberId, tokenInfo.refreshToken());
+        Optional<String> refreshToken = Optional.ofNullable(tokenInfo.refreshToken());
+        if (refreshToken.isPresent()) {
+            memberService.updateRefreshToken(memberId, tokenInfo.refreshToken());
+        }
         oAuthProvider.logout(tokenInfo.accessToken());
     }
 }
