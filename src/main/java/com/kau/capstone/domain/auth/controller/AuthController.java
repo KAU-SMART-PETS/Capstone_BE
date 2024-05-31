@@ -8,7 +8,6 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.net.URI;
 
-@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class AuthController {
@@ -67,9 +65,7 @@ public class AuthController {
     @GetMapping("/api/v1/oauth2/logout")
     public ResponseEntity<Void> oauthLogout(@LoginUser LoginInfo loginInfo,
                                             HttpServletRequest request, HttpServletResponse response) {
-        log.info("로그아웃 시작");
         authService.logout(loginInfo.memberId());
-        log.info("로그아웃 끝");
 
         request.getSession().removeAttribute(LOGIN_ATTRIBUTE_NAME);
 
