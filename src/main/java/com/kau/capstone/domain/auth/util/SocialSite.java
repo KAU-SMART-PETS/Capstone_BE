@@ -8,7 +8,9 @@ import static com.kau.capstone.global.exception.ErrorCode.SOCIAL_SITE_NOT_SUPPOR
 
 public enum SocialSite {
 
-    KAKAO("kakao");
+    KAKAO("kakao"),
+    NAVER("naver"),
+    ;
 
     private String site;
 
