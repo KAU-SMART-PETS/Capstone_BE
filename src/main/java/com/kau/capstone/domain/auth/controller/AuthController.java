@@ -85,6 +85,8 @@ public class AuthController {
         Cookie cookie = authService.expireCookie();
         response.addCookie(cookie);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY)
+                .location(URI.create(HOME))
+                .build();
     }
 }
