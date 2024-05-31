@@ -18,4 +18,13 @@ public record UserInfoDto(
                 .refreshToken(refreshToken)
                 .build();
     }
+
+    public static UserInfoDto toDto(NaverUserInfoResponse response, String refreshToken) {
+        return UserInfoDto.builder()
+                .id(response.account().id())
+                .nickname(response.account().name())
+                .email(response.account().email())
+                .refreshToken(refreshToken)
+                .build();
+    }
 }

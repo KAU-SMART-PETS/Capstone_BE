@@ -6,6 +6,7 @@ import com.kau.capstone.domain.auth.util.SocialSite;
 import com.kau.capstone.domain.auth.util.provider.access.NaverAccessToken;
 import com.kau.capstone.domain.auth.util.provider.logout.NaverLogout;
 import com.kau.capstone.domain.auth.util.provider.redirect.NaverRedirect;
+import com.kau.capstone.domain.auth.util.provider.refresh.NaverRefreshToken;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,11 +14,14 @@ public class NaverProvider implements OAuthProvider {
 
     private final NaverRedirect redirect;
     private final NaverAccessToken accessToken;
+    private final NaverRefreshToken refreshToken;
     private final NaverLogout naverLogout;
 
-    public NaverProvider(NaverRedirect redirect, NaverAccessToken accessToken, NaverLogout naverLogout) {
+    public NaverProvider(NaverRedirect redirect, NaverAccessToken accessToken, NaverRefreshToken refreshToken,
+                         NaverLogout naverLogout) {
         this.redirect = redirect;
         this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
         this.naverLogout = naverLogout;
     }
 
@@ -33,7 +37,7 @@ public class NaverProvider implements OAuthProvider {
 
     @Override
     public TokenInfo updateToken(String beforeRefreshToken) {
-        return TokenInfo.builder().build();
+        return refreshToken.updateToken(beforeRefreshToken);
     }
 
     @Override

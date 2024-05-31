@@ -2,6 +2,7 @@ package com.kau.capstone.domain.auth.util.provider.access;
 
 import com.kau.capstone.domain.auth.dto.NaverAccessTokenResponse;
 import com.kau.capstone.domain.auth.dto.NaverUserInfoResponse;
+import com.kau.capstone.domain.auth.dto.TokenInfo;
 import com.kau.capstone.domain.auth.dto.UserInfoDto;
 import com.kau.capstone.domain.auth.util.provider.secret.NaverSecretValue;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -32,11 +33,11 @@ public class NaverAccessToken {
     }
 
     public UserInfoDto getPlatformUser(String code) {
-        String accessToken = requestAccessToken(code);
-        return getUserInfo(accessToken);
+        TokenInfo tokenInfo = requestAccessToken(code);
+        return getUserInfo(tokenInfo);
     }
 
-    private String requestAccessToken(String code) {
+    private TokenInfo requestAccessToken(String code) {
         HttpHeaders headers = new HttpHeaders();
         headers.set(GRANT_TYPE, AUTHORIZATION_CODE);
         headers.set(CLIENT_ID, secretValue.getClientId());
@@ -47,16 +48,16 @@ public class NaverAccessToken {
         NaverAccessTokenResponse response = restTemplate.postForEntity(ACCESS_TOKEN_URL, headers,
                 NaverAccessTokenResponse.class).getBody();
 
-        return response.accessToken();
+        return TokenInfo.toResponse(response);
     }
 
-    private UserInfoDto getUserInfo(String accessToken) {
+    private UserInfoDto getUserInfo(TokenInfo tokenInfo) {
         HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(accessToken);
+        headers.setBearerAuth(tokenInfo.accessToken());
 
         NaverUserInfoResponse response = restTemplate.postForEntity(USER_INFO_URL, new HttpEntity<>(headers),
                 NaverUserInfoResponse.class).getBody();
 
-        return response.toUserInfo();
+        return UserInfoDto.toDto(response, tokenInfo.refreshToken());
     }
 }

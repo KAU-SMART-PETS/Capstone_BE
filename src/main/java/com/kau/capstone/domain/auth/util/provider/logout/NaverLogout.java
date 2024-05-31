@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class NaverLogout {
 
-    private static final String LOGOUT_URL = "`https://nid.naver.com/oauth2.0/token";
+    private static final String LOGOUT_URL = "https://nid.naver.com/oauth2.0/token";
 
     private static final String DELETE = "delete";
 
