@@ -1,5 +1,6 @@
 package com.kau.capstone.domain.auth.util.provider;
 
+import com.kau.capstone.domain.auth.dto.TokenResponse;
 import com.kau.capstone.domain.auth.dto.UserInfoDto;
 import com.kau.capstone.domain.auth.util.SocialSite;
 import com.kau.capstone.domain.auth.util.provider.access.NaverAccessToken;
@@ -28,6 +29,11 @@ public class NaverProvider implements OAuthProvider {
     @Override
     public UserInfoDto getUserInfo(String code) {
         return accessToken.getPlatformUser(code);
+    }
+
+    @Override
+    public TokenResponse updateToken(String beforeRefreshToken) {
+        return TokenResponse.builder().build();
     }
 
     @Override
