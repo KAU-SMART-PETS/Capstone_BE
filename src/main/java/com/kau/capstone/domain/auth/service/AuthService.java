@@ -1,6 +1,7 @@
 package com.kau.capstone.domain.auth.service;
 
 import com.kau.capstone.domain.auth.dto.SignUserDto;
+import com.kau.capstone.domain.auth.dto.TokenInfo;
 import com.kau.capstone.domain.auth.dto.UserInfoDto;
 import com.kau.capstone.domain.auth.util.SocialSite;
 import com.kau.capstone.domain.auth.util.provider.OAuthProvider;
@@ -49,6 +50,9 @@ public class AuthService {
         Member member = memberService.findById(memberId);
         SocialSite socialSite = SocialSite.findBySocialSite(member.getSocialSite());
         OAuthProvider oAuthProvider = oAuthProviders.getClient(socialSite);
-        oAuthProvider.logout(member.getPlatformId());
+
+        TokenInfo tokenInfo = oAuthProvider.updateToken(member.getRefreshToken());
+        memberService.updateRefreshToken(memberId, tokenInfo.refreshToken());
+        oAuthProvider.logout(tokenInfo.accessToken());
     }
 }

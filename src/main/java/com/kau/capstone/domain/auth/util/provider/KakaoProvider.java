@@ -41,8 +41,8 @@ public class KakaoProvider implements OAuthProvider {
     }
 
     @Override
-    public void logout(String platformId) {
-        logout.logout(platformId);
+    public void logout(String accessToken) {
+        logout.logout(accessToken);
     }
 
     @Override

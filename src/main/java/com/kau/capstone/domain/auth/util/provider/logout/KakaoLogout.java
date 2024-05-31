@@ -29,15 +29,11 @@ public class KakaoLogout {
         this.secretValue = secretValue;
     }
 
-    public void logout(String platformId) {
+    public void logout(String accessToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        headers.add(AUTHORIZATION, KAKAO_AK + secretValue.getAdminKey());
+        headers.setBearerAuth(accessToken);
 
-        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-        body.add(TARGET_ID_TYPE, USER_ID);
-        body.add(TARGET_ID, platformId);
-
-        restTemplate.postForEntity(LOGOUT_URL, new HttpEntity<>(body, headers), String.class);
+        restTemplate.postForEntity(LOGOUT_URL, headers, String.class);
     }
 }

@@ -37,8 +37,8 @@ public class NaverProvider implements OAuthProvider {
     }
 
     @Override
-    public void logout(String refreshToken) {
-        naverLogout.logout(refreshToken);
+    public void logout(String accessToken) {
+        naverLogout.logout(accessToken);
     }
 
     @Override

@@ -12,7 +12,7 @@ public interface OAuthProvider {
 
     TokenInfo updateToken(String beforeRefreshToken);
 
-    void logout(String platformId);
+    void logout(String refreshToken);
 
     SocialSite getSocialSite();
 }
