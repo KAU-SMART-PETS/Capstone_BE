@@ -13,3 +13,7 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
+kakao:
+  rest-api-key: test
+  redirect-uri: test
+  admin-key: test

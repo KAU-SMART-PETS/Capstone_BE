@@ -9,3 +9,8 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+kakao:
+  rest-api-key: ${LOCAL_KAKAO_REST_API_KEY}
+  redirect-uri: ${LOCAL_KAKAO_REDIRECT_URI}
+  admin-key: ${LOCAL_KAKAO_ADMIN_KEY}
