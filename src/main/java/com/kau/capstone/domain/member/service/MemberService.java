@@ -2,10 +2,13 @@ package com.kau.capstone.domain.member.service;
 
 import com.kau.capstone.domain.auth.dto.SignUserDto;
 import com.kau.capstone.domain.auth.dto.UserInfoDto;
+import com.kau.capstone.domain.member.dto.MemberInfoResponse;
+import com.kau.capstone.domain.member.dto.ModifyMemberRequest;
 import com.kau.capstone.domain.member.entity.Member;
 import com.kau.capstone.domain.member.exception.MemberNotFoundException;
 import com.kau.capstone.domain.member.repository.MemberRepository;
 import com.kau.capstone.domain.member.util.MemberMapper;
+import com.kau.capstone.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,5 +49,19 @@ public class MemberService {
     @Transactional(propagation = REQUIRES_NEW)
     public void updateRefreshToken(Long memberId, String refreshToken) {
         memberRepository.updateRefreshTokenByMemberId(memberId, refreshToken);
+    }
+
+    public MemberInfoResponse getMemberInfo(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+
+        return MemberInfoResponse.toResponse(member);
+    }
+
+    public void putMemberInfo(Long memberId, ModifyMemberRequest request) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+
+        member.updateInfo(request.name(), request.email());
     }
 }
