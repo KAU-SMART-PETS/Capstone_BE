@@ -45,7 +45,7 @@ public class AuthController {
                 .build();
     }
 
-    @GetMapping("/api/v1/oauth2/{site}/code")
+    @PostMapping("/api/v1/oauth2/{site}/code")
     public ResponseEntity<Void> oauthLoginCode(@PathVariable String site,
                                                @RequestParam("code") String code,
                                                HttpServletRequest request) {
@@ -62,7 +62,7 @@ public class AuthController {
                 .build();
     }
 
-    @GetMapping("/api/v1/oauth2/logout")
+    @PostMapping("/api/v1/oauth2/logout")
     public ResponseEntity<Void> oauthLogout(@LoginUser LoginInfo loginInfo,
                                             HttpServletRequest request, HttpServletResponse response) {
         authService.logout(loginInfo.memberId());
