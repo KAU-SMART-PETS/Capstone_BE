@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
@@ -25,7 +25,7 @@ public class MemberController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/api/v1/user")
+    @PatchMapping("/api/v1/user")
     public ResponseEntity<Void> putMemberInfo(@LoginUser LoginInfo loginInfo,
                                               @RequestBody ModifyMemberRequest request) {
         memberService.putMemberInfo(loginInfo.memberId(), request);
