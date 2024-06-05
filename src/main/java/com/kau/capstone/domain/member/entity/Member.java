@@ -12,6 +12,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 
+import java.util.Objects;
+
 @Entity
 @Getter
 @Builder
@@ -41,4 +43,21 @@ public class Member extends BaseEntity {
 
     @Comment("회원 포인트")
     private Long point;
+
+    public void updateInfo(String name, String email) {
+        updateName(name);
+        updateEmail(email);
+    }
+
+    private void updateName(String name) {
+        if (!Objects.isNull(name)) {
+            this.name = name;
+        }
+    }
+
+    private void updateEmail(String email) {
+        if (!Objects.isNull(email)) {
+            this.email = email;
+        }
+    }
 }
