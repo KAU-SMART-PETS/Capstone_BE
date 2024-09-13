@@ -1,7 +1,6 @@
 package com.kau.capstone.domain.pet.entity;
 
 import com.kau.capstone.global.common.BaseEntity;
-import com.kau.capstone.global.common.Gender;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

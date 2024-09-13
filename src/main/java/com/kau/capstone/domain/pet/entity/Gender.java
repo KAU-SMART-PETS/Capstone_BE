@@ -1,4 +1,4 @@
-package com.kau.capstone.global.common;
+package com.kau.capstone.domain.pet.entity;
 
 import com.kau.capstone.global.exception.ErrorCode;
 import com.kau.capstone.global.exception.InvalidGenderException;

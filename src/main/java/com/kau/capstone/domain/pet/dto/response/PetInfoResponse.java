@@ -1,6 +1,6 @@
 package com.kau.capstone.domain.pet.dto.response;
 
-import com.kau.capstone.global.common.Gender;
+import com.kau.capstone.domain.pet.entity.Gender;
 import com.kau.capstone.domain.pet.entity.PetType;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
