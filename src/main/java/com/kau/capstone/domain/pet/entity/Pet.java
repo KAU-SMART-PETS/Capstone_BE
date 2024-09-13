@@ -1,8 +1,7 @@
 package com.kau.capstone.domain.pet.entity;
 
+import com.kau.capstone.domain.pet.dto.request.UpdatePetInfoRequest;
 import com.kau.capstone.global.common.BaseEntity;
-import com.kau.capstone.global.common.Gender;
-import com.kau.capstone.global.common.PetType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -40,7 +39,7 @@ public class Pet extends BaseEntity {
     private Gender gender;
 
     @Comment("체중")
-    private float weight;
+    private double weight;
 
     @Comment("나이")
     @Column(nullable = false)
@@ -49,7 +48,7 @@ public class Pet extends BaseEntity {
     @Comment("반려동물 이미지")
     private String imageUrl;
 
-    public Pet(Long id, String name, PetType petType, Gender gender, float weight, Integer age,
+    public Pet(Long id, String name, PetType petType, Gender gender, double weight, Integer age,
         String imageUrl) {
         this.id = id;
         this.name = name;
@@ -58,6 +57,14 @@ public class Pet extends BaseEntity {
         this.weight = weight;
         this.age = age;
         this.imageUrl = imageUrl;
+    }
+
+    public void updatePet(UpdatePetInfoRequest updatePetInfoRequest) {
+        this.age = updatePetInfoRequest.age();
+        this.name = updatePetInfoRequest.name();
+        this.petType = PetType.fromInt(updatePetInfoRequest.petType());
+        this.gender = Gender.fromInt(updatePetInfoRequest.gender());
+        this.weight = updatePetInfoRequest.weight();
     }
 }
 

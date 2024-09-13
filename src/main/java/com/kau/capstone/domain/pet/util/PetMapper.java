@@ -3,8 +3,8 @@ package com.kau.capstone.domain.pet.util;
 import com.kau.capstone.domain.pet.dto.request.PetRegistRequest;
 import com.kau.capstone.domain.pet.dto.response.PetInfoResponse;
 import com.kau.capstone.domain.pet.entity.Pet;
-import com.kau.capstone.global.common.Gender;
-import com.kau.capstone.global.common.PetType;
+import com.kau.capstone.domain.pet.entity.Gender;
+import com.kau.capstone.domain.pet.entity.PetType;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -31,7 +31,7 @@ public class PetMapper {
             .petType(pet.getPetType())
             .gender(pet.getGender())
             .name(pet.getName())
-            .weight(pet.getWeight())
+            .weight((float) pet.getWeight())
             .imageUrl(pet.getImageUrl())
             .build();
     }
