@@ -31,7 +31,7 @@ public class PetMapper {
             .petType(pet.getPetType())
             .gender(pet.getGender())
             .name(pet.getName())
-            .weight(pet.getWeight())
+            .weight((float) pet.getWeight())
             .imageUrl(pet.getImageUrl())
             .build();
     }
