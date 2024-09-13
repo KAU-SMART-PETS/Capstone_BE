@@ -44,4 +44,11 @@ public class PetService {
         pet.updatePet(updatePetInfoRequest);
         petRepository.save(pet);
     }
+
+    @Transactional
+    public void deletePetInfo(Long petId) {
+        Pet pet = findByPetId(petId);
+        pet.deletePet();
+        petRepository.save(pet);
+    }
 }
