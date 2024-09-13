@@ -1,5 +1,6 @@
 package com.kau.capstone.domain.pet.entity;
 
+import com.kau.capstone.domain.pet.dto.request.UpdatePetInfoRequest;
 import com.kau.capstone.global.common.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -56,6 +57,14 @@ public class Pet extends BaseEntity {
         this.weight = weight;
         this.age = age;
         this.imageUrl = imageUrl;
+    }
+
+    public void updatePet(UpdatePetInfoRequest updatePetInfoRequest) {
+        this.age = updatePetInfoRequest.age();
+        this.name = updatePetInfoRequest.name();
+        this.petType = PetType.fromInt(updatePetInfoRequest.petType());
+        this.gender = Gender.fromInt(updatePetInfoRequest.gender());
+        this.weight = updatePetInfoRequest.weight();
     }
 }
 
