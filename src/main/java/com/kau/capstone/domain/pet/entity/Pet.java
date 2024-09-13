@@ -38,7 +38,7 @@ public class Pet extends BaseEntity {
     private Gender gender;
 
     @Comment("체중")
-    private float weight;
+    private double weight;
 
     @Comment("나이")
     @Column(nullable = false)
@@ -47,7 +47,7 @@ public class Pet extends BaseEntity {
     @Comment("반려동물 이미지")
     private String imageUrl;
 
-    public Pet(Long id, String name, PetType petType, Gender gender, float weight, Integer age,
+    public Pet(Long id, String name, PetType petType, Gender gender, double weight, Integer age,
         String imageUrl) {
         this.id = id;
         this.name = name;
