@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,6 +47,16 @@ public class PetRestController {
     ) {
         petService.updatePetInfo(petId, updatePetInfoRequest);
         return ResponseEntity.ok("반려동물 정보를 성공적으로 수정하였습니다.");
+    }
+
+    @DeleteMapping("/{pet_id}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "반려동물 정보 삭제 API", description = "반려동물 정보를 삭제하는 API입니다.")
+    public ResponseEntity<?> deletePetInfo(
+        @PathVariable("pet_id") @NotNull Long petId
+    ) {
+        petService.deletePetInfo(petId);
+        return ResponseEntity.ok("반려동물 정보를 성공적으로 삭제하였습니다.");
     }
 
 }
