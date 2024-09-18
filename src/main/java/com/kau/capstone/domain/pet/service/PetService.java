@@ -32,9 +32,9 @@ public class PetService {
         petRepository.save(pet);
     }
 
+    @Transactional(readOnly = true)
     public PetInfoResponse getPetInfo(Long petId) {
         Pet pet = getPet(petId);
-
         return PetMapper.toGetResponseDTO(pet);
     }
 
