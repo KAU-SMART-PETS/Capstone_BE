@@ -28,7 +28,7 @@ public class PetRestController {
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    @Operation(summary = "반려동물 정보 등록 API", description = "반려동물 정보를 수정하는 API입니다.")
+    @Operation(summary = "반려동물 정보 등록 API", description = "반려동물 정보를 등록하는 API입니다.")
     public ResponseEntity<String> createPetInfo(
         @RequestBody PetRegistRequest petRegistRequest
     ) {
@@ -37,7 +37,9 @@ public class PetRestController {
     }
 
     @GetMapping("/{pet_id}")
-    public ResponseEntity<PetInfoResponse> getPetInfo(@PathVariable Long pet_id) {
+    public ResponseEntity<PetInfoResponse> getPetInfo(
+        @PathVariable Long pet_id
+    ) {
         petService.getPetInfo(pet_id);
         return new ResponseEntity<>(petService.getPetInfo(pet_id), HttpStatus.OK);
     }
