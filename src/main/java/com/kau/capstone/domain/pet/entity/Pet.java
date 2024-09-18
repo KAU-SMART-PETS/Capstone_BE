@@ -18,7 +18,6 @@ import org.hibernate.annotations.Comment;
 
 @Entity
 @Getter
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Pet extends BaseEntity {
 
@@ -49,9 +48,9 @@ public class Pet extends BaseEntity {
     @Comment("반려동물 이미지")
     private String imageUrl;
 
-    public Pet(Long id, String name, PetType petType, Gender gender, double weight, Integer age,
+    @Builder
+    public Pet(String name, PetType petType, Gender gender, double weight, Integer age,
         String imageUrl) {
-        this.id = id;
         this.name = name;
         this.petType = petType;
         this.gender = gender;
