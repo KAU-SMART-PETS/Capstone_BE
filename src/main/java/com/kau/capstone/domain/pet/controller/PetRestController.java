@@ -54,7 +54,7 @@ public class PetRestController {
         @RequestBody UpdatePetInfoRequest updatePetInfoRequest
     ) {
         petService.updatePetInfo(petId, updatePetInfoRequest);
-        return ResponseEntity.ok("반려동물 정보를 성공적으로 수정하였습니다.");
+        return ResponseEntity.status(HttpStatus.OK).body("반려동물 정보를 성공적으로 수정하였습니다.");
     }
 
     @DeleteMapping("/{pet_id}")
@@ -64,7 +64,7 @@ public class PetRestController {
         @PathVariable("pet_id") @NotNull Long petId
     ) {
         petService.deletePetInfo(petId);
-        return ResponseEntity.ok("반려동물 정보를 성공적으로 삭제하였습니다.");
+        return ResponseEntity.status(HttpStatus.OK).body("반려동물 정보를 성공적으로 삭제하였습니다.");
     }
 
 }
