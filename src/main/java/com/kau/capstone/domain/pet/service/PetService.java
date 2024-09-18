@@ -25,29 +25,28 @@ public class PetService {
         petRepository.save(PetMapper.toPet(petRegistRequest));
     }
 
-    public Pet findByPetId(Long petId) {
+    public Pet getPet(Long petId) {
         return petRepository.findById(petId).orElseThrow(
             () -> new PetNotFoundException(ErrorCode.PET_INFO_NOT_FOUND)
         );
     }
 
     public PetInfoResponse getPetInfo(Long petId) {
-
-        Pet pet = findByPetId(petId);
+        Pet pet = getPet(petId);
 
         return PetMapper.toGetResponseDTO(pet);
     }
 
     @Transactional
     public void updatePetInfo(Long petId, UpdatePetInfoRequest updatePetInfoRequest) {
-        Pet pet = findByPetId(petId);
+        Pet pet = getPet(petId);
         pet.updatePet(updatePetInfoRequest);
         petRepository.save(pet);
     }
 
     @Transactional
     public void deletePetInfo(Long petId) {
-        Pet pet = findByPetId(petId);
+        Pet pet = getPet(petId);
         pet.deletePet();
         petRepository.save(pet);
     }
