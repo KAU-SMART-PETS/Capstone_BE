@@ -8,21 +8,16 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Builder
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class PetInfoResponse {
+public record PetInfoResponse (
+    String name,
+    PetType petType,
+    Gender gender,
+    double weight,
+    String imageUrl,
+    Integer age
+){
 
-    private String name;
-
-    private PetType petType;
-
-    private Gender gender;
-
-    private float weight;
-
-    private String imageUrl;
-
-    private Integer age;
+    @Builder
+    public PetInfoResponse {
+    }
 }
