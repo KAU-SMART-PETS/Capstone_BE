@@ -37,11 +37,13 @@ public class PetRestController {
     }
 
     @GetMapping("/{pet_id}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "반려동물 정보 조회 API", description = "반려동물 정보를 조회하는 API입니다.")
     public ResponseEntity<PetInfoResponse> getPetInfo(
-        @PathVariable Long pet_id
+        @PathVariable Long petId
     ) {
-        petService.getPetInfo(pet_id);
-        return new ResponseEntity<>(petService.getPetInfo(pet_id), HttpStatus.OK);
+        PetInfoResponse petInfoResponse = petService.getPetInfo(petId);
+        return ResponseEntity.status(HttpStatus.OK).body(petInfoResponse);
     }
 
     @PatchMapping("/{pet_id}")
