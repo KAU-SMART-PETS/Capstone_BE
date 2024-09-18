@@ -20,15 +20,16 @@ public class PetService {
 
     private final PetRepository petRepository;
 
-    @Transactional
-    public void registPet(PetRegistRequest petRegistRequest) {
-        petRepository.save(PetMapper.toPet(petRegistRequest));
-    }
-
     public Pet getPet(Long petId) {
         return petRepository.findById(petId).orElseThrow(
             () -> new PetNotFoundException(ErrorCode.PET_INFO_NOT_FOUND)
         );
+    }
+
+    @Transactional
+    public void createPetInfo(PetRegistRequest petRegistRequest) {
+        Pet pet = PetMapper.toPet(petRegistRequest);
+        petRepository.save(pet);
     }
 
     public PetInfoResponse getPetInfo(Long petId) {

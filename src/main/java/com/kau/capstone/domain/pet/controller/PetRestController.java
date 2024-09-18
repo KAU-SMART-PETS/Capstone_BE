@@ -26,10 +26,14 @@ public class PetRestController {
 
     private final PetService petService;
 
-    @PostMapping("/regist")
-    public ResponseEntity<String> createPetRegist(@RequestBody PetRegistRequest petRegistRequest) {
-        petService.registPet(petRegistRequest);
-        return ResponseEntity.ok().build();
+    @PostMapping("")
+    @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "반려동물 정보 등록 API", description = "반려동물 정보를 수정하는 API입니다.")
+    public ResponseEntity<String> createPetInfo(
+        @RequestBody PetRegistRequest petRegistRequest
+    ) {
+        petService.createPetInfo(petRegistRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body("반려동물 정보를 성공적으로 저장하였습니다.");
     }
 
     @GetMapping("/{pet_id}")
