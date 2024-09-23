@@ -1,5 +1,11 @@
 package com.kau.capstone.domain.pet.service;
 
+import com.kau.capstone.domain.auth.dto.LoginInfo;
+import com.kau.capstone.domain.member.entity.Member;
+import com.kau.capstone.domain.member.entity.pet.OwnedPet;
+import com.kau.capstone.domain.member.exception.MemberNotFoundException;
+import com.kau.capstone.domain.member.repository.MemberRepository;
+import com.kau.capstone.domain.member.repository.OwnedPetRepository;
 import com.kau.capstone.domain.pet.dto.request.PetRegistRequest;
 import com.kau.capstone.domain.pet.dto.request.UpdatePetInfoRequest;
 import com.kau.capstone.domain.pet.dto.response.PetInfoResponse;
@@ -7,11 +13,12 @@ import com.kau.capstone.domain.pet.entity.Pet;
 import com.kau.capstone.domain.pet.exception.PetNotFoundException;
 import com.kau.capstone.domain.pet.repository.PetRepository;
 import com.kau.capstone.domain.pet.util.PetMapper;
-import com.kau.capstone.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.kau.capstone.global.exception.ErrorCode.*;
 
 @Slf4j
 @Service
@@ -19,15 +26,31 @@ import org.springframework.transaction.annotation.Transactional;
 public class PetService {
 
     private final PetRepository petRepository;
+    private final MemberRepository memberRepository;
+    private final OwnedPetRepository ownedPetRepository;
 
     @Transactional
-    public void registPet(PetRegistRequest petRegistRequest) {
-        petRepository.save(PetMapper.toPet(petRegistRequest));
+    public void registPet(LoginInfo loginInfo, PetRegistRequest petRegistRequest) {
+        Pet pet = petRepository.save(PetMapper.toPet(petRegistRequest));
+        savedOwnedPet(loginInfo.memberId(), pet);
+    }
+
+    private void savedOwnedPet(Long memberId, Pet pet) {
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                () -> new MemberNotFoundException(MEMBER_NOT_FOUND)
+        );
+
+        OwnedPet ownedPet = OwnedPet.builder()
+                .member(member)
+                .pet(pet)
+                .build();
+
+        ownedPetRepository.save(ownedPet);
     }
 
     public Pet findByPetId(Long petId) {
         return petRepository.findById(petId).orElseThrow(
-            () -> new PetNotFoundException(ErrorCode.PET_INFO_NOT_FOUND)
+            () -> new PetNotFoundException(PET_INFO_NOT_FOUND)
         );
     }
 
