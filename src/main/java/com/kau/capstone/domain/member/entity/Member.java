@@ -47,6 +47,7 @@ public class Member extends BaseEntity {
     @Comment("회원 포인트")
     private Long point;
 
+    @Comment("회원이 등록한 반려동물 목록")
     @OneToMany(mappedBy = "member")
     private List<OwnedPet> ownedPets;
 
