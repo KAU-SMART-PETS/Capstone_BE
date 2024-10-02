@@ -23,7 +23,7 @@ public class PetService {
     private final PetRepository petRepository;
     private final S3Service s3Service;
 
-    public Pet getPet(Long petId) {
+    private Pet getPet(Long petId) {
         return petRepository.findById(petId).orElseThrow(
             () -> new PetNotFoundException(ErrorCode.PET_INFO_NOT_FOUND)
         );
