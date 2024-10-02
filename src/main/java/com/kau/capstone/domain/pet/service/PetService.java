@@ -60,6 +60,7 @@ public class PetService {
     public void deletePetInfo(Long petId) {
         Pet pet = getPet(petId);
         pet.deletePet();
+        s3Service.delete(pet);
         petRepository.save(pet);
     }
 }
