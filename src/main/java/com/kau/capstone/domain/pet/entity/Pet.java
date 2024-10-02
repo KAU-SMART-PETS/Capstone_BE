@@ -49,14 +49,12 @@ public class Pet extends BaseEntity {
     private String imageUrl;
 
     @Builder
-    public Pet(String name, PetType petType, Gender gender, double weight, Integer age,
-        String imageUrl) {
+    public Pet(String name, PetType petType, Gender gender, double weight, Integer age) {
         this.name = name;
         this.petType = petType;
         this.gender = gender;
         this.weight = weight;
         this.age = age;
-        this.imageUrl = imageUrl;
     }
 
     public void updatePet(PetRegistRequest petRegistRequest) {
