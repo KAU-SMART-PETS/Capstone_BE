@@ -23,8 +23,6 @@ public class PetRegistRequest {
     @Nullable
     private float weight;
 
-    private String imageUrl;
-
     @NotNull
     private Integer age;
 }
