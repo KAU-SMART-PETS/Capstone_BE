@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PetMapper {
 
-    public static Pet toPet(PetRegistRequest petRegistRequest) {
+    public static Pet toPet(PetRegistRequest petRegistRequest, String imageUrl) {
         Gender gender = Gender.fromInt(petRegistRequest.getGender());
         PetType petType = PetType.fromInt(petRegistRequest.getPetType());
 
@@ -21,7 +21,7 @@ public class PetMapper {
             .gender(gender)
             .age(petRegistRequest.getAge())
             .weight(petRegistRequest.getWeight())
-            .imageUrl(petRegistRequest.getImageUrl())
+            .imageUrl(imageUrl)
             .build();
     }
 
