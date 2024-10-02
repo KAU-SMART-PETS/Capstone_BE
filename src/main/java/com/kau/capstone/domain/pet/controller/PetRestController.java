@@ -1,5 +1,7 @@
 package com.kau.capstone.domain.pet.controller;
 
+import com.kau.capstone.domain.auth.dto.LoginInfo;
+import com.kau.capstone.domain.auth.util.LoginUser;
 import com.kau.capstone.domain.pet.dto.request.PetRegistRequest;
 import com.kau.capstone.domain.pet.dto.request.UpdatePetInfoRequest;
 import com.kau.capstone.domain.pet.dto.response.PetInfoResponse;
@@ -27,8 +29,10 @@ public class PetRestController {
     private final PetService petService;
 
     @PostMapping("/regist")
-    public ResponseEntity<String> createPetRegist(@RequestBody PetRegistRequest petRegistRequest) {
-        petService.registPet(petRegistRequest);
+    public ResponseEntity<String> createPetRegist(@LoginUser LoginInfo loginInfo,
+                                                  @RequestBody PetRegistRequest petRegistRequest
+    ) {
+        petService.registPet(loginInfo, petRegistRequest);
         return ResponseEntity.ok().build();
     }
 
