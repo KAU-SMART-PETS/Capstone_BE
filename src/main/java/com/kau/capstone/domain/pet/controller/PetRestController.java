@@ -5,12 +5,15 @@ import com.kau.capstone.domain.pet.dto.request.UpdatePetInfoRequest;
 import com.kau.capstone.domain.pet.dto.response.PetInfoResponse;
 import com.kau.capstone.domain.pet.service.PetService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,8 +33,8 @@ public class PetRestController {
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "반려동물 정보 등록 API", description = "반려동물 정보를 등록하는 API입니다.")
     public ResponseEntity<String> createPetInfo(
-        @RequestBody PetRegistRequest petRegistRequest
-    ) {
+        @Valid @ModelAttribute("petRegistRequest") PetRegistRequest petRegistRequest
+    ) throws IOException {
         petService.createPetInfo(petRegistRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body("반려동물 정보를 성공적으로 저장하였습니다.");
     }

@@ -7,7 +7,10 @@ import com.kau.capstone.domain.pet.entity.Pet;
 import com.kau.capstone.domain.pet.exception.PetNotFoundException;
 import com.kau.capstone.domain.pet.repository.PetRepository;
 import com.kau.capstone.domain.pet.util.PetMapper;
+import com.kau.capstone.global.common.s3.S3Service;
 import com.kau.capstone.global.exception.ErrorCode;
+import java.io.IOException;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class PetService {
 
     private final PetRepository petRepository;
+    private final S3Service s3Service;
 
     public Pet getPet(Long petId) {
         return petRepository.findById(petId).orElseThrow(
@@ -27,8 +31,13 @@ public class PetService {
     }
 
     @Transactional
-    public void createPetInfo(PetRegistRequest petRegistRequest) {
+    public void createPetInfo(PetRegistRequest petRegistRequest)
+        throws IOException {
         Pet pet = PetMapper.toPet(petRegistRequest);
+        if (!Objects.isNull(petRegistRequest.getImage())) {
+            String dirName = /*userName + */ petRegistRequest.getName() + "/profile";
+            s3Service.upload(petRegistRequest.getImage(), dirName, "profile");
+        }
         petRepository.save(pet);
     }
 
