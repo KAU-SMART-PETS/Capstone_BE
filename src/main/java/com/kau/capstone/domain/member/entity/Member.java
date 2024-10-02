@@ -1,10 +1,12 @@
 package com.kau.capstone.domain.member.entity;
 
+import com.kau.capstone.domain.member.entity.pet.OwnedPet;
 import com.kau.capstone.global.common.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,6 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -43,6 +46,10 @@ public class Member extends BaseEntity {
 
     @Comment("회원 포인트")
     private Long point;
+
+    @Comment("회원이 등록한 반려동물 목록")
+    @OneToMany(mappedBy = "member")
+    private List<OwnedPet> ownedPets;
 
     public void updateInfo(String name, String email) {
         updateName(name);

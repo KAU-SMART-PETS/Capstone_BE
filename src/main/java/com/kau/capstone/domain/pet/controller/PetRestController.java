@@ -1,5 +1,7 @@
 package com.kau.capstone.domain.pet.controller;
 
+import com.kau.capstone.domain.auth.dto.LoginInfo;
+import com.kau.capstone.domain.auth.util.LoginUser;
 import com.kau.capstone.domain.pet.dto.request.PetRegistRequest;
 import com.kau.capstone.domain.pet.dto.response.PetInfoResponse;
 import com.kau.capstone.domain.pet.service.PetService;
@@ -31,9 +33,10 @@ public class PetRestController {
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "반려동물 정보 등록 API", description = "반려동물 정보를 등록하는 API입니다.")
     public ResponseEntity<String> createPetInfo(
+        @LoginUser LoginInfo loginInfo,
         @Valid @ModelAttribute("petRegistRequest") PetRegistRequest petRegistRequest
     ) throws IOException {
-        petService.createPetInfo(petRegistRequest);
+        petService.createPetInfo(loginInfo, petRegistRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body("반려동물 정보를 성공적으로 저장하였습니다.");
     }
 
