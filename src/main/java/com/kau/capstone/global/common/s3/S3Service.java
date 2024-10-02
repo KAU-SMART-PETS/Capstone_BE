@@ -4,6 +4,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.kau.capstone.domain.pet.entity.Pet;
 import java.io.IOException;
 import java.io.InputStream;
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +44,15 @@ public class S3Service {
         amazonS3.putObject(new PutObjectRequest(bucket, fileRoute, inputStream, metadata)
             .withCannedAcl(CannedAccessControlList.PublicRead));
         return amazonS3.getUrl(bucket, fileRoute).toString();
+    }
+
+    public void delete(Pet pet) {
+        String key = pet.getImageUrl().split("amazonaws.com/")[1];
+        log.info(key);
+
+        if (amazonS3.doesObjectExist(bucket, key)) {
+            amazonS3.deleteObject(bucket, key);
+        }
     }
 
 }
