@@ -33,13 +33,14 @@ public class PetService {
     @Transactional
     public void createPetInfo(PetRegistRequest petRegistRequest)
         throws IOException {
-        String imageUrl = "";
-        if (!Objects.isNull(petRegistRequest.getImage())) {
-            String dirName = /*userName + */ petRegistRequest.getName() + "/profile";
-            imageUrl = s3Service.upload(petRegistRequest.getImage(), dirName, "profile");
-        }
-        Pet pet = PetMapper.toPet(petRegistRequest, imageUrl);
+        Pet pet = PetMapper.toPet(petRegistRequest);
         petRepository.save(pet);
+        log.info(petRegistRequest.getImage().getOriginalFilename());
+        if (!Objects.isNull(petRegistRequest.getImage())) {
+            String dirName = pet.getId().toString() + "/profile";
+            String imageUrl = s3Service.upload(petRegistRequest.getImage(), dirName, "profile");
+            pet.updateImageUrl(imageUrl);
+        }
     }
 
     @Transactional(readOnly = true)

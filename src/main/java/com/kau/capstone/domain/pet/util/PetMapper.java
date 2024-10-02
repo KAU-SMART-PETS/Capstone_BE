@@ -2,8 +2,8 @@ package com.kau.capstone.domain.pet.util;
 
 import com.kau.capstone.domain.pet.dto.request.PetRegistRequest;
 import com.kau.capstone.domain.pet.dto.response.PetInfoResponse;
-import com.kau.capstone.domain.pet.entity.Pet;
 import com.kau.capstone.domain.pet.entity.Gender;
+import com.kau.capstone.domain.pet.entity.Pet;
 import com.kau.capstone.domain.pet.entity.PetType;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PetMapper {
 
-    public static Pet toPet(PetRegistRequest petRegistRequest, String imageUrl) {
+    public static Pet toPet(PetRegistRequest petRegistRequest) {
         Gender gender = Gender.fromInt(petRegistRequest.getGender());
         PetType petType = PetType.fromInt(petRegistRequest.getPetType());
 
@@ -21,7 +21,6 @@ public class PetMapper {
             .gender(gender)
             .age(petRegistRequest.getAge())
             .weight(petRegistRequest.getWeight())
-            .imageUrl(imageUrl)
             .build();
     }
 

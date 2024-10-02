@@ -70,5 +70,9 @@ public class Pet extends BaseEntity {
     public void deletePet() {
         this.delete(LocalDateTime.now());
     }
+
+    public void updateImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 }
 
