@@ -1,7 +1,6 @@
 package com.kau.capstone.domain.pet.service;
 
 import com.kau.capstone.domain.pet.dto.request.PetRegistRequest;
-import com.kau.capstone.domain.pet.dto.request.UpdatePetInfoRequest;
 import com.kau.capstone.domain.pet.dto.response.PetInfoResponse;
 import com.kau.capstone.domain.pet.entity.Pet;
 import com.kau.capstone.domain.pet.exception.PetNotFoundException;
@@ -30,17 +29,22 @@ public class PetService {
         );
     }
 
+    private void uploadImage(PetRegistRequest petRegistRequest, Pet pet) throws IOException {
+        if (!Objects.isNull(petRegistRequest.getImage())) {
+            String dirName = pet.getId().toString() + "/profile";
+            String imageUrl = s3Service.upload(petRegistRequest.getImage(), dirName,
+                "profileImage");
+            pet.updateImageUrl(imageUrl);
+        }
+    }
+
     @Transactional
     public void createPetInfo(PetRegistRequest petRegistRequest)
         throws IOException {
         Pet pet = PetMapper.toPet(petRegistRequest);
         petRepository.save(pet);
         log.info(petRegistRequest.getImage().getOriginalFilename());
-        if (!Objects.isNull(petRegistRequest.getImage())) {
-            String dirName = pet.getId().toString() + "/profile";
-            String imageUrl = s3Service.upload(petRegistRequest.getImage(), dirName, "profile");
-            pet.updateImageUrl(imageUrl);
-        }
+        uploadImage(petRegistRequest, pet);
     }
 
     @Transactional(readOnly = true)
@@ -50,9 +54,10 @@ public class PetService {
     }
 
     @Transactional
-    public void updatePetInfo(Long petId, UpdatePetInfoRequest updatePetInfoRequest) {
+    public void updatePetInfo(Long petId, PetRegistRequest petRegistRequest) throws IOException {
         Pet pet = getPet(petId);
-        pet.updatePet(updatePetInfoRequest);
+        pet.updatePet(petRegistRequest);
+        uploadImage(petRegistRequest, pet);
         petRepository.save(pet);
     }
 
