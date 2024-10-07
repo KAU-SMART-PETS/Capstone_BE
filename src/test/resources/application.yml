@@ -22,3 +22,14 @@ naver:
   client-id: test
   client-secret: test
   redirect-uri: test
+
+
+cloud:
+  aws:
+    s3:
+      bucket: testBucket
+    stack.auto: false
+    region.static: testRegion
+    credentials:
+      accessKey: testAccessKey
+      secretKey: testSecretKey
