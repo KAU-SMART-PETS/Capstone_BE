@@ -1,6 +1,6 @@
 package com.kau.capstone.domain.pet.entity;
 
-import com.kau.capstone.domain.pet.dto.request.UpdatePetInfoRequest;
+import com.kau.capstone.domain.pet.dto.request.PetRegistRequest;
 import com.kau.capstone.global.common.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,7 +18,6 @@ import org.hibernate.annotations.Comment;
 
 @Entity
 @Getter
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Pet extends BaseEntity {
 
@@ -49,27 +48,29 @@ public class Pet extends BaseEntity {
     @Comment("반려동물 이미지")
     private String imageUrl;
 
-    public Pet(Long id, String name, PetType petType, Gender gender, double weight, Integer age,
-        String imageUrl) {
-        this.id = id;
+    @Builder
+    public Pet(String name, PetType petType, Gender gender, double weight, Integer age) {
         this.name = name;
         this.petType = petType;
         this.gender = gender;
         this.weight = weight;
         this.age = age;
-        this.imageUrl = imageUrl;
     }
 
-    public void updatePet(UpdatePetInfoRequest updatePetInfoRequest) {
-        this.age = updatePetInfoRequest.age();
-        this.name = updatePetInfoRequest.name();
-        this.petType = PetType.fromInt(updatePetInfoRequest.petType());
-        this.gender = Gender.fromInt(updatePetInfoRequest.gender());
-        this.weight = updatePetInfoRequest.weight();
+    public void updatePet(PetRegistRequest petRegistRequest) {
+        this.age = petRegistRequest.getAge();
+        this.name = petRegistRequest.getName();
+        this.petType = PetType.fromInt(petRegistRequest.getPetType());
+        this.gender = Gender.fromInt(petRegistRequest.getGender());
+        this.weight = petRegistRequest.getWeight();
     }
 
     public void deletePet() {
         this.delete(LocalDateTime.now());
+    }
+
+    public void updateImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }
 

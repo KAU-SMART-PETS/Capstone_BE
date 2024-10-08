@@ -21,3 +21,13 @@ naver:
   client-id: ${PROD_NAVER_CLIENT_ID}
   client-secret: ${PROD_NAVER_CLIENT_SECRET}
   redirect-uri: ${PROD_NAVER_REDIRECT_URI}
+
+cloud:
+  aws:
+    s3:
+      bucket: ${S3_BUCKET}
+    stack.auto: false
+    region.static: ${AWS_REGION}
+    credentials:
+      accessKey: ${AWS_ACCESS_KEY}
+      secretKey: ${AWS_SECRET_KEY}
