@@ -16,7 +16,7 @@ import org.hibernate.annotations.Comment;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Hospital {
+public class Vet {
 
     @Id
     @Comment("동물병원 식별자")

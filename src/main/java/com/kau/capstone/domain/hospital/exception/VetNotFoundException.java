@@ -3,9 +3,9 @@ package com.kau.capstone.domain.hospital.exception;
 import com.kau.capstone.global.exception.ApplicationException;
 import com.kau.capstone.global.exception.ErrorCode;
 
-public class HospitalNotFoundException extends ApplicationException {
+public class VetNotFoundException extends ApplicationException {
 
-    public HospitalNotFoundException(ErrorCode errorCode) {
+    public VetNotFoundException(ErrorCode errorCode) {
         super(errorCode);
     }
 }
