@@ -77,6 +77,7 @@ public class MemberService {
                 .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
 
         List<Pet> ownedPets = ownedPetRepository.findPetsByMember(member);
+
         return OwnedPetsResponse.toResponse(ownedPets);
     }
 }
