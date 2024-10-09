@@ -35,11 +35,11 @@ public class Hospital {
     @Comment("이름")
     private String name;
 
-    @Comment("주소의 x좌표")
-    private String mapY;
+    @Comment("주소의 x좌표 (경도, longitude)")
+    private Double mapX;
 
-    @Comment("주소의 y좌표")
-    private String mapX;
+    @Comment("주소의 y좌표 (위도, latitude)")
+    private Double mapY;
 
     @Comment("전화번호")
     private String telephone;

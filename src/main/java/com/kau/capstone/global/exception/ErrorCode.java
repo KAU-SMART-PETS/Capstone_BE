@@ -14,6 +14,7 @@ public enum ErrorCode {
     SOCIAL_SITE_NOT_SUPPORTED(HttpStatus.NOT_FOUND, "지원하지 않는 소셜 로그인 사이트입니다."),
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 회원입니다."),
     PET_INFO_NOT_FOUND(HttpStatus.NOT_FOUND, "반려동물 정보를 찾을 수 없습니다."),
+    HOSPITAL_NOT_FOUND(HttpStatus.NOT_FOUND, "동물병원 정보를 찾을 수 없습니다."),
 
     //s3
     CANNOT_CONVERT_FILE(HttpStatus.BAD_REQUEST, "파일을 변환할 수 없습니다.")
