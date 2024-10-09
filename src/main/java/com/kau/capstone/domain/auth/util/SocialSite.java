@@ -10,6 +10,7 @@ public enum SocialSite {
 
     KAKAO("kakao"),
     NAVER("naver"),
+    TEST("test"),
     ;
 
     private String site;
