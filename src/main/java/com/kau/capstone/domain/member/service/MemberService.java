@@ -4,14 +4,20 @@ import com.kau.capstone.domain.auth.dto.SignUserDto;
 import com.kau.capstone.domain.auth.dto.UserInfoDto;
 import com.kau.capstone.domain.member.dto.MemberInfoResponse;
 import com.kau.capstone.domain.member.dto.ModifyMemberRequest;
+import com.kau.capstone.domain.member.dto.OwnedPetsResponse;
 import com.kau.capstone.domain.member.entity.Member;
+import com.kau.capstone.domain.member.entity.pet.OwnedPet;
 import com.kau.capstone.domain.member.exception.MemberNotFoundException;
 import com.kau.capstone.domain.member.repository.MemberRepository;
+import com.kau.capstone.domain.member.repository.OwnedPetRepository;
 import com.kau.capstone.domain.member.util.MemberMapper;
+import com.kau.capstone.domain.pet.entity.Pet;
 import com.kau.capstone.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static com.kau.capstone.global.exception.ErrorCode.MEMBER_NOT_FOUND;
 import static java.lang.Boolean.FALSE;
@@ -24,6 +30,7 @@ import static org.springframework.transaction.annotation.Propagation.REQUIRES_NE
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final OwnedPetRepository ownedPetRepository;
 
     @Transactional(propagation = REQUIRES_NEW)
     public SignUserDto findOrCreateMember(String site, UserInfoDto userInfoDto) {
@@ -63,5 +70,13 @@ public class MemberService {
                 .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
 
         member.updateInfo(request.name(), request.email());
+    }
+
+    public OwnedPetsResponse getOwnedPets(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+
+        List<Pet> ownedPets = ownedPetRepository.findPetsByMember(member);
+        return OwnedPetsResponse.toResponse(ownedPets);
     }
 }
