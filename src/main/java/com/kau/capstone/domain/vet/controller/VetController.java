@@ -1,5 +1,7 @@
 package com.kau.capstone.domain.vet.controller;
 
+import com.kau.capstone.domain.vet.dto.MemberLocationRequest;
+import com.kau.capstone.domain.vet.dto.VetDetailResponse;
 import com.kau.capstone.domain.vet.dto.VetResponse;
 import com.kau.capstone.domain.vet.dto.VetsResponse;
 import com.kau.capstone.domain.vet.service.VetService;
@@ -7,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @RequiredArgsConstructor
@@ -15,8 +19,9 @@ public class VetController {
     private final VetService vetService;
 
     @GetMapping(path = "/api/v1/vets/{vet_id}")
-    public ResponseEntity<VetResponse> getVetInfo(Long vetId) {
-        VetResponse response = vetService.getVetInfo(vetId);
+    public ResponseEntity<VetDetailResponse> getVetInfo(@PathVariable Long vetId,
+                                                  @RequestBody MemberLocationRequest memberLocationRequest) {
+        VetDetailResponse response = vetService.getVetInfo(vetId, memberLocationRequest);
 
         return ResponseEntity.ok(response);
     }
