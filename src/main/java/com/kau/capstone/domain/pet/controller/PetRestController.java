@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/pet")
+@RequestMapping("api/v1/pets")
 public class PetRestController {
 
     private final PetService petService;
@@ -44,7 +44,7 @@ public class PetRestController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "반려동물 정보 조회 API", description = "반려동물 정보를 조회하는 API입니다.")
     public ResponseEntity<PetInfoResponse> getPetInfo(
-        @PathVariable Long petId
+        @PathVariable("pet_id") Long petId
     ) {
         PetInfoResponse petInfoResponse = petService.getPetInfo(petId);
         return ResponseEntity.status(HttpStatus.OK).body(petInfoResponse);
