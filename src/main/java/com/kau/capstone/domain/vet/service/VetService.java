@@ -1,6 +1,7 @@
 package com.kau.capstone.domain.vet.service;
 
-import com.kau.capstone.domain.vet.dto.VetResponse;
+import com.kau.capstone.domain.vet.dto.MemberLocationRequest;
+import com.kau.capstone.domain.vet.dto.VetDetailResponse;
 import com.kau.capstone.domain.vet.dto.VetsResponse;
 import com.kau.capstone.domain.vet.entity.Vet;
 import com.kau.capstone.domain.vet.exception.VetNotFoundException;
@@ -20,11 +21,12 @@ public class VetService {
 
     private final VetRepository vetRepository;
 
-    public VetResponse getVetInfo(Long vetId) {
+    public VetDetailResponse getVetInfo(Long vetId, MemberLocationRequest request) {
         Vet vet = vetRepository.findById(vetId)
                 .orElseThrow(() -> new VetNotFoundException(VET_NOT_FOUND));
+        Double vetToMemberDistance = vet.calculateDistanceToMember(request.latitude(), request.longitude());
 
-        return VetResponse.toResponse(vet);
+        return VetDetailResponse.toResponse(vet, vetToMemberDistance);
     }
 
     public VetsResponse getVetsInfo() {
