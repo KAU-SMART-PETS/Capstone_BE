@@ -1,4 +1,4 @@
-package com.kau.capstone.domain.hospital.exception;
+package com.kau.capstone.domain.vet.exception;
 
 import com.kau.capstone.global.exception.ApplicationException;
 import com.kau.capstone.global.exception.ErrorCode;

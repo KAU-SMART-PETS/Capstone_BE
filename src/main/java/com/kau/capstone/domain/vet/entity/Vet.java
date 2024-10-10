@@ -1,4 +1,4 @@
-package com.kau.capstone.domain.hospital.entity;
+package com.kau.capstone.domain.vet.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
