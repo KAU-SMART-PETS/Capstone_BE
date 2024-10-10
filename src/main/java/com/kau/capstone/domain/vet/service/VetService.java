@@ -1,9 +1,9 @@
-package com.kau.capstone.domain.hospital.service;
+package com.kau.capstone.domain.vet.service;
 
-import com.kau.capstone.domain.hospital.dto.VetResponse;
-import com.kau.capstone.domain.hospital.entity.Vet;
-import com.kau.capstone.domain.hospital.exception.VetNotFoundException;
-import com.kau.capstone.domain.hospital.repository.VetRepository;
+import com.kau.capstone.domain.vet.dto.VetResponse;
+import com.kau.capstone.domain.vet.entity.Vet;
+import com.kau.capstone.domain.vet.exception.VetNotFoundException;
+import com.kau.capstone.domain.vet.repository.VetRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

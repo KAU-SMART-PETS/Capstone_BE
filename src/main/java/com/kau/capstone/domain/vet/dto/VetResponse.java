@@ -1,6 +1,6 @@
-package com.kau.capstone.domain.hospital.dto;
+package com.kau.capstone.domain.vet.dto;
 
-import com.kau.capstone.domain.hospital.entity.Vet;
+import com.kau.capstone.domain.vet.entity.Vet;
 import lombok.Builder;
 
 @Builder

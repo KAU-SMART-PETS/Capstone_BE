@@ -1,6 +1,6 @@
-package com.kau.capstone.domain.hospital.repository;
+package com.kau.capstone.domain.vet.repository;
 
-import com.kau.capstone.domain.hospital.entity.Vet;
+import com.kau.capstone.domain.vet.entity.Vet;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface VetRepository extends JpaRepository<Vet, Long> {

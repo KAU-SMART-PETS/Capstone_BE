@@ -1,7 +1,7 @@
-package com.kau.capstone.domain.hospital.controller;
+package com.kau.capstone.domain.vet.controller;
 
-import com.kau.capstone.domain.hospital.dto.VetResponse;
-import com.kau.capstone.domain.hospital.service.VetService;
+import com.kau.capstone.domain.vet.dto.VetResponse;
+import com.kau.capstone.domain.vet.service.VetService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
