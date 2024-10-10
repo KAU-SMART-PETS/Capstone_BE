@@ -8,9 +8,7 @@ public record VetResponse(
         Long id,
         String name,
         String address,
-        String telephone,
-        Double mapX,
-        Double mapY
+        String telephone
 ) {
 
     public static VetResponse toResponse(Vet vet) {
@@ -19,8 +17,6 @@ public record VetResponse(
                 .name(vet.getName())
                 .address(vet.getAddress())
                 .telephone(vet.getTelephone())
-                .mapX(vet.getMapX())
-                .mapY(vet.getMapY())
                 .build();
     }
 }
