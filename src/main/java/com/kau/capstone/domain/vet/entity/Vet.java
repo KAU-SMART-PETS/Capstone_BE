@@ -1,6 +1,5 @@
 package com.kau.capstone.domain.vet.entity;
 
-import com.kau.capstone.domain.vet.entity.vo.VetMemberLocation;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -64,8 +63,8 @@ public class Vet {
                 * Math.sin(Math.toRadians(memberMapY))
                 +
                 Math.cos(Math.toRadians(mapY))
-                * Math.cos(Math.toRadians(memberMapY))
-                * Math.cos(Math.toRadians(theta));
+                        * Math.cos(Math.toRadians(memberMapY))
+                        * Math.cos(Math.toRadians(theta));
         dist = Math.acos(dist);
         dist = Math.toDegrees(dist);
         dist = dist * 60 * 1.1515; // 여기까지가 마일(Mile) 단위 계산

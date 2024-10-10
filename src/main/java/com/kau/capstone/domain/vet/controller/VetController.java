@@ -2,7 +2,6 @@ package com.kau.capstone.domain.vet.controller;
 
 import com.kau.capstone.domain.vet.dto.MemberLocationRequest;
 import com.kau.capstone.domain.vet.dto.VetDetailResponse;
-import com.kau.capstone.domain.vet.dto.VetResponse;
 import com.kau.capstone.domain.vet.dto.VetsResponse;
 import com.kau.capstone.domain.vet.service.VetService;
 import lombok.RequiredArgsConstructor;
@@ -20,14 +19,14 @@ public class VetController {
 
     @GetMapping(path = "/api/v1/vets/{vet_id}")
     public ResponseEntity<VetDetailResponse> getVetInfo(@PathVariable Long vetId,
-                                                  @RequestBody MemberLocationRequest memberLocationRequest) {
+                                                        @RequestBody MemberLocationRequest memberLocationRequest) {
         VetDetailResponse response = vetService.getVetInfo(vetId, memberLocationRequest);
 
         return ResponseEntity.ok(response);
     }
 
     @GetMapping(path = "/api/v1/vets")
-    public ResponseEntity<VetsResponse>  getVetsInfo() {
+    public ResponseEntity<VetsResponse> getVetsInfo() {
         VetsResponse response = vetService.getVetsInfo();
 
         return ResponseEntity.ok(response);

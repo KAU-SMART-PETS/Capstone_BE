@@ -2,10 +2,8 @@ package com.kau.capstone.domain.vet.service;
 
 import com.kau.capstone.domain.vet.dto.MemberLocationRequest;
 import com.kau.capstone.domain.vet.dto.VetDetailResponse;
-import com.kau.capstone.domain.vet.dto.VetResponse;
 import com.kau.capstone.domain.vet.dto.VetsResponse;
 import com.kau.capstone.domain.vet.entity.Vet;
-import com.kau.capstone.domain.vet.entity.vo.VetMemberLocation;
 import com.kau.capstone.domain.vet.exception.VetNotFoundException;
 import com.kau.capstone.domain.vet.repository.VetRepository;
 import lombok.RequiredArgsConstructor;
