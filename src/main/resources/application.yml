@@ -2,9 +2,4 @@ spring:
   config:
     import: optional:file:.env[.properties]
   profiles:
-    default: local
-  jpa:
-    hibernate:
-      ddl-auto: create
-    properties:
-      format_sql: true
+    default: prod
