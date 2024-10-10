@@ -5,6 +5,7 @@ import lombok.Builder;
 
 @Builder
 public record VetResponse(
+        Long id,
         String name,
         String address,
         String telephone,
@@ -14,6 +15,7 @@ public record VetResponse(
 
     public static VetResponse toResponse(Vet vet) {
         return VetResponse.builder()
+                .id(vet.getId())
                 .name(vet.getName())
                 .address(vet.getAddress())
                 .telephone(vet.getTelephone())
