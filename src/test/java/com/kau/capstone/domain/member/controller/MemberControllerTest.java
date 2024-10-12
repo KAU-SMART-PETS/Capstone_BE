@@ -20,6 +20,8 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 
+import static org.assertj.core.api.Assertions.*;
+
 @SuppressWarnings("NonAsciiCharacters")
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -59,7 +61,7 @@ class MemberControllerTest {
                     .cookie("JSESSIONID", cookie)
                     .contentType("application/json")
                     .when()
-                    .get("/api/v1/user")
+                    .get("/api/v1/users")
                     .then()
                     .extract();
             MemberInfoResponse response = res.jsonPath().getObject("", MemberInfoResponse.class);
@@ -67,10 +69,12 @@ class MemberControllerTest {
             // then
             SoftAssertions.assertSoftly(soft -> {
                 soft.assertThat(res.statusCode()).isEqualTo(HttpStatus.OK.value());
-                soft.assertThat(member.getSocialSite()).isEqualTo(response.socialSite());
                 soft.assertThat(member.getName()).isEqualTo(response.name());
                 soft.assertThat(member.getEmail()).isEqualTo(response.email());
-                soft.assertThat(member.getPoint()).isEqualTo(response.point());
+                soft.assertThat(member.getPhoneNumber()).isEqualTo(response.phoneNumber());
+                soft.assertThat(member.getSmsOptIn()).isEqualTo(response.smsOptIn());
+                soft.assertThat(member.getEmailOptIn()).isEqualTo(response.emailOptIn());
+
             });
         }
     }
@@ -81,7 +85,7 @@ class MemberControllerTest {
         @Test
         void 유저_정보를_수정할_수_있다() {
             // given
-            ModifyMemberRequest request = new ModifyMemberRequest("update", "update@update.com");
+            ModifyMemberRequest request = new ModifyMemberRequest("update@update.com", "010-1234-1234", false, false);
 
             // when
             String cookie = getCookie("1");
@@ -91,12 +95,12 @@ class MemberControllerTest {
                     .contentType("application/json")
                     .body(request)
                     .when()
-                    .patch("/api/v1/user")
+                    .patch("/api/v1/users")
                     .then()
                     .extract();
 
             // then
-            Assertions.assertThat(res.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+            assertThat(res.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
         }
     }
 

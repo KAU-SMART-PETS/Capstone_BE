@@ -19,14 +19,14 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/api/v1/user")
+    @GetMapping("/api/v1/users")
     public ResponseEntity<MemberInfoResponse> getMemberInfo(@LoginUser LoginInfo loginInfo) {
         MemberInfoResponse response = memberService.getMemberInfo(loginInfo.memberId());
 
         return ResponseEntity.ok(response);
     }
 
-    @PatchMapping("/api/v1/user")
+    @PatchMapping("/api/v1/users")
     public ResponseEntity<Void> putMemberInfo(@LoginUser LoginInfo loginInfo,
                                               @RequestBody ModifyMemberRequest request) {
         memberService.putMemberInfo(loginInfo.memberId(), request);
@@ -34,7 +34,7 @@ public class MemberController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/api/v1/user/pets")
+    @GetMapping("/api/v1/users/pets")
     public ResponseEntity<OwnedPetsResponse> getOwnerPets(@LoginUser LoginInfo loginInfo) {
         OwnedPetsResponse response = memberService.getOwnedPets(loginInfo.memberId());
 
