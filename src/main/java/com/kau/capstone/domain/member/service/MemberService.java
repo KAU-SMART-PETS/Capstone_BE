@@ -69,7 +69,7 @@ public class MemberService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
 
-        member.updateInfo(request.name(), request.email());
+        member.updateInfo(request.email(), request.phoneNumber(), request.smsOptIn(), request.emailOptIn());
     }
 
     public OwnedPetsResponse getOwnedPets(Long memberId) {

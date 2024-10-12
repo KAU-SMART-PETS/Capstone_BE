@@ -51,26 +51,43 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member")
     private List<OwnedPet> ownedPets;
 
+    @Comment("사용자 휴대폰 번호")
+    private String phoneNumber;
+
     @Comment("SMS 수신 여부")
-    private Boolean smsOptIn;
+    private Boolean smsOptIn = false;
 
     @Comment("이메일 수신 여부")
-    private Boolean emailOptIn;
+    private Boolean emailOptIn = false;
 
-    public void updateInfo(String name, String email) {
-        updateName(name);
+    public void updateInfo(String email, String phoneNumber, Boolean smsOptIn, Boolean emailOptIn) {
         updateEmail(email);
-    }
-
-    private void updateName(String name) {
-        if (!Objects.isNull(name)) {
-            this.name = name;
-        }
+        updatePhoneNumber(phoneNumber);
+        updateSmsOptIn(smsOptIn);
+        updateEmailOptIn(emailOptIn);
     }
 
     private void updateEmail(String email) {
         if (!Objects.isNull(email)) {
             this.email = email;
+        }
+    }
+
+    private void updatePhoneNumber(String phoneNumber) {
+        if (!Objects.isNull(phoneNumber)) {
+            this.phoneNumber = phoneNumber;
+        }
+    }
+
+    private void updateSmsOptIn(Boolean smsOptIn) {
+        if (!Objects.isNull(smsOptIn)) {
+            this.smsOptIn = smsOptIn;
+        }
+    }
+
+    private void updateEmailOptIn(Boolean emailOptIn) {
+        if (!Objects.isNull(emailOptIn)) {
+            this.emailOptIn = emailOptIn;
         }
     }
 }

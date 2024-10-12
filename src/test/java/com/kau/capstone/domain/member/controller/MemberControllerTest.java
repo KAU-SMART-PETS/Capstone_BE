@@ -20,6 +20,8 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 
+import static org.assertj.core.api.Assertions.*;
+
 @SuppressWarnings("NonAsciiCharacters")
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -81,7 +83,7 @@ class MemberControllerTest {
         @Test
         void 유저_정보를_수정할_수_있다() {
             // given
-            ModifyMemberRequest request = new ModifyMemberRequest("update", "update@update.com");
+            ModifyMemberRequest request = new ModifyMemberRequest("update@update.com", "010-1234-1234", false, false);
 
             // when
             String cookie = getCookie("1");
@@ -96,7 +98,7 @@ class MemberControllerTest {
                     .extract();
 
             // then
-            Assertions.assertThat(res.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+            assertThat(res.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
         }
     }
 

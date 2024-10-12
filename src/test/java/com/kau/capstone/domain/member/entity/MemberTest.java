@@ -15,48 +15,6 @@ class MemberTest {
     class updateInfo_성공_테스트 {
 
         @Test
-        void 사용자의_이름과_이메일을_변경할_수_있다() {
-            // given
-            Member member = Member.builder()
-                    .name("test")
-                    .email("test@test.com")
-                    .build();
-
-            String expectedName = "update";
-            String expectedEmail = "update@update.com";
-
-            // when
-            member.updateInfo(expectedName, expectedEmail);
-
-            String actualName = member.getName();
-            String actualEmail = member.getEmail();
-
-            // then
-            SoftAssertions.assertSoftly(soft -> {
-                soft.assertThat(actualName).isEqualTo(expectedName);
-                soft.assertThat(actualEmail).isEqualTo(expectedEmail);
-            });
-        }
-
-        @Test
-        void 사용자의_이름만_변경할_수_있다() {
-            // given
-            Member member = Member.builder()
-                    .name("test")
-                    .email("test@test.com")
-                    .build();
-
-            String expectedName = "update";
-
-            // when
-            member.updateInfo(expectedName, null);
-            String actualName = member.getName();
-
-            // then
-            Assertions.assertThat(actualName).isEqualTo(expectedName);
-        }
-
-        @Test
         void 사용자의_이메일만_변경할_수_있다() {
             // given
             Member member = Member.builder()
@@ -64,14 +22,68 @@ class MemberTest {
                     .email("test@test.com")
                     .build();
 
-            String expectedEmail = "update@update.com";
+            String expected = "update@update.com";
 
             // when
-            member.updateInfo(null, expectedEmail);
-            String actualEmail = member.getEmail();
+            member.updateInfo(expected, null, null, null);
+            String actual = member.getEmail();
 
             // then
-            Assertions.assertThat(actualEmail).isEqualTo(expectedEmail);
+            Assertions.assertThat(actual).isEqualTo(expected);
+        }
+
+        @Test
+        void 사용자의_휴대번호만_변경할_수_있다() {
+            // given
+            Member member = Member.builder()
+                    .name("test")
+                    .email("test@test.com")
+                    .build();
+
+            String expected = "010-1234-1234";
+
+            // when
+            member.updateInfo(null, expected, null, null);
+            String actual = member.getPhoneNumber();
+
+            // then
+            Assertions.assertThat(actual).isEqualTo(expected);
+        }
+
+        @Test
+        void 사용자의_SMS_수신만_변경할_수_있다() {
+            // given
+            Member member = Member.builder()
+                    .name("test")
+                    .email("test@test.com")
+                    .build();
+
+            Boolean expected = true;
+
+            // when
+            member.updateInfo(null, null, expected, null);
+            Boolean actual = member.getSmsOptIn();
+
+            // then
+            Assertions.assertThat(actual).isEqualTo(expected);
+        }
+
+        @Test
+        void 사용자의_이메일_수신만_변경할_수_있다() {
+            // given
+            Member member = Member.builder()
+                    .name("test")
+                    .email("test@test.com")
+                    .build();
+
+            Boolean expected = true;
+
+            // when
+            member.updateInfo(null, null, null, expected);
+            Boolean actual = member.getEmailOptIn();
+
+            // then
+            Assertions.assertThat(actual).isEqualTo(expected);
         }
     }
 }
