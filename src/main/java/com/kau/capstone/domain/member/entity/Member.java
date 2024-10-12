@@ -45,7 +45,8 @@ public class Member extends BaseEntity {
     private String email;
 
     @Comment("회원 포인트")
-    private Long point;
+    @Builder.Default
+    private Long point = 0L;
 
     @Comment("회원이 등록한 반려동물 목록")
     @OneToMany(mappedBy = "member")
@@ -55,9 +56,11 @@ public class Member extends BaseEntity {
     private String phoneNumber;
 
     @Comment("SMS 수신 여부")
+    @Builder.Default
     private Boolean smsOptIn = false;
 
     @Comment("이메일 수신 여부")
+    @Builder.Default
     private Boolean emailOptIn = false;
 
     public void updateInfo(String email, String phoneNumber, Boolean smsOptIn, Boolean emailOptIn) {
@@ -89,5 +92,9 @@ public class Member extends BaseEntity {
         if (!Objects.isNull(emailOptIn)) {
             this.emailOptIn = emailOptIn;
         }
+    }
+
+    public void payment(Long payPoint) {
+        this.point -= payPoint;
     }
 }
