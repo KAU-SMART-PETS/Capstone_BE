@@ -51,6 +51,12 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member")
     private List<OwnedPet> ownedPets;
 
+    @Comment("SMS 수신 여부")
+    private Boolean smsOptIn;
+
+    @Comment("이메일 수신 여부")
+    private Boolean emailOptIn;
+
     public void updateInfo(String name, String email) {
         updateName(name);
         updateEmail(email);
