@@ -15,6 +15,7 @@ public enum ErrorCode {
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 회원입니다."),
     PET_INFO_NOT_FOUND(HttpStatus.NOT_FOUND, "반려동물 정보를 찾을 수 없습니다."),
     VET_NOT_FOUND(HttpStatus.NOT_FOUND, "동물병원 정보를 찾을 수 없습니다."),
+    POINT_NOT_ENOUGH(HttpStatus.FORBIDDEN, "결제에 포인트가 부족합니다."),
 
     //s3
     CANNOT_CONVERT_FILE(HttpStatus.BAD_REQUEST, "파일을 변환할 수 없습니다.")

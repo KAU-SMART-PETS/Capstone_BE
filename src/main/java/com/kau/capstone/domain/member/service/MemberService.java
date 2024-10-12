@@ -5,9 +5,11 @@ import com.kau.capstone.domain.auth.dto.UserInfoDto;
 import com.kau.capstone.domain.member.dto.MemberInfoResponse;
 import com.kau.capstone.domain.member.dto.ModifyMemberRequest;
 import com.kau.capstone.domain.member.dto.OwnedPetsResponse;
+import com.kau.capstone.domain.member.dto.PayPointRequest;
 import com.kau.capstone.domain.member.entity.Member;
 import com.kau.capstone.domain.member.entity.pet.OwnedPet;
 import com.kau.capstone.domain.member.exception.MemberNotFoundException;
+import com.kau.capstone.domain.member.exception.PointNotEnoughException;
 import com.kau.capstone.domain.member.repository.MemberRepository;
 import com.kau.capstone.domain.member.repository.OwnedPetRepository;
 import com.kau.capstone.domain.member.util.MemberMapper;
@@ -20,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static com.kau.capstone.global.exception.ErrorCode.MEMBER_NOT_FOUND;
+import static com.kau.capstone.global.exception.ErrorCode.POINT_NOT_ENOUGH;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
@@ -79,5 +82,16 @@ public class MemberService {
         List<Pet> ownedPets = ownedPetRepository.findPetsByMember(member);
 
         return OwnedPetsResponse.toResponse(ownedPets);
+    }
+
+    public void processPointPayment(Long memberId, PayPointRequest request) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+
+        if (member.getPoint() < request.point()) {
+            throw new PointNotEnoughException(POINT_NOT_ENOUGH);
+        }
+
+        member.payment(request.point());
     }
 }

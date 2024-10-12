@@ -7,6 +7,8 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.*;
+
 @SuppressWarnings("NonAsciiCharacters")
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class MemberTest {
@@ -29,7 +31,7 @@ class MemberTest {
             String actual = member.getEmail();
 
             // then
-            Assertions.assertThat(actual).isEqualTo(expected);
+            assertThat(actual).isEqualTo(expected);
         }
 
         @Test
@@ -47,7 +49,7 @@ class MemberTest {
             String actual = member.getPhoneNumber();
 
             // then
-            Assertions.assertThat(actual).isEqualTo(expected);
+            assertThat(actual).isEqualTo(expected);
         }
 
         @Test
@@ -65,7 +67,7 @@ class MemberTest {
             Boolean actual = member.getSmsOptIn();
 
             // then
-            Assertions.assertThat(actual).isEqualTo(expected);
+            assertThat(actual).isEqualTo(expected);
         }
 
         @Test
@@ -83,7 +85,30 @@ class MemberTest {
             Boolean actual = member.getEmailOptIn();
 
             // then
-            Assertions.assertThat(actual).isEqualTo(expected);
+            assertThat(actual).isEqualTo(expected);
+        }
+    }
+
+    @Nested
+    class payment_성공_테스트 {
+
+        @Test
+        void 사용자의_포인트를_차감할_수_있다() {
+            // given
+            Member member = Member.builder()
+                    .name("test")
+                    .email("test@test.com")
+                    .point(10000L)
+                    .build();
+
+            Long expected = 5000L;
+
+            // when
+            member.payment(5000L);
+            Long actual = member.getPoint();
+
+            // then
+            assertThat(actual).isEqualTo(expected);
         }
     }
 }
