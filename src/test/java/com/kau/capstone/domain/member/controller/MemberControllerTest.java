@@ -61,7 +61,7 @@ class MemberControllerTest {
                     .cookie("JSESSIONID", cookie)
                     .contentType("application/json")
                     .when()
-                    .get("/api/v1/user")
+                    .get("/api/v1/users")
                     .then()
                     .extract();
             MemberInfoResponse response = res.jsonPath().getObject("", MemberInfoResponse.class);
@@ -95,7 +95,7 @@ class MemberControllerTest {
                     .contentType("application/json")
                     .body(request)
                     .when()
-                    .patch("/api/v1/user")
+                    .patch("/api/v1/users")
                     .then()
                     .extract();
 
