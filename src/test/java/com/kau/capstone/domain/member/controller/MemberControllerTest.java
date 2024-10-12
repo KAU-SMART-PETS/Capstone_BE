@@ -69,10 +69,12 @@ class MemberControllerTest {
             // then
             SoftAssertions.assertSoftly(soft -> {
                 soft.assertThat(res.statusCode()).isEqualTo(HttpStatus.OK.value());
-                soft.assertThat(member.getSocialSite()).isEqualTo(response.socialSite());
                 soft.assertThat(member.getName()).isEqualTo(response.name());
                 soft.assertThat(member.getEmail()).isEqualTo(response.email());
-                soft.assertThat(member.getPoint()).isEqualTo(response.point());
+                soft.assertThat(member.getPhoneNumber()).isEqualTo(response.phoneNumber());
+                soft.assertThat(member.getSmsOptIn()).isEqualTo(response.smsOptIn());
+                soft.assertThat(member.getEmailOptIn()).isEqualTo(response.emailOptIn());
+
             });
         }
     }

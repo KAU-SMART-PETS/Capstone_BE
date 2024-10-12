@@ -7,16 +7,18 @@ import lombok.Builder;
 public record MemberInfoResponse (
         String name,
         String email,
-        Long point,
-        String socialSite
+        String phoneNumber,
+        Boolean smsOptIn,
+        Boolean emailOptIn
 ) {
 
     public static MemberInfoResponse toResponse(Member member) {
         return MemberInfoResponse.builder()
                 .name(member.getName())
                 .email(member.getEmail())
-                .point(member.getPoint())
-                .socialSite(member.getSocialSite())
+                .phoneNumber(member.getPhoneNumber())
+                .smsOptIn(member.getSmsOptIn())
+                .emailOptIn(member.getEmailOptIn())
                 .build();
     }
 }
