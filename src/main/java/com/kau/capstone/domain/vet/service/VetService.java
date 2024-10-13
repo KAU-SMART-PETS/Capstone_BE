@@ -15,8 +15,8 @@ import java.util.List;
 import static com.kau.capstone.global.exception.ErrorCode.VET_NOT_FOUND;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class VetService {
 
     private final VetRepository vetRepository;
