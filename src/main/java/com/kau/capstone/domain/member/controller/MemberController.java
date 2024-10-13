@@ -2,6 +2,7 @@ package com.kau.capstone.domain.member.controller;
 
 import com.kau.capstone.domain.auth.dto.LoginInfo;
 import com.kau.capstone.domain.auth.util.LoginUser;
+import com.kau.capstone.domain.member.dto.EarnPointRequest;
 import com.kau.capstone.domain.member.dto.MemberInfoResponse;
 import com.kau.capstone.domain.member.dto.ModifyMemberRequest;
 import com.kau.capstone.domain.member.dto.OwnedPetsResponse;
@@ -47,6 +48,14 @@ public class MemberController {
     public ResponseEntity<Void> payWithPoints(@LoginUser LoginInfo loginInfo,
                                               @RequestBody PayPointRequest request) {
         memberService.processPointPayment(loginInfo.memberId(), request);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/api/v1/users/earn")
+    public ResponseEntity<Void> earnWithPoints(@LoginUser LoginInfo loginInfo,
+                                               @RequestBody EarnPointRequest request) {
+        memberService.processPointEarn(loginInfo.memberId(), request);
 
         return ResponseEntity.ok().build();
     }

@@ -97,4 +97,8 @@ public class Member extends BaseEntity {
     public void payment(Long payPoint) {
         this.point -= payPoint;
     }
+
+    public void earn(Long earnPoint) {
+        this.point += earnPoint;
+    }
 }
