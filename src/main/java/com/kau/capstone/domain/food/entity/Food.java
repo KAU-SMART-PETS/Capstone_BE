@@ -28,4 +28,7 @@ public class Food {
 
     @Comment("사료 이미지 경로")
     private String imageUrl;
+
+    @Comment("사료 가격")
+    private Long price;
 }
