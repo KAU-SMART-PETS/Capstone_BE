@@ -2,6 +2,7 @@ package com.kau.capstone.domain.member.service;
 
 import com.kau.capstone.domain.auth.dto.SignUserDto;
 import com.kau.capstone.domain.auth.dto.UserInfoDto;
+import com.kau.capstone.domain.member.dto.EarnPointRequest;
 import com.kau.capstone.domain.member.dto.MemberInfoResponse;
 import com.kau.capstone.domain.member.dto.ModifyMemberRequest;
 import com.kau.capstone.domain.member.dto.OwnedPetsResponse;
@@ -93,5 +94,12 @@ public class MemberService {
         }
 
         member.payment(request.point());
+    }
+
+    public void processPointEarn(Long memberId, EarnPointRequest request) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+
+        member.earn(request.point());
     }
 }

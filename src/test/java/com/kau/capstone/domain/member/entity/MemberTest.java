@@ -111,4 +111,27 @@ class MemberTest {
             assertThat(actual).isEqualTo(expected);
         }
     }
+
+    @Nested
+    class earn_성공_테스트 {
+
+        @Test
+        void 사용자가_포인트를_획득할_수_있다() {
+            // given
+            Member member = Member.builder()
+                    .name("test")
+                    .email("test@test.com")
+                    .point(10000L)
+                    .build();
+
+            Long expected = 15000L;
+
+            // when
+            member.earn(5000L);
+            Long actual = member.getPoint();
+
+            // then
+            assertThat(actual).isEqualTo(expected);
+        }
+    }
 }
