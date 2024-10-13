@@ -2,8 +2,11 @@ package com.kau.capstone.domain.member.controller;
 
 import com.kau.capstone.domain.member.dto.MemberInfoResponse;
 import com.kau.capstone.domain.member.dto.ModifyMemberRequest;
+import com.kau.capstone.domain.member.dto.PayPointRequest;
 import com.kau.capstone.domain.member.entity.Member;
 import com.kau.capstone.domain.member.repository.MemberRepository;
+import com.kau.capstone.global.common.ResponseDTO;
+import com.kau.capstone.global.exception.ErrorCode;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -19,8 +22,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.SoftAssertions.*;
 
 @SuppressWarnings("NonAsciiCharacters")
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -67,7 +74,7 @@ class MemberControllerTest {
             MemberInfoResponse response = res.jsonPath().getObject("", MemberInfoResponse.class);
 
             // then
-            SoftAssertions.assertSoftly(soft -> {
+            assertSoftly(soft -> {
                 soft.assertThat(res.statusCode()).isEqualTo(HttpStatus.OK.value());
                 soft.assertThat(member.getName()).isEqualTo(response.name());
                 soft.assertThat(member.getEmail()).isEqualTo(response.email());
@@ -101,6 +108,74 @@ class MemberControllerTest {
 
             // then
             assertThat(res.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+        }
+    }
+
+    @Nested
+    class payWithPoints_성공_테스트 {
+
+        @Test
+        void 유저가_가진_포인트로_결제를_할_수_있다() {
+            // given
+            Member member = Member.builder()
+                    .name("test")
+                    .point(10000L)
+                    .platformId("1")
+                    .build();
+            memberRepository.save(member);
+
+            PayPointRequest request = new PayPointRequest(5000L);
+
+            // when
+            String cookie = getCookie("1");
+
+            ExtractableResponse<Response> res = RestAssured.given()
+                    .cookie("JSESSIONID", cookie)
+                    .contentType("application/json")
+                    .body(request)
+                    .when()
+                    .patch("/api/v1/users/pay")
+                    .then()
+                    .extract();
+
+            // then
+            assertThat(res.statusCode()).isEqualTo(HttpStatus.OK.value());
+        }
+    }
+
+    @Nested
+    class payWithPoints_실패_테스트 {
+
+        @Test
+        void 유저가_가진_포인트로_결제할_수_없으면_예외를_반환한다() {
+            // given
+            Member member = Member.builder()
+                    .name("test")
+                    .point(0L)
+                    .platformId("1")
+                    .build();
+            memberRepository.save(member);
+
+            PayPointRequest request = new PayPointRequest(5000L);
+
+            // when
+            String cookie = getCookie("1");
+
+            ExtractableResponse<Response> res = RestAssured.given()
+                    .cookie("JSESSIONID", cookie)
+                    .contentType("application/json")
+                    .body(request)
+                    .when()
+                    .patch("/api/v1/users/pay")
+                    .then()
+                    .extract();
+            ResponseDTO response = res.jsonPath().getObject("", ResponseDTO.class);
+
+            // then
+            assertSoftly(soft -> {
+                soft.assertThat(res.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
+                soft.assertThat(response.getMessage()).isEqualTo(ErrorCode.POINT_NOT_ENOUGH.getSimpleMessage());
+            });
         }
     }
 
