@@ -29,8 +29,8 @@ import static java.lang.Boolean.TRUE;
 import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class MemberService {
 
     private final MemberRepository memberRepository;
