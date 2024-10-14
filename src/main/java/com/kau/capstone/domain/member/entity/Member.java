@@ -1,12 +1,15 @@
 package com.kau.capstone.domain.member.entity;
 
 import com.kau.capstone.domain.member.entity.pet.OwnedPet;
+import com.kau.capstone.domain.point.entity.Point;
 import com.kau.capstone.global.common.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,9 +47,10 @@ public class Member extends BaseEntity {
     @Comment("회원 이메일")
     private String email;
 
+    @OneToOne
     @Comment("회원 포인트")
-    @Builder.Default
-    private Long point = 0L;
+    @JoinColumn(name = "point_id")
+    private Point point;
 
     @Comment("회원이 등록한 반려동물 목록")
     @OneToMany(mappedBy = "member")
@@ -94,11 +98,7 @@ public class Member extends BaseEntity {
         }
     }
 
-    public void payment(Long payPoint) {
-        this.point -= payPoint;
-    }
-
-    public void earn(Long earnPoint) {
-        this.point += earnPoint;
+    public void connectPoint(Point point) {
+        this.point = point;
     }
 }

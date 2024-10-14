@@ -6,6 +6,7 @@ import com.kau.capstone.domain.food.repository.FoodRepository;
 import com.kau.capstone.domain.member.repository.MemberRepository;
 import com.kau.capstone.domain.member.repository.OwnedPetRepository;
 import com.kau.capstone.domain.pet.repository.PetRepository;
+import com.kau.capstone.domain.point.repository.PointRepository;
 import com.kau.capstone.domain.vet.repository.VetRepository;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,6 +42,9 @@ public class ControllerTest {
 
     @Autowired
     protected OwnedBluetoothRepository ownedBluetoothRepository;
+
+    @Autowired
+    protected PointRepository pointRepository;
 
     @BeforeEach
     void setUp() {

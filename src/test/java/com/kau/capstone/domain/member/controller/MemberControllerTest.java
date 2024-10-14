@@ -1,14 +1,15 @@
 package com.kau.capstone.domain.member.controller;
 
 import com.kau.capstone.domain.auth.util.SocialSite;
-import com.kau.capstone.domain.member.dto.EarnPointRequest;
+import com.kau.capstone.domain.point.dto.EarnPointRequest;
 import com.kau.capstone.domain.member.dto.MemberInfoResponse;
 import com.kau.capstone.domain.member.dto.ModifyMemberRequest;
 import com.kau.capstone.domain.member.dto.OwnedPetsResponse;
-import com.kau.capstone.domain.member.dto.PayPointRequest;
+import com.kau.capstone.domain.point.dto.PayPointRequest;
 import com.kau.capstone.domain.member.entity.Member;
 import com.kau.capstone.domain.member.entity.pet.OwnedPet;
 import com.kau.capstone.domain.pet.entity.Pet;
+import com.kau.capstone.domain.point.entity.Point;
 import com.kau.capstone.global.common.ControllerTest;
 import com.kau.capstone.global.common.ResponseDTO;
 import com.kau.capstone.global.exception.ErrorCode;
@@ -36,17 +37,24 @@ class MemberControllerTest extends ControllerTest {
         @Test
         void 유저_정보를_조회한다() {
             // given
+            Point point = Point.builder()
+                    .amount(5000L)
+                    .build();
+            pointRepository.save(point);
+
             Member saveMember = Member.builder()
                     .socialSite("test")
                     .platformId("1")
                     .name("test")
                     .email("test@test.com")
-                    .point(100L)
+                    .point(point)
                     .socialSite(SocialSite.NAVER.name())
                     .smsOptIn(false)
                     .emailOptIn(true)
                     .build();
             Member member = memberRepository.save(saveMember);
+
+            point.connectMember(member);
 
             // when
             String cookie = getCookie("1");
@@ -66,7 +74,7 @@ class MemberControllerTest extends ControllerTest {
                 soft.assertThat(member.getName()).isEqualTo(response.name());
                 soft.assertThat(member.getEmail()).isEqualTo(response.email());
                 soft.assertThat(member.getPhoneNumber()).isEqualTo(response.phoneNumber());
-                soft.assertThat(member.getPoint()).isEqualTo(response.point());
+                soft.assertThat(member.getPoint().getAmount()).isEqualTo(response.point());
                 soft.assertThat(member.getSocialSite()).isEqualTo(response.socialSite());
                 soft.assertThat(member.getSmsOptIn()).isEqualTo(response.smsOptIn());
                 soft.assertThat(member.getEmailOptIn()).isEqualTo(response.emailOptIn());
@@ -154,106 +162,6 @@ class MemberControllerTest extends ControllerTest {
                 soft.assertThat(response.pets().get(0).id()).isEqualTo(1L);
                 soft.assertThat(response.pets().get(1).id()).isEqualTo(3L);
             });
-        }
-    }
-
-    @Nested
-    class payWithPoints_성공_테스트 {
-
-        @Test
-        void 유저가_가진_포인트로_결제를_할_수_있다() {
-            // given
-            Member member = Member.builder()
-                    .name("test")
-                    .point(10000L)
-                    .platformId("1")
-                    .build();
-            memberRepository.save(member);
-
-            PayPointRequest request = new PayPointRequest(5000L);
-
-            // when
-            String cookie = getCookie("1");
-
-            ExtractableResponse<Response> res = RestAssured.given()
-                    .cookie("JSESSIONID", cookie)
-                    .contentType("application/json")
-                    .body(request)
-                    .when()
-                    .patch("/api/v1/users/pay")
-                    .then()
-                    .extract();
-
-            // then
-            assertThat(res.statusCode()).isEqualTo(HttpStatus.OK.value());
-        }
-    }
-
-    @Nested
-    class payWithPoints_실패_테스트 {
-
-        @Test
-        void 유저가_가진_포인트로_결제할_수_없으면_예외를_반환한다() {
-            // given
-            Member member = Member.builder()
-                    .name("test")
-                    .point(0L)
-                    .platformId("1")
-                    .build();
-            memberRepository.save(member);
-
-            PayPointRequest request = new PayPointRequest(5000L);
-
-            // when
-            String cookie = getCookie("1");
-
-            ExtractableResponse<Response> res = RestAssured.given()
-                    .cookie("JSESSIONID", cookie)
-                    .contentType("application/json")
-                    .body(request)
-                    .when()
-                    .patch("/api/v1/users/pay")
-                    .then()
-                    .extract();
-            ResponseDTO response = res.jsonPath().getObject("", ResponseDTO.class);
-
-            // then
-            assertSoftly(soft -> {
-                soft.assertThat(res.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
-                soft.assertThat(response.getMessage()).isEqualTo(ErrorCode.POINT_NOT_ENOUGH.getSimpleMessage());
-            });
-        }
-    }
-
-    @Nested
-    class earnWithPoints_성공_테스트 {
-
-        @Test
-        void 유저가_포인트를_획득할_수_있다() {
-            // given
-            Member member = Member.builder()
-                    .name("test")
-                    .point(10000L)
-                    .platformId("1")
-                    .build();
-            memberRepository.save(member);
-
-            EarnPointRequest request = new EarnPointRequest(5000L);
-
-            // when
-            String cookie = getCookie("1");
-
-            ExtractableResponse<Response> res = RestAssured.given()
-                    .cookie("JSESSIONID", cookie)
-                    .contentType("application/json")
-                    .body(request)
-                    .when()
-                    .patch("/api/v1/users/earn")
-                    .then()
-                    .extract();
-
-            // then
-            assertThat(res.statusCode()).isEqualTo(HttpStatus.OK.value());
         }
     }
 }

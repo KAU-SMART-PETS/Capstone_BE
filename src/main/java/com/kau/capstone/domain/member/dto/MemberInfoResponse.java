@@ -19,7 +19,7 @@ public record MemberInfoResponse (
                 .name(member.getName())
                 .email(member.getEmail())
                 .phoneNumber(member.getPhoneNumber())
-                .point(member.getPoint())
+                .point(member.getPoint().getAmount())
                 .socialSite(member.getSocialSite())
                 .smsOptIn(member.getSmsOptIn())
                 .emailOptIn(member.getEmailOptIn())

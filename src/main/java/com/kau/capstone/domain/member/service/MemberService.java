@@ -2,20 +2,20 @@ package com.kau.capstone.domain.member.service;
 
 import com.kau.capstone.domain.auth.dto.SignUserDto;
 import com.kau.capstone.domain.auth.dto.UserInfoDto;
-import com.kau.capstone.domain.member.dto.EarnPointRequest;
+import com.kau.capstone.domain.point.dto.EarnPointRequest;
 import com.kau.capstone.domain.member.dto.MemberInfoResponse;
 import com.kau.capstone.domain.member.dto.ModifyMemberRequest;
 import com.kau.capstone.domain.member.dto.OwnedPetsResponse;
-import com.kau.capstone.domain.member.dto.PayPointRequest;
+import com.kau.capstone.domain.point.dto.PayPointRequest;
 import com.kau.capstone.domain.member.entity.Member;
-import com.kau.capstone.domain.member.entity.pet.OwnedPet;
 import com.kau.capstone.domain.member.exception.MemberNotFoundException;
 import com.kau.capstone.domain.member.exception.PointNotEnoughException;
 import com.kau.capstone.domain.member.repository.MemberRepository;
 import com.kau.capstone.domain.member.repository.OwnedPetRepository;
 import com.kau.capstone.domain.member.util.MemberMapper;
 import com.kau.capstone.domain.pet.entity.Pet;
-import com.kau.capstone.global.exception.ErrorCode;
+import com.kau.capstone.domain.point.entity.Point;
+import com.kau.capstone.domain.point.repository.PointRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +35,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final OwnedPetRepository ownedPetRepository;
+    private final PointRepository pointRepository;
 
     @Transactional(propagation = REQUIRES_NEW)
     public SignUserDto findOrCreateMember(String site, UserInfoDto userInfoDto) {
@@ -46,8 +47,16 @@ public class MemberService {
     }
 
     private SignUserDto save(String site, UserInfoDto userInfoDto) {
+        Point point = Point.builder()
+                .amount(0L)
+                .build();
+        pointRepository.save(point);
+
         Member member = MemberMapper.toMember(site, userInfoDto);
         memberRepository.save(member);
+
+        point.connectMember(member);
+        member.connectPoint(point);
 
         return SignUserDto.of(TRUE, member.getId());
     }
@@ -83,23 +92,5 @@ public class MemberService {
         List<Pet> ownedPets = ownedPetRepository.findPetsByMember(member);
 
         return OwnedPetsResponse.toResponse(ownedPets);
-    }
-
-    public void processPointPayment(Long memberId, PayPointRequest request) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
-
-        if (member.getPoint() < request.point()) {
-            throw new PointNotEnoughException(POINT_NOT_ENOUGH);
-        }
-
-        member.payment(request.point());
-    }
-
-    public void processPointEarn(Long memberId, EarnPointRequest request) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
-
-        member.earn(request.point());
     }
 }
