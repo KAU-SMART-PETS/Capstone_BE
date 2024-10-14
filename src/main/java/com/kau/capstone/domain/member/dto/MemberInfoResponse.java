@@ -8,6 +8,8 @@ public record MemberInfoResponse (
         String name,
         String email,
         String phoneNumber,
+        Long point,
+        String socialSite,
         Boolean smsOptIn,
         Boolean emailOptIn
 ) {
@@ -17,6 +19,8 @@ public record MemberInfoResponse (
                 .name(member.getName())
                 .email(member.getEmail())
                 .phoneNumber(member.getPhoneNumber())
+                .point(member.getPoint())
+                .socialSite(member.getSocialSite())
                 .smsOptIn(member.getSmsOptIn())
                 .emailOptIn(member.getEmailOptIn())
                 .build();
