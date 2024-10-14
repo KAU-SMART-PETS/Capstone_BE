@@ -1,5 +1,6 @@
 package com.kau.capstone.global.common;
 
+import com.kau.capstone.domain.food.repository.FoodRepository;
 import com.kau.capstone.domain.member.repository.MemberRepository;
 import com.kau.capstone.domain.member.repository.OwnedPetRepository;
 import com.kau.capstone.domain.pet.repository.PetRepository;
@@ -29,6 +30,9 @@ public class ControllerTest {
 
     @Autowired
     protected VetRepository vetRepository;
+
+    @Autowired
+    protected FoodRepository foodRepository;
 
     @BeforeEach
     void setUp() {
