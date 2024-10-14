@@ -1,6 +1,7 @@
 package com.kau.capstone.domain.member.controller;
 
 import com.kau.capstone.domain.auth.util.SocialSite;
+import com.kau.capstone.domain.member.dto.EarnPointRequest;
 import com.kau.capstone.domain.member.dto.MemberInfoResponse;
 import com.kau.capstone.domain.member.dto.ModifyMemberRequest;
 import com.kau.capstone.domain.member.dto.OwnedPetsResponse;
@@ -221,6 +222,38 @@ class MemberControllerTest extends ControllerTest {
                 soft.assertThat(res.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
                 soft.assertThat(response.getMessage()).isEqualTo(ErrorCode.POINT_NOT_ENOUGH.getSimpleMessage());
             });
+        }
+    }
+
+    @Nested
+    class earnWithPoints_성공_테스트 {
+
+        @Test
+        void 유저가_포인트를_획득할_수_있다() {
+            // given
+            Member member = Member.builder()
+                    .name("test")
+                    .point(10000L)
+                    .platformId("1")
+                    .build();
+            memberRepository.save(member);
+
+            EarnPointRequest request = new EarnPointRequest(5000L);
+
+            // when
+            String cookie = getCookie("1");
+
+            ExtractableResponse<Response> res = RestAssured.given()
+                    .cookie("JSESSIONID", cookie)
+                    .contentType("application/json")
+                    .body(request)
+                    .when()
+                    .patch("/api/v1/users/earn")
+                    .then()
+                    .extract();
+
+            // then
+            assertThat(res.statusCode()).isEqualTo(HttpStatus.OK.value());
         }
     }
 }
