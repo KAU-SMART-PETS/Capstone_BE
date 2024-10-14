@@ -22,4 +22,16 @@ public class ControllerTest {
     void setUp() {
         RestAssured.port = port;
     }
+
+    protected String getCookie(String memberId) {
+        return RestAssured.given()
+                .queryParam("code", memberId)
+                .when()
+                .post("/api/v1/oauth2/test/code")
+                .then()
+                .log().all()
+                .extract()
+                .response()
+                .cookie("JSESSIONID");
+    }
 }

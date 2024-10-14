@@ -166,16 +166,4 @@ class MemberControllerTest extends ControllerTest {
             });
         }
     }
-
-    private String getCookie(String memberId) {
-        return RestAssured.given()
-                .queryParam("code", memberId)
-                .when()
-                .post("/api/v1/oauth2/test/code")
-                .then()
-                .log().all()
-                .extract()
-                .response()
-                .cookie("JSESSIONID");
-    }
 }
