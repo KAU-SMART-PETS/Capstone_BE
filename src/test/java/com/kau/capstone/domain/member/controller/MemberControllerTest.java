@@ -2,8 +2,11 @@ package com.kau.capstone.domain.member.controller;
 
 import com.kau.capstone.domain.member.dto.MemberInfoResponse;
 import com.kau.capstone.domain.member.dto.ModifyMemberRequest;
+import com.kau.capstone.domain.member.dto.OwnedPetsResponse;
 import com.kau.capstone.domain.member.dto.PayPointRequest;
 import com.kau.capstone.domain.member.entity.Member;
+import com.kau.capstone.domain.member.entity.pet.OwnedPet;
+import com.kau.capstone.domain.pet.entity.Pet;
 import com.kau.capstone.global.common.ControllerTest;
 import com.kau.capstone.global.common.ResponseDTO;
 import com.kau.capstone.global.exception.ErrorCode;
@@ -15,6 +18,8 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -85,6 +90,63 @@ class MemberControllerTest extends ControllerTest {
 
             // then
             assertThat(res.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+        }
+    }
+
+    @Nested
+    class getOwnerPets_성공_테스트 {
+
+        @Test
+        void 사용자가_등록한_반려동물_목록을_볼_수_있다() {
+            // given
+            Member member = Member.builder()
+                    .name("test")
+                    .platformId("1")
+                    .build();
+            memberRepository.save(member);
+
+            Pet pet1 = Pet.builder()
+                    .name("test1")
+                    .age(1)
+                    .build();
+            Pet pet2 = Pet.builder()
+                    .name("test2")
+                    .age(2)
+                    .build();
+            Pet pet3 = Pet.builder()
+                    .name("test3")
+                    .age(3)
+                    .build();
+            petRepository.saveAll(List.of(pet1, pet2, pet3));
+
+            OwnedPet ownedPet1 = OwnedPet.builder()
+                    .member(member)
+                    .pet(pet1)
+                    .build();
+            OwnedPet ownedPet2 = OwnedPet.builder()
+                    .member(member)
+                    .pet(pet3)
+                    .build();
+            ownedPetRepository.saveAll(List.of(ownedPet1, ownedPet2));
+
+            // when
+            String cookie = getCookie("1");
+
+            ExtractableResponse<Response> res = RestAssured.given()
+                    .cookie("JSESSIONID", cookie)
+                    .contentType("application/json")
+                    .when()
+                    .get("/api/v1/users/pets")
+                    .then()
+                    .extract();
+            OwnedPetsResponse response = res.jsonPath().getObject("", OwnedPetsResponse.class);
+
+            // then
+            assertSoftly(soft -> {
+                soft.assertThat(response.pets().size()).isEqualTo(2);
+                soft.assertThat(response.pets().get(0).id()).isEqualTo(1L);
+                soft.assertThat(response.pets().get(1).id()).isEqualTo(3L);
+            });
         }
     }
 
