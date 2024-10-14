@@ -1,11 +1,11 @@
 package com.kau.capstone.domain.auth;
 
 import com.kau.capstone.domain.auth.access.TestAccessToken;
+import com.kau.capstone.domain.auth.dto.TokenInfo;
+import com.kau.capstone.domain.auth.dto.UserInfoDto;
 import com.kau.capstone.domain.auth.logout.TestLogout;
 import com.kau.capstone.domain.auth.redirect.TestRedirect;
 import com.kau.capstone.domain.auth.refresh.TestRefreshToken;
-import com.kau.capstone.domain.auth.dto.TokenInfo;
-import com.kau.capstone.domain.auth.dto.UserInfoDto;
 import com.kau.capstone.domain.auth.util.SocialSite;
 import com.kau.capstone.domain.auth.util.provider.OAuthProvider;
 import lombok.RequiredArgsConstructor;
