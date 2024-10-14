@@ -1,5 +1,7 @@
 package com.kau.capstone.global.common;
 
+import com.kau.capstone.domain.bluetooth.repository.BluetoothRepository;
+import com.kau.capstone.domain.bluetooth.repository.OwnedBluetoothRepository;
 import com.kau.capstone.domain.food.repository.FoodRepository;
 import com.kau.capstone.domain.member.repository.MemberRepository;
 import com.kau.capstone.domain.member.repository.OwnedPetRepository;
@@ -33,6 +35,12 @@ public class ControllerTest {
 
     @Autowired
     protected FoodRepository foodRepository;
+
+    @Autowired
+    protected BluetoothRepository bluetoothRepository;
+
+    @Autowired
+    protected OwnedBluetoothRepository ownedBluetoothRepository;
 
     @BeforeEach
     void setUp() {
