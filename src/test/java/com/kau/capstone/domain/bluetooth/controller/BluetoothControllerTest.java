@@ -1,5 +1,6 @@
 package com.kau.capstone.domain.bluetooth.controller;
 
+import com.kau.capstone.domain.bluetooth.dto.BluetoothRegistryRequest;
 import com.kau.capstone.domain.bluetooth.dto.OwnedBluetoothResponse;
 import com.kau.capstone.domain.bluetooth.entity.Bluetooth;
 import com.kau.capstone.domain.bluetooth.entity.member.OwnedBluetooth;
@@ -12,14 +13,47 @@ import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @SuppressWarnings("NonAsciiCharacters")
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class BluetoothControllerTest extends ControllerTest {
+
+    @Nested
+    class createOwnedBluetooth_성공_테스트 {
+
+        @Test
+        void 사용자가_블루투스_기기를_등록할_수_있다() {
+            // given
+            Member member = Member.builder()
+                    .name("test")
+                    .platformId("1")
+                    .build();
+            memberRepository.save(member);
+
+            BluetoothRegistryRequest request = new BluetoothRegistryRequest("test", "macAddressTest");
+
+            // when
+            String cookie = getCookie("1");
+
+            ExtractableResponse<Response> res = RestAssured.given()
+                    .cookie("JSESSIONID", cookie)
+                    .contentType("application/json")
+                    .body(request)
+                    .when()
+                    .post("/api/v1/bluetooth")
+                    .then()
+                    .extract();
+
+            // then
+            assertThat(res.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+        }
+    }
 
     @Nested
     class getOwnedBluetoothInfo_성공_테스트 {
