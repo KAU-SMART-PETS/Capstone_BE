@@ -1,17 +1,13 @@
-package com.kau.capstone.common;
+package com.kau.capstone.domain.auth;
 
-import com.kau.capstone.common.access.TestAccessToken;
-import com.kau.capstone.common.logout.TestLogout;
-import com.kau.capstone.common.redirect.TestRedirect;
-import com.kau.capstone.common.refresh.TestRefreshToken;
+import com.kau.capstone.domain.auth.access.TestAccessToken;
+import com.kau.capstone.domain.auth.logout.TestLogout;
+import com.kau.capstone.domain.auth.redirect.TestRedirect;
+import com.kau.capstone.domain.auth.refresh.TestRefreshToken;
 import com.kau.capstone.domain.auth.dto.TokenInfo;
 import com.kau.capstone.domain.auth.dto.UserInfoDto;
 import com.kau.capstone.domain.auth.util.SocialSite;
 import com.kau.capstone.domain.auth.util.provider.OAuthProvider;
-import com.kau.capstone.domain.auth.util.provider.access.KakaoAccessToken;
-import com.kau.capstone.domain.auth.util.provider.logout.KakaoLogout;
-import com.kau.capstone.domain.auth.util.provider.redirect.KakaoRedirect;
-import com.kau.capstone.domain.auth.util.provider.refresh.KakaoRefreshToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;

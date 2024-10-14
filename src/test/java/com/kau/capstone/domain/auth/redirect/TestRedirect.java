@@ -1,9 +1,9 @@
-package com.kau.capstone.common.access;
+package com.kau.capstone.domain.auth.redirect;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
 @Profile("test")
-public class TestAccessToken {
+public class TestRedirect {
 }

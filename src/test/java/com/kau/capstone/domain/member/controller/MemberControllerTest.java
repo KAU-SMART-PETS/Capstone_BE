@@ -5,6 +5,7 @@ import com.kau.capstone.domain.member.dto.ModifyMemberRequest;
 import com.kau.capstone.domain.member.dto.PayPointRequest;
 import com.kau.capstone.domain.member.entity.Member;
 import com.kau.capstone.domain.member.repository.MemberRepository;
+import com.kau.capstone.global.common.ControllerTest;
 import com.kau.capstone.global.common.ResponseDTO;
 import com.kau.capstone.global.exception.ErrorCode;
 import io.restassured.RestAssured;
@@ -31,20 +32,7 @@ import static org.assertj.core.api.SoftAssertions.*;
 
 @SuppressWarnings("NonAsciiCharacters")
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class MemberControllerTest {
-
-    @LocalServerPort
-    private int port;
-
-    @Autowired
-    private MemberRepository memberRepository;
-
-    @BeforeEach
-    void setUp() {
-        RestAssured.port = port;
-    }
+class MemberControllerTest extends ControllerTest {
 
     @Nested
     class getMemberInfo_성공_테스트 {
