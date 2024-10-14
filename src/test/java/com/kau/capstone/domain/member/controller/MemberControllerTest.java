@@ -1,5 +1,6 @@
 package com.kau.capstone.domain.member.controller;
 
+import com.kau.capstone.domain.auth.util.SocialSite;
 import com.kau.capstone.domain.member.dto.MemberInfoResponse;
 import com.kau.capstone.domain.member.dto.ModifyMemberRequest;
 import com.kau.capstone.domain.member.dto.OwnedPetsResponse;
@@ -40,6 +41,9 @@ class MemberControllerTest extends ControllerTest {
                     .name("test")
                     .email("test@test.com")
                     .point(100L)
+                    .socialSite(SocialSite.NAVER.name())
+                    .smsOptIn(false)
+                    .emailOptIn(true)
                     .build();
             Member member = memberRepository.save(saveMember);
 
@@ -61,6 +65,8 @@ class MemberControllerTest extends ControllerTest {
                 soft.assertThat(member.getName()).isEqualTo(response.name());
                 soft.assertThat(member.getEmail()).isEqualTo(response.email());
                 soft.assertThat(member.getPhoneNumber()).isEqualTo(response.phoneNumber());
+                soft.assertThat(member.getPoint()).isEqualTo(response.point());
+                soft.assertThat(member.getSocialSite()).isEqualTo(response.socialSite());
                 soft.assertThat(member.getSmsOptIn()).isEqualTo(response.smsOptIn());
                 soft.assertThat(member.getEmailOptIn()).isEqualTo(response.emailOptIn());
 
