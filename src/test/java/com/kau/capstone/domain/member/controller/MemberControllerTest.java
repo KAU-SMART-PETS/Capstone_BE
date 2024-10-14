@@ -4,47 +4,24 @@ import com.kau.capstone.domain.member.dto.MemberInfoResponse;
 import com.kau.capstone.domain.member.dto.ModifyMemberRequest;
 import com.kau.capstone.domain.member.dto.PayPointRequest;
 import com.kau.capstone.domain.member.entity.Member;
-import com.kau.capstone.domain.member.repository.MemberRepository;
+import com.kau.capstone.global.common.ControllerTest;
 import com.kau.capstone.global.common.ResponseDTO;
 import com.kau.capstone.global.exception.ErrorCode;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import org.assertj.core.api.Assertions;
-import org.assertj.core.api.SoftAssertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.*;
-import static org.assertj.core.api.SoftAssertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @SuppressWarnings("NonAsciiCharacters")
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class MemberControllerTest {
-
-    @LocalServerPort
-    private int port;
-
-    @Autowired
-    private MemberRepository memberRepository;
-
-    @BeforeEach
-    void setUp() {
-        RestAssured.port = port;
-    }
+class MemberControllerTest extends ControllerTest {
 
     @Nested
     class getMemberInfo_성공_테스트 {
@@ -177,17 +154,5 @@ class MemberControllerTest {
                 soft.assertThat(response.getMessage()).isEqualTo(ErrorCode.POINT_NOT_ENOUGH.getSimpleMessage());
             });
         }
-    }
-
-    private String getCookie(String memberId) {
-        return RestAssured.given()
-                .queryParam("code", memberId)
-                .when()
-                .post("/api/v1/oauth2/test/code")
-                .then()
-                .log().all()
-                .extract()
-                .response()
-                .cookie("JSESSIONID");
     }
 }
