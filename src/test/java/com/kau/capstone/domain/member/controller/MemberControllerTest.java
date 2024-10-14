@@ -143,9 +143,9 @@ class MemberControllerTest extends ControllerTest {
 
             // then
             assertSoftly(soft -> {
-               soft.assertThat(response.pets().size()).isEqualTo(2);
-               soft.assertThat(response.pets().get(0).id()).isEqualTo(1L);
-               soft.assertThat(response.pets().get(1).id()).isEqualTo(3L);
+                soft.assertThat(response.pets().size()).isEqualTo(2);
+                soft.assertThat(response.pets().get(0).id()).isEqualTo(1L);
+                soft.assertThat(response.pets().get(1).id()).isEqualTo(3L);
             });
         }
     }
