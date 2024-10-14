@@ -3,6 +3,7 @@ package com.kau.capstone.global.common;
 import com.kau.capstone.domain.member.repository.MemberRepository;
 import com.kau.capstone.domain.member.repository.OwnedPetRepository;
 import com.kau.capstone.domain.pet.repository.PetRepository;
+import com.kau.capstone.domain.vet.repository.VetRepository;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class ControllerTest {
 
     @Autowired
     protected OwnedPetRepository ownedPetRepository;
+
+    @Autowired
+    protected VetRepository vetRepository;
 
     @BeforeEach
     void setUp() {
