@@ -42,7 +42,7 @@ public class PointService {
         }
 
         point.payment(request.point());
-        save(member, point, request.point(), PAYMENT_POINT);
+        save(member, point, -request.point(), PAYMENT_POINT);
     }
 
     public void processPointEarn(Long memberId, EarnPointRequest request) {
