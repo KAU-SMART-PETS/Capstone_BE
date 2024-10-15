@@ -40,10 +40,13 @@ public class History {
     private Member member;
 
     @Comment("적립/결제 후의 총 포인트")
-    private Long totalPoints;
+    private Long totalPoint;
 
     @Comment("적립/결제하는 포인트")
-    private Long pointChange;
+    private Long changePoint;
+
+    @Comment("무엇으로 인해 적립/결제했는지 보여주는 내용")
+    private String name;
 
     @Comment("적립/결제 일자")
     private LocalDateTime date;
