@@ -10,11 +10,11 @@ import com.kau.capstone.domain.point.dto.PayPointRequest;
 import com.kau.capstone.domain.point.entity.Point;
 import com.kau.capstone.domain.point.entity.history.History;
 import com.kau.capstone.domain.point.repository.HistoryRepository;
-import com.kau.capstone.domain.point.repository.PointRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.kau.capstone.global.exception.ErrorCode.MEMBER_NOT_FOUND;
@@ -25,27 +25,34 @@ import static com.kau.capstone.global.exception.ErrorCode.POINT_NOT_ENOUGH;
 @RequiredArgsConstructor
 public class PointService {
 
+    private static final String PAYMENT_POINT = "포인트 결제";
+    private static final String EARN_POINT = "포인트 적립";
+
     private final MemberRepository memberRepository;
     private final HistoryRepository historyRepository;
 
     public void processPointPayment(Long memberId, PayPointRequest request) {
-        Point point = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND))
-                .getPoint();
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+
+        Point point = member.getPoint();
 
         if (point.getAmount() < request.point()) {
             throw new PointNotEnoughException(POINT_NOT_ENOUGH);
         }
 
         point.payment(request.point());
+        save(member, point, request.point(), PAYMENT_POINT);
     }
 
     public void processPointEarn(Long memberId, EarnPointRequest request) {
-        Point point = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND))
-                .getPoint();
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+
+        Point point = member.getPoint();
 
         point.deposit(request.point());
+        save(member, point, request.point(), EARN_POINT);
     }
 
     public HistoryResponse getPointHistory(Long memberId) {
@@ -55,5 +62,17 @@ public class PointService {
         List<History> histories = historyRepository.findHistoriesByMember(member);
 
         return HistoryResponse.toResponse(histories);
+    }
+
+    public void save(Member member, Point point, Long changePoint, String name) {
+        History history = History.builder()
+                .member(member)
+                .point(point)
+                .totalPoint(point.getAmount())
+                .changePoint(changePoint)
+                .name(name)
+                .date(LocalDateTime.now())
+                .build();
+        historyRepository.save(history);
     }
 }
