@@ -2,6 +2,7 @@ package com.kau.capstone.domain.point.controller;
 
 import com.kau.capstone.domain.member.entity.Member;
 import com.kau.capstone.domain.point.dto.EarnPointRequest;
+import com.kau.capstone.domain.point.dto.HistoryResponse;
 import com.kau.capstone.domain.point.dto.PayPointRequest;
 import com.kau.capstone.domain.point.entity.Point;
 import com.kau.capstone.global.common.ControllerTest;
@@ -142,6 +143,141 @@ class PointControllerTest extends ControllerTest {
 
             // then
             assertThat(res.statusCode()).isEqualTo(HttpStatus.OK.value());
+        }
+    }
+
+    @Nested
+    class getPointHistory_성공_테스트 {
+
+        @Test
+        void 사용자는_자신의_포인트_내역을_볼_수_있다() {
+            // given - 초기 데이터 추가
+            Point point = Point.builder()
+                    .amount(5000L)
+                    .build();
+            pointRepository.save(point);
+
+            Member member = Member.builder()
+                    .name("test")
+                    .point(point)
+                    .platformId("1")
+                    .build();
+            memberRepository.save(member);
+
+            point.connectMember(member);
+
+            // given - 사용자가 포인트 적립을 진행
+            String cookie = getCookie("1");
+            EarnPointRequest request1 = new EarnPointRequest(2000L);
+            PayPointRequest request2 = new PayPointRequest(3000L);
+
+            ExtractableResponse<Response> earn1 = RestAssured.given()
+                    .cookie("JSESSIONID", cookie)
+                    .contentType("application/json")
+                    .body(request1)
+                    .when()
+                    .patch("/api/v1/points/deposit")
+                    .then()
+                    .extract();
+            ExtractableResponse<Response> earn2 = RestAssured.given()
+                    .cookie("JSESSIONID", cookie)
+                    .contentType("application/json")
+                    .body(request2)
+                    .when()
+                    .patch("/api/v1/points/payment")
+                    .then()
+                    .extract();
+
+            // when
+            ExtractableResponse<Response> res = RestAssured.given()
+                    .cookie("JSESSIONID", cookie)
+                    .contentType("application/json")
+                    .when()
+                    .get("/api/v1/points")
+                    .then()
+                    .extract();
+            HistoryResponse response = res.jsonPath().getObject("", HistoryResponse.class);
+
+            // then
+            assertSoftly(soft -> {
+                assertThat(response.history().size()).isEqualTo(2);
+                assertThat(request1.point()).isEqualTo(response.history().get(0).changePoint());
+                assertThat(request2.point()).isEqualTo(-response.history().get(1).changePoint());
+            });
+        }
+
+        @Test
+        void 사용자_A는_사용자_B의_포인트_내역을_보지_못해야_한다() {
+            // given - 사용자1 데이터 추가
+            Point point1 = Point.builder()
+                    .amount(5000L)
+                    .build();
+            pointRepository.save(point1);
+
+            Member member1 = Member.builder()
+                    .name("test")
+                    .point(point1)
+                    .platformId("1")
+                    .build();
+            memberRepository.save(member1);
+
+            point1.connectMember(member1);
+
+            // given - 사용자2 데이터 추가
+            Point point2 = Point.builder()
+                    .amount(5000L)
+                    .build();
+            pointRepository.save(point2);
+
+            Member member2 = Member.builder()
+                    .name("test")
+                    .point(point2)
+                    .platformId("2")
+                    .build();
+            memberRepository.save(member2);
+
+            point2.connectMember(member2);
+
+            // given - 돈 적립
+            String cookie1 = getCookie("1");
+            EarnPointRequest request1 = new EarnPointRequest(2000L);
+
+            ExtractableResponse<Response> earn1 = RestAssured.given()
+                    .cookie("JSESSIONID", cookie1)
+                    .contentType("application/json")
+                    .body(request1)
+                    .when()
+                    .patch("/api/v1/points/deposit")
+                    .then()
+                    .extract();
+
+            String cookie2 = getCookie("2");
+            EarnPointRequest request2 = new EarnPointRequest(4000L);
+
+            ExtractableResponse<Response> earn2 = RestAssured.given()
+                    .cookie("JSESSIONID", cookie2)
+                    .contentType("application/json")
+                    .body(request2)
+                    .when()
+                    .patch("/api/v1/points/deposit")
+                    .then()
+                    .extract();
+
+            // when
+            ExtractableResponse<Response> res = RestAssured.given()
+                    .cookie("JSESSIONID", cookie1)
+                    .contentType("application/json")
+                    .when()
+                    .get("/api/v1/points")
+                    .then()
+                    .extract();
+            HistoryResponse response = res.jsonPath().getObject("", HistoryResponse.class);
+
+            // then
+            assertSoftly(soft -> {
+                assertThat(response.history().size()).isEqualTo(1);
+                assertThat(request1.point()).isEqualTo(response.history().get(0).changePoint());
+            });
         }
     }
 }
