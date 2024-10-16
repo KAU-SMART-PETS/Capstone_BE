@@ -30,8 +30,8 @@ class VetControllerTest extends ControllerTest {
             Vet vet = Vet.builder()
                     .name("동물병원1")
                     .address("경기도 고양시 어쩌고저쩌고")
-                    .mapX(126.9033478)
-                    .mapY(35.1615584)
+                    .longitude(126.9033478)
+                    .latitude(35.1615584)
                     .telephone("031-123-1234")
                     .build();
             vetRepository.save(vet);
@@ -65,28 +65,31 @@ class VetControllerTest extends ControllerTest {
     class getVetsInfo_성공_테스트 {
 
         @Test
-        void 동물병원_목록을_조회한다() {
+        void 사용자에게_가장_가까운_동물병원_목록을_조회한다() {
             // given
             Vet vet1 = Vet.builder()
                     .name("동물병원1")
                     .address("경기도 고양시 어쩌고저쩌고")
-                    .mapX(126.9033478)
-                    .mapY(35.1615584)
+                    .longitude(126.9033478)
+                    .latitude(35.1615584)
                     .telephone("031-123-1234")
                     .build();
             Vet vet2 = Vet.builder()
                     .name("동물병원2")
                     .address("서울특별시 어쩌고저쩌고")
-                    .mapX(123.4567)
-                    .mapY(35.1234)
+                    .longitude(123.4567)
+                    .latitude(35.1234)
                     .telephone("02-1234-1234")
                     .build();
             vetRepository.saveAll(List.of(vet1, vet2));
+
+            MemberLocationRequest request = new MemberLocationRequest(35.1234, 123.4567);
 
             // when
 
             ExtractableResponse<Response> res = RestAssured.given()
                     .contentType("application/json")
+                    .body(request)
                     .when()
                     .get("/api/v1/vets")
                     .then()
@@ -96,8 +99,8 @@ class VetControllerTest extends ControllerTest {
             // then
             assertSoftly(soft -> {
                 soft.assertThat(response.vets().size()).isEqualTo(2);
-                soft.assertThat(response.vets().get(0).name()).isEqualTo("동물병원1");
-                soft.assertThat(response.vets().get(1).name()).isEqualTo("동물병원2");
+                soft.assertThat(response.vets().get(0).name()).isEqualTo("동물병원2");
+                soft.assertThat(response.vets().get(1).name()).isEqualTo("동물병원1");
             });
         }
     }

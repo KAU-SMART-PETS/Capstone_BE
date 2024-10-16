@@ -38,10 +38,10 @@ public class Vet {
     private String name;
 
     @Comment("주소의 x좌표 (경도, longitude)")
-    private Double mapX;
+    private Double longitude;
 
     @Comment("주소의 y좌표 (위도, latitude)")
-    private Double mapY;
+    private Double latitude;
 
     @Comment("전화번호")
     private String telephone;
@@ -52,18 +52,18 @@ public class Vet {
     1 Mile = 1609.344 m
     값이 너무 부정확하면 BigDecimal로 교체하기
      */
-    public double calculateDistanceToMember(Double memberMapY, Double memberMapX) {
-        if ((Objects.equals(mapX, memberMapX)) && (Objects.equals(mapY, memberMapY))) {
+    public double calculateDistanceToMember(Double memberLatitude, Double memberLongtitude) {
+        if ((Objects.equals(longitude, memberLongtitude)) && (Objects.equals(latitude, memberLatitude))) {
             return 0;
         }
 
-        double theta = mapX - memberMapX;
+        double theta = longitude - memberLongtitude;
         double dist = Math.sin(
-                Math.toRadians(mapY))
-                * Math.sin(Math.toRadians(memberMapY))
+                Math.toRadians(latitude))
+                * Math.sin(Math.toRadians(memberLatitude))
                 +
-                Math.cos(Math.toRadians(mapY))
-                        * Math.cos(Math.toRadians(memberMapY))
+                Math.cos(Math.toRadians(latitude))
+                        * Math.cos(Math.toRadians(memberLatitude))
                         * Math.cos(Math.toRadians(theta));
         dist = Math.acos(dist);
         dist = Math.toDegrees(dist);

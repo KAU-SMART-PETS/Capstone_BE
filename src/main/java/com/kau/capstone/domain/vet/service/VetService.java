@@ -29,8 +29,8 @@ public class VetService {
         return VetDetailResponse.toResponse(vet, vetToMemberDistance);
     }
 
-    public VetsResponse getVetsInfo() {
-        List<Vet> vets = vetRepository.findAll();
+    public VetsResponse getVetsInfo(MemberLocationRequest request) {
+        List<Vet> vets = vetRepository.findNearestVets(request.latitude(), request.longitude());
 
         return VetsResponse.toResponse(vets);
     }
