@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class PointController {
+public class PointController implements PointApi {
 
     private final PointService pointService;
 
