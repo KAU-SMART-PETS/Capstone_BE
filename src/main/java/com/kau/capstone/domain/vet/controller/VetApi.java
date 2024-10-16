@@ -37,5 +37,8 @@ public interface VetApi {
             content = @Content(schema = @Schema(implementation = VetsResponse.class))
     )
     @GetMapping("/api/v1/vets")
-    ResponseEntity<VetsResponse> getVetsInfo();
+    ResponseEntity<VetsResponse> getVetsInfo(
+            @Parameter(description = "현재 사용자의 위치 (동물병원과 사용자 사이의 거리를 구할 때 사용합니다.")
+            @RequestBody MemberLocationRequest memberLocationRequest
+    );
 }
