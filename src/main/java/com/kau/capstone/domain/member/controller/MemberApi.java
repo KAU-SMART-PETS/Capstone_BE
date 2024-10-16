@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@Tag(name = "보건정보 API")
+@Tag(name = "사용자 API")
 public interface MemberApi {
 
     @Operation(summary = "사용자 정보 조회", description = "사용자에게 등록된 정보를 보여주는 기능입니다.")
