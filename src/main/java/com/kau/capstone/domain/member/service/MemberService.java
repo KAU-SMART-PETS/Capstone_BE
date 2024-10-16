@@ -16,6 +16,9 @@ import com.kau.capstone.domain.member.util.MemberMapper;
 import com.kau.capstone.domain.pet.entity.Pet;
 import com.kau.capstone.domain.point.entity.Point;
 import com.kau.capstone.domain.point.repository.PointRepository;
+import com.kau.capstone.domain.reward.entity.Reward;
+import com.kau.capstone.domain.reward.entity.RewardDetail;
+import com.kau.capstone.domain.reward.repository.RewardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +39,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final OwnedPetRepository ownedPetRepository;
     private final PointRepository pointRepository;
+    private final RewardRepository rewardRepository;
 
     @Transactional(propagation = REQUIRES_NEW)
     public SignUserDto findOrCreateMember(String site, UserInfoDto userInfoDto) {
@@ -47,6 +51,7 @@ public class MemberService {
     }
 
     private SignUserDto save(String site, UserInfoDto userInfoDto) {
+        // 포인트, 멤버 연결
         Point point = Point.builder()
                 .amount(0L)
                 .build();
@@ -57,6 +62,10 @@ public class MemberService {
 
         point.connectMember(member);
         member.connectPoint(point);
+
+        // 리워드 내용 초기 세팅 (모두 미달성으로 표기하기 위해)
+        List<Reward> rewards = RewardDetail.getRewards();
+        rewardRepository.saveAll(rewards);
 
         return SignUserDto.of(TRUE, member.getId());
     }

@@ -45,4 +45,11 @@ public class Reward {
 
     @Comment("달성 여부")
     private Boolean isAchieved;
+
+    @Comment("달성 여부")
+    private Boolean isObtain;
+
+    public void connectMember(Member member) {
+        this.member = member;
+    }
 }
