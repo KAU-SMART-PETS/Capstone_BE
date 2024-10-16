@@ -1,5 +1,8 @@
 package com.kau.capstone.domain.point.service;
 
+import com.kau.capstone.domain.alarm.entity.Alarm;
+import com.kau.capstone.domain.alarm.entity.AlarmDetail;
+import com.kau.capstone.domain.alarm.repository.AlarmRepository;
 import com.kau.capstone.domain.food.entity.Food;
 import com.kau.capstone.domain.food.exception.FoodNotFoundException;
 import com.kau.capstone.domain.food.repository.FoodRepository;
@@ -42,6 +45,7 @@ public class PointService {
     private final HistoryRepository historyRepository;
     private final FoodRepository foodRepository;
     private final RewardRepository rewardRepository;
+    private final AlarmRepository alarmRepository;
 
     public void processPointPayment(Long memberId, PayPointRequest request) {
         Member member = memberRepository.findById(memberId)
@@ -107,6 +111,11 @@ public class PointService {
         Reward reward = rewardRepository.findRewardByMemberAndType(member, RewardDetail.THREE.type());
         if (!Objects.isNull(reward) && !reward.getIsAchieved()) {
             reward.achievedSuccess();
+        }
+
+        Alarm alarm = alarmRepository.findAlarmByMemberAndType(member, AlarmDetail.ONE.type());
+        if (!Objects.isNull(alarm) && alarm.getIsVisible()) {
+            alarm.doNotVisible();
         }
     }
 

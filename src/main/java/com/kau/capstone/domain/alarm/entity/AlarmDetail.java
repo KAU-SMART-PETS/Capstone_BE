@@ -13,6 +13,7 @@ public enum AlarmDetail {
     TWO(2L, "우리 아이 안전을 위한 비문을 등록해주세요", true),
     TRHEE(3L, "반려동물의 예방 접종을 등록해주세요", true),
     FOUR(4L, "반려동물 산책을 시작해볼까요?", true),
+    FIVE(5L, "포인트를 모아 사료를 구매해보세요!", true)
     ;
 
     private final Long type;
