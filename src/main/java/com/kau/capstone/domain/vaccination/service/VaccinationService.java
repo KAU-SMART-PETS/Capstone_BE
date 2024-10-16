@@ -6,6 +6,7 @@ import com.kau.capstone.domain.member.repository.MemberRepository;
 import com.kau.capstone.domain.pet.entity.Pet;
 import com.kau.capstone.domain.pet.exception.PetNotFoundException;
 import com.kau.capstone.domain.pet.repository.PetRepository;
+import com.kau.capstone.domain.vaccination.dto.CreateVaccinationRequest;
 import com.kau.capstone.domain.vaccination.dto.VaccinationsResponse;
 import com.kau.capstone.domain.vaccination.entity.Vaccination;
 import com.kau.capstone.domain.vaccination.repository.VaccinationRepository;
@@ -34,5 +35,23 @@ public class VaccinationService {
         List<Vaccination> vaccinations = vaccinationRepository.findAllByMemberAndPet(pet);
 
         return VaccinationsResponse.toResponse(pet, vaccinations);
+    }
+
+    public void createVaccinationInfo(Long memberId, Long petId, CreateVaccinationRequest request) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+
+        Pet pet = petRepository.findById(petId)
+                .orElseThrow(() -> new PetNotFoundException(PET_INFO_NOT_FOUND));
+
+        Vaccination vaccination = Vaccination.builder()
+                .member(member)
+                .pet(pet)
+                .name(request.name())
+                .timeYear(request.year())
+                .timeMonth(request.month())
+                .timeDay(request.day())
+                .build();
+        vaccinationRepository.save(vaccination);
     }
 }
