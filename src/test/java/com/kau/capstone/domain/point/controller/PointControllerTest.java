@@ -1,6 +1,8 @@
 package com.kau.capstone.domain.point.controller;
 
+import com.kau.capstone.domain.food.entity.Food;
 import com.kau.capstone.domain.member.entity.Member;
+import com.kau.capstone.domain.point.dto.DeliveryFeeRequest;
 import com.kau.capstone.domain.point.dto.EarnPointRequest;
 import com.kau.capstone.domain.point.dto.HistoryResponse;
 import com.kau.capstone.domain.point.dto.PayPointRequest;
@@ -277,6 +279,61 @@ class PointControllerTest extends ControllerTest {
             assertSoftly(soft -> {
                 assertThat(response.history().size()).isEqualTo(1);
                 assertThat(request1.point()).isEqualTo(response.history().get(0).changePoint());
+            });
+        }
+
+        @Test
+        void 사용자가_사료_주문시_사료_결제_내역을_볼_수_있다() {
+            // given - 결제 전 세팅
+            Point point = Point.builder()
+                    .amount(10000L)
+                    .build();
+            pointRepository.save(point);
+
+            Member member = Member.builder()
+                    .name("test")
+                    .point(point)
+                    .platformId("1")
+                    .build();
+            memberRepository.save(member);
+
+            point.connectMember(member);
+
+            Food food = Food.builder()
+                    .name("test food")
+                    .price(2000L)
+                    .build();
+            foodRepository.save(food);
+
+            DeliveryFeeRequest request = new DeliveryFeeRequest(2500L);
+
+            // given - 결제
+            String cookie = getCookie("1");
+
+            ExtractableResponse<Response> res1 = RestAssured.given()
+                    .cookie("JSESSIONID", cookie)
+                    .contentType("application/json")
+                    .body(request)
+                    .when()
+                    .post("/api/v1/foods/1/points/payment")
+                    .then()
+                    .extract();
+
+            // when
+            ExtractableResponse<Response> res2 = RestAssured.given()
+                    .cookie("JSESSIONID", cookie)
+                    .contentType("application/json")
+                    .when()
+                    .get("/api/v1/points")
+                    .then()
+                    .extract();
+            HistoryResponse response = res2.jsonPath().getObject("", HistoryResponse.class);
+
+            // then
+            assertSoftly(soft -> {
+                assertThat(response.history().size()).isEqualTo(1);
+                assertThat(food.getName()).isEqualTo(response.history().get(0).name());
+                assertThat(food.getPrice() + request.deliveryFee()).isEqualTo(-response.history().get(0).changePoint());
             });
         }
     }

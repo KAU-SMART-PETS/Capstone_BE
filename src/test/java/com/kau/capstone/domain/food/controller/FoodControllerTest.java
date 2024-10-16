@@ -2,7 +2,13 @@ package com.kau.capstone.domain.food.controller;
 
 import com.kau.capstone.domain.food.dto.FoodsResponse;
 import com.kau.capstone.domain.food.entity.Food;
+import com.kau.capstone.domain.member.entity.Member;
+import com.kau.capstone.domain.point.dto.DeliveryFeeRequest;
+import com.kau.capstone.domain.point.dto.PayPointRequest;
+import com.kau.capstone.domain.point.entity.Point;
 import com.kau.capstone.global.common.ControllerTest;
+import com.kau.capstone.global.common.ResponseDTO;
+import com.kau.capstone.global.exception.ErrorCode;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -11,9 +17,11 @@ import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.*;
 
 @SuppressWarnings("NonAsciiCharacters")
@@ -52,6 +60,102 @@ class FoodControllerTest extends ControllerTest {
                 soft.assertThat(response.foods().size()).isEqualTo(2);
                 soft.assertThat(food1.getId()).isEqualTo(response.foods().get(0).id());
                 soft.assertThat(food2.getId()).isEqualTo(response.foods().get(1).id());
+            });
+        }
+    }
+
+    @Nested
+    class payFoodWithPoints_성공_테스트 {
+
+        @Test
+        void 사료_결제시_포인트가_차감되어야_한다() {
+            // given
+            Point point = Point.builder()
+                    .amount(10000L)
+                    .build();
+            pointRepository.save(point);
+
+            Member member = Member.builder()
+                    .name("test")
+                    .point(point)
+                    .platformId("1")
+                    .build();
+            memberRepository.save(member);
+
+            point.connectMember(member);
+
+            Food food = Food.builder()
+                    .name("test food")
+                    .price(2000L)
+                    .build();
+            foodRepository.save(food);
+
+            DeliveryFeeRequest request = new DeliveryFeeRequest(2500L);
+
+            // when
+            String cookie = getCookie("1");
+
+            ExtractableResponse<Response> res = RestAssured.given()
+                    .cookie("JSESSIONID", cookie)
+                    .contentType("application/json")
+                    .body(request)
+                    .when()
+                    .post("/api/v1/foods/1/points/payment")
+                    .then()
+                    .extract();
+
+            // then
+            assertThat(res.statusCode()).isEqualTo(HttpStatus.OK.value());
+        }
+    }
+
+    @Nested
+    class payFoodWithPoints_실패_테스트 {
+
+        @Test
+        void 사료_결제할_포인트가_부족하면_에러가_나와야_한다() {
+            // given
+            Point point = Point.builder()
+                    .amount(0L)
+                    .build();
+            pointRepository.save(point);
+
+            Member member = Member.builder()
+                    .name("test")
+                    .point(point)
+                    .platformId("1")
+                    .build();
+            memberRepository.save(member);
+
+            point.connectMember(member);
+
+            Food food = Food.builder()
+                    .name("test food")
+                    .price(2000L)
+                    .build();
+            foodRepository.save(food);
+
+            DeliveryFeeRequest request = new DeliveryFeeRequest(2500L);
+
+            // when
+            String cookie = getCookie("1");
+
+            ExtractableResponse<Response> res = RestAssured.given()
+                    .cookie("JSESSIONID", cookie)
+                    .contentType("application/json")
+                    .body(request)
+                    .when()
+                    .post("/api/v1/foods/1/points/payment")
+                    .then()
+                    .extract();
+
+            // then
+            ResponseDTO response = res.jsonPath().getObject("", ResponseDTO.class);
+
+            // then
+            assertSoftly(soft -> {
+                soft.assertThat(res.statusCode()).isEqualTo(HttpStatus.FORBIDDEN.value());
+                soft.assertThat(response.getMessage()).isEqualTo(ErrorCode.POINT_NOT_ENOUGH.getSimpleMessage());
             });
         }
     }

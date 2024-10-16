@@ -1,5 +1,8 @@
 package com.kau.capstone.domain.point.service;
 
+import com.kau.capstone.domain.food.entity.Food;
+import com.kau.capstone.domain.food.exception.FoodNotFoundException;
+import com.kau.capstone.domain.food.repository.FoodRepository;
 import com.kau.capstone.domain.member.entity.Member;
 import com.kau.capstone.domain.member.exception.MemberNotFoundException;
 import com.kau.capstone.domain.member.exception.PointNotEnoughException;
@@ -17,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.kau.capstone.global.exception.ErrorCode.FOOD_NOT_FOUND;
 import static com.kau.capstone.global.exception.ErrorCode.MEMBER_NOT_FOUND;
 import static com.kau.capstone.global.exception.ErrorCode.POINT_NOT_ENOUGH;
 
@@ -30,6 +34,7 @@ public class PointService {
 
     private final MemberRepository memberRepository;
     private final HistoryRepository historyRepository;
+    private final FoodRepository foodRepository;
 
     public void processPointPayment(Long memberId, PayPointRequest request) {
         Member member = memberRepository.findById(memberId)
@@ -74,5 +79,22 @@ public class PointService {
                 .date(LocalDateTime.now())
                 .build();
         historyRepository.save(history);
+    }
+
+    public void processPointPaymentForFood(Long memberId, Long foodId, Long deliveryFee) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+        Point point = member.getPoint();
+
+        Food food = foodRepository.findById(foodId)
+                .orElseThrow(() -> new FoodNotFoundException(FOOD_NOT_FOUND));
+        Long totalPrice = food.getPrice() + deliveryFee;
+
+        if (point.getAmount() < totalPrice) {
+            throw new PointNotEnoughException(POINT_NOT_ENOUGH);
+        }
+
+        point.payment(totalPrice);
+        save(member, point, -totalPrice, food.getName());
     }
 }
