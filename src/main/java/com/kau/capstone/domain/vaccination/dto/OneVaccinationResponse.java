@@ -14,9 +14,9 @@ public record OneVaccinationResponse(
     public static OneVaccinationResponse toResponse(Vaccination vaccination) {
         return OneVaccinationResponse.builder()
                 .name(vaccination.getName())
-                .year(vaccination.getYear())
-                .month(vaccination.getMonth())
-                .day(vaccination.getDay())
+                .year(vaccination.getTimeYear())
+                .month(vaccination.getTimeMonth())
+                .day(vaccination.getTimeDay())
                 .build();
     }
 }

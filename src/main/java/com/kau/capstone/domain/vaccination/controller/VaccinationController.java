@@ -17,9 +17,8 @@ public class VaccinationController {
     private final VaccinationService vaccinationService;
 
     @GetMapping("/api/v1/pets/{petId}/vaccination")
-    public ResponseEntity<VaccinationsResponse> getVaccinationInfoForPet(@LoginUser LoginInfo loginInfo,
-                                                                         @PathVariable Long petId) {
-        VaccinationsResponse response = vaccinationService.getVaccinationInfo(loginInfo.memberId(), petId);
+    public ResponseEntity<VaccinationsResponse> getVaccinationInfoForPet(@PathVariable Long petId) {
+        VaccinationsResponse response = vaccinationService.getVaccinationInfo(petId);
 
         return ResponseEntity.ok(response);
     }

@@ -41,11 +41,11 @@ public class Vaccination {
     private String name;
 
     @Comment("연도")
-    private Integer year;
+    private Integer timeYear;
 
     @Comment("월")
-    private Integer month;
+    private Integer timeMonth;
 
     @Comment("일")
-    private Integer day;
+    private Integer timeDay;
 }

@@ -27,14 +27,11 @@ public class VaccinationService {
     private final PetRepository petRepository;
     private final VaccinationRepository vaccinationRepository;
 
-    public VaccinationsResponse getVaccinationInfo(Long memberId, Long petId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
-
+    public VaccinationsResponse getVaccinationInfo(Long petId) {
         Pet pet = petRepository.findById(petId)
                 .orElseThrow(() -> new PetNotFoundException(PET_INFO_NOT_FOUND));
 
-        List<Vaccination> vaccinations = vaccinationRepository.findAllByMemberAndPet(member, pet);
+        List<Vaccination> vaccinations = vaccinationRepository.findAllByMemberAndPet(pet);
 
         return VaccinationsResponse.toResponse(pet, vaccinations);
     }

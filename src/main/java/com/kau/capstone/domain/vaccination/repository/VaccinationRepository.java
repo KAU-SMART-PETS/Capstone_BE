@@ -11,7 +11,6 @@ import java.util.List;
 
 public interface VaccinationRepository extends JpaRepository<Vaccination, Long> {
 
-    @Query("SELECT v FROM Vaccination v WHERE v.member = :member AND v.pet = :type")
-    List<Vaccination> findAllByMemberAndPet(@Param("member") Member member,
-                                            @Param("pet") Pet pet);
+    @Query("SELECT v FROM Vaccination v WHERE v.pet = :pet")
+    List<Vaccination> findAllByMemberAndPet(@Param("pet") Pet pet);
 }
