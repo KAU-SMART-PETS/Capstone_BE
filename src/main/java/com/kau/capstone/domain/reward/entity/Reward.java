@@ -52,4 +52,8 @@ public class Reward {
     public void connectMember(Member member) {
         this.member = member;
     }
+
+    public void achievedSuccess() {
+        this.isAchieved = true;
+    }
 }

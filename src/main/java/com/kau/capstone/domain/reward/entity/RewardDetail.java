@@ -40,4 +40,8 @@ public enum RewardDetail {
                         .build())
                 .toList();
     }
+
+    public Long type() {
+        return this.type;
+    }
 }
