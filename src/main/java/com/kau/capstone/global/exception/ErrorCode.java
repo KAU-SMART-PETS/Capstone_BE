@@ -17,6 +17,7 @@ public enum ErrorCode {
     VET_NOT_FOUND(HttpStatus.NOT_FOUND, "동물병원 정보를 찾을 수 없습니다."),
     POINT_NOT_ENOUGH(HttpStatus.FORBIDDEN, "결제 포인트가 부족합니다."),
     FOOD_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 사료 제품입니다."),
+    REWARD_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않은 리워드입니다."),
 
     //s3
     CANNOT_CONVERT_FILE(HttpStatus.BAD_REQUEST, "파일을 변환할 수 없습니다.")

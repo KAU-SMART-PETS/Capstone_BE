@@ -56,4 +56,8 @@ public class Reward {
     public void achievedSuccess() {
         this.isAchieved = true;
     }
+
+    public void obtainSuccess() {
+        this.isObtain = true;
+    }
 }
