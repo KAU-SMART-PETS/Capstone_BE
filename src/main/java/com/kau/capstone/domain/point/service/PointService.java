@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 import static com.kau.capstone.global.exception.ErrorCode.FOOD_NOT_FOUND;
 import static com.kau.capstone.global.exception.ErrorCode.MEMBER_NOT_FOUND;
@@ -102,7 +103,7 @@ public class PointService {
         save(member, point, -totalPrice, food.getName());
 
         Reward reward = rewardRepository.findRewardByMemberAndType(member, RewardDetail.THREE.type());
-        if (!reward.getIsAchieved()) {
+        if (!Objects.isNull(reward) && !reward.getIsAchieved()) {
             reward.achievedSuccess();
         }
     }

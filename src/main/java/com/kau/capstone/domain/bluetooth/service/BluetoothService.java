@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 import static com.kau.capstone.global.exception.ErrorCode.MEMBER_NOT_FOUND;
 
@@ -47,7 +48,7 @@ public class BluetoothService {
         ownedBluetoothRepository.save(ownedBluetooth);
 
         Reward reward = rewardRepository.findRewardByMemberAndType(member, RewardDetail.TWO.type());
-        if (reward.getIsAchieved()) {
+        if (!Objects.isNull(reward) && !reward.getIsAchieved()) {
             reward.achievedSuccess();
         }
     }

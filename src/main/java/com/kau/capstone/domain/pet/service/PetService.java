@@ -54,7 +54,7 @@ public class PetService {
                 () -> new MemberNotFoundException(MEMBER_NOT_FOUND));
 
         Reward reward = rewardRepository.findRewardByMemberAndType(member, RewardDetail.ONE.type());
-        if (reward.getIsAchieved()) {
+        if (!Objects.isNull(reward) && !reward.getIsAchieved()) {
             reward.achievedSuccess();
         }
     }
