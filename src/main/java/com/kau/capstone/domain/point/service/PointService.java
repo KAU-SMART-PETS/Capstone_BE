@@ -15,6 +15,7 @@ import com.kau.capstone.domain.point.entity.history.History;
 import com.kau.capstone.domain.point.repository.HistoryRepository;
 import com.kau.capstone.domain.reward.entity.Reward;
 import com.kau.capstone.domain.reward.entity.RewardDetail;
+import com.kau.capstone.domain.reward.exception.RewardNotFoundException;
 import com.kau.capstone.domain.reward.repository.RewardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ import java.util.Objects;
 import static com.kau.capstone.global.exception.ErrorCode.FOOD_NOT_FOUND;
 import static com.kau.capstone.global.exception.ErrorCode.MEMBER_NOT_FOUND;
 import static com.kau.capstone.global.exception.ErrorCode.POINT_NOT_ENOUGH;
+import static com.kau.capstone.global.exception.ErrorCode.REWARD_NOT_FOUND;
 
 @Service
 @Transactional
@@ -105,6 +107,23 @@ public class PointService {
         Reward reward = rewardRepository.findRewardByMemberAndType(member, RewardDetail.THREE.type());
         if (!Objects.isNull(reward) && !reward.getIsAchieved()) {
             reward.achievedSuccess();
+        }
+    }
+
+    public void processPointEarnForReward(Long memberId, Long rewardId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+        Point point = member.getPoint();
+
+        Reward reward = rewardRepository.findById(rewardId)
+                .orElseThrow(() -> new RewardNotFoundException(REWARD_NOT_FOUND));
+        Long rewardPoint = reward.getEarnPoint();
+
+        point.deposit(rewardPoint);
+        save(member, point, rewardPoint, reward.getTitle());
+
+        if (!reward.getIsObtain()) {
+            reward.obtainSuccess();
         }
     }
 }

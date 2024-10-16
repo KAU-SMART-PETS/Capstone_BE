@@ -83,4 +83,55 @@ class RewardControllerTest extends ControllerTest {
             });
         }
     }
+
+    @Nested
+    class earnRewardWithPoints_성공_테스트 {
+
+        @Test
+        void 사료_구매_리워드_달성시_포인트를_적립할_수_있다() {
+            // given
+            String cookie = getCookie("1");
+
+            Food food = Food.builder()
+                    .name("test food")
+                    .price(0L)
+                    .build();
+            foodRepository.save(food);
+
+            DeliveryFeeRequest request = new DeliveryFeeRequest(0L);
+            RestAssured.given()
+                    .cookie("JSESSIONID", cookie)
+                    .contentType("application/json")
+                    .body(request)
+                    .when()
+                    .post("/api/v1/foods/1/points/payment")
+                    .then()
+                    .extract();
+
+            // when
+            ExtractableResponse<Response> res = RestAssured.given()
+                    .cookie("JSESSIONID", cookie)
+                    .contentType("application/json")
+                    .when()
+                    .post("/api/v1/rewards/3/points/deposit")
+                    .then()
+                    .extract();
+
+            ExtractableResponse<Response> res1 = RestAssured.given()
+                    .cookie("JSESSIONID", cookie)
+                    .contentType("application/json")
+                    .when()
+                    .get("/api/v1/rewards")
+                    .then()
+                    .extract();
+            RewardsResponse response = res1.jsonPath().getObject("", RewardsResponse.class);
+
+            // then
+            assertSoftly(soft -> {
+                soft.assertThat(res.statusCode()).isEqualTo(HttpStatus.OK.value());
+                soft.assertThat(response.rewards().size()).isEqualTo(5);
+                soft.assertThat(response.rewards().get(2).isObtain()).isTrue();
+            });
+        }
+    }
 }

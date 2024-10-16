@@ -9,7 +9,8 @@ public record RewardResponse(
         String title,
         String content,
         Long earnPoint,
-        Boolean isAchieved
+        Boolean isAchieved,
+        Boolean isObtain
 ) {
 
     public static RewardResponse toResponse(Reward reward) {
@@ -19,6 +20,7 @@ public record RewardResponse(
                 .content(reward.getContent())
                 .earnPoint(reward.getEarnPoint())
                 .isAchieved(reward.getIsAchieved())
+                .isObtain(reward.getIsObtain())
                 .build();
     }
 }
