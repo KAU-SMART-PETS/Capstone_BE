@@ -30,7 +30,7 @@ public interface VetApi {
             @Parameter(description = "현재 사용자의 위치 (동물병원과 사용자 사이의 거리를 구할 때 사용합니다.")
             @RequestBody MemberLocationRequest memberLocationRequest);
 
-    @Operation(summary = "동물병원 목록 조회", description = "동물병원 전체 목록을 조회합니다. (현재는 전체 데이터 반환이지만, 나중에 논의 필요)")
+    @Operation(summary = "동물병원 목록 조회", description = "사용자와 가까운 상위 20개의 동물병원 목록을 조회합니다.")
     @ApiResponse(
             responseCode = "200",
             description = "동물병원 목록 조회 성공",
