@@ -1,5 +1,8 @@
 package com.kau.capstone.domain.member.service;
 
+import com.kau.capstone.domain.alarm.entity.Alarm;
+import com.kau.capstone.domain.alarm.entity.AlarmDetail;
+import com.kau.capstone.domain.alarm.repository.AlarmRepository;
 import com.kau.capstone.domain.auth.dto.SignUserDto;
 import com.kau.capstone.domain.auth.dto.UserInfoDto;
 import com.kau.capstone.domain.point.dto.EarnPointRequest;
@@ -40,6 +43,7 @@ public class MemberService {
     private final OwnedPetRepository ownedPetRepository;
     private final PointRepository pointRepository;
     private final RewardRepository rewardRepository;
+    private final AlarmRepository alarmRepository;
 
     @Transactional(propagation = REQUIRES_NEW)
     public SignUserDto findOrCreateMember(String site, UserInfoDto userInfoDto) {
@@ -66,6 +70,10 @@ public class MemberService {
         // 리워드 내용 초기 세팅 (모두 미달성으로 표기하기 위해)
         List<Reward> rewards = RewardDetail.getRewards(member);
         rewardRepository.saveAll(rewards);
+
+        // 알람 내용 초기 세팅 (모든 알람을 보여주기 위해)
+        List<Alarm> alarms = AlarmDetail.getAlarms(member);
+        alarmRepository.saveAll(alarms);
 
         return SignUserDto.of(TRUE, member.getId());
     }
