@@ -5,6 +5,7 @@ import com.kau.capstone.domain.auth.dto.UserInfoDto;
 import com.kau.capstone.domain.member.repository.MemberRepository;
 import com.kau.capstone.domain.member.repository.OwnedPetRepository;
 import com.kau.capstone.domain.point.repository.PointRepository;
+import com.kau.capstone.domain.reward.repository.RewardRepository;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,9 @@ public class TestMemberService extends MemberService {
 
     public TestMemberService(MemberRepository memberRepository,
                              OwnedPetRepository ownedPetRepository,
-                             PointRepository pointRepository) {
-        super(memberRepository, ownedPetRepository, pointRepository);
+                             PointRepository pointRepository,
+                             RewardRepository rewardRepository) {
+        super(memberRepository, ownedPetRepository, pointRepository, rewardRepository);
     }
 
     @Override

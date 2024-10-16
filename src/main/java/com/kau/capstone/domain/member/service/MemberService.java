@@ -64,7 +64,7 @@ public class MemberService {
         member.connectPoint(point);
 
         // 리워드 내용 초기 세팅 (모두 미달성으로 표기하기 위해)
-        List<Reward> rewards = RewardDetail.getRewards();
+        List<Reward> rewards = RewardDetail.getRewards(member);
         rewardRepository.saveAll(rewards);
 
         return SignUserDto.of(TRUE, member.getId());

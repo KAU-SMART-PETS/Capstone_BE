@@ -1,5 +1,7 @@
 package com.kau.capstone.domain.reward.entity;
 
+import com.kau.capstone.domain.member.entity.Member;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,10 +30,11 @@ public enum RewardDetail {
         this.isObtain = isObtain;
     }
 
-    public static List<Reward> getRewards() {
+    public static List<Reward> getRewards(Member member) {
         return Arrays.stream(RewardDetail.values())
                 .map(detail -> Reward.builder()
                         .type(detail.type)
+                        .member(member)
                         .title(detail.title)
                         .content(detail.content)
                         .earnPoint(detail.earnPoint)
