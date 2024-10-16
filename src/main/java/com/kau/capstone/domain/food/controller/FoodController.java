@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class FoodController {
+public class FoodController implements FoodApi {
 
     private final FoodService foodService;
     private final PointService pointService;
