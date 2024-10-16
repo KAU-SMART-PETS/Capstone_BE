@@ -18,7 +18,7 @@ public class VetController implements VetApi {
 
     private final VetService vetService;
 
-    @GetMapping(path = "/api/v1/vets/{vetId}")
+    @PostMapping(path = "/api/v1/vets/{vetId}")
     public ResponseEntity<VetDetailResponse> getVetDetailInfo(@PathVariable Long vetId,
                                                               @RequestBody MemberLocationRequest memberLocationRequest) {
         VetDetailResponse response = vetService.getVetInfo(vetId, memberLocationRequest);
