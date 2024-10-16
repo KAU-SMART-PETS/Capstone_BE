@@ -21,7 +21,7 @@ import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
-public class AuthController {
+public class AuthController implements AuthApi {
 
     private static final String LOGIN_ATTRIBUTE_NAME = "memberId";
     private static final String HOME = "/";
@@ -35,6 +35,19 @@ public class AuthController {
         request.getSession().setAttribute(LOGIN_ATTRIBUTE_NAME, memberId);
 
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/api/v1/logout")
+    public ResponseEntity<Void> logout(@LoginUser LoginInfo loginInfo,
+                                       HttpServletRequest request, HttpServletResponse response) {
+        request.getSession().removeAttribute(LOGIN_ATTRIBUTE_NAME);
+
+        Cookie cookie = authService.expireCookie();
+        response.addCookie(cookie);
+
+        return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY)
+                .location(URI.create(HOME))
+                .build();
     }
 
     @GetMapping("/api/v1/oauth2/{site}")
@@ -53,11 +66,6 @@ public class AuthController {
         SignUserDto signUserDto = authService.loginAuthorizeUser(site, code);
         request.getSession().setAttribute(LOGIN_ATTRIBUTE_NAME, signUserDto.memberId());
 
-        if (signUserDto.isSignUp()) {
-            ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY)
-                    .location(URI.create(MYPAGE))
-                    .build();
-        }
         return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY)
                 .location(URI.create(HOME))
                 .build();
@@ -68,19 +76,6 @@ public class AuthController {
                                             HttpServletRequest request, HttpServletResponse response) {
         authService.logout(loginInfo.memberId());
 
-        request.getSession().removeAttribute(LOGIN_ATTRIBUTE_NAME);
-
-        Cookie cookie = authService.expireCookie();
-        response.addCookie(cookie);
-
-        return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY)
-                .location(URI.create(HOME))
-                .build();
-    }
-
-    @PostMapping("/api/v1/logout")
-    public ResponseEntity<Void> logout(@LoginUser LoginInfo loginInfo,
-                                       HttpServletRequest request, HttpServletResponse response) {
         request.getSession().removeAttribute(LOGIN_ATTRIBUTE_NAME);
 
         Cookie cookie = authService.expireCookie();
