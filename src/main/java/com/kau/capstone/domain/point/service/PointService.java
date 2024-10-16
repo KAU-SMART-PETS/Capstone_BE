@@ -13,12 +13,16 @@ import com.kau.capstone.domain.point.dto.PayPointRequest;
 import com.kau.capstone.domain.point.entity.Point;
 import com.kau.capstone.domain.point.entity.history.History;
 import com.kau.capstone.domain.point.repository.HistoryRepository;
+import com.kau.capstone.domain.reward.entity.Reward;
+import com.kau.capstone.domain.reward.entity.RewardDetail;
+import com.kau.capstone.domain.reward.repository.RewardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 import static com.kau.capstone.global.exception.ErrorCode.FOOD_NOT_FOUND;
 import static com.kau.capstone.global.exception.ErrorCode.MEMBER_NOT_FOUND;
@@ -35,6 +39,7 @@ public class PointService {
     private final MemberRepository memberRepository;
     private final HistoryRepository historyRepository;
     private final FoodRepository foodRepository;
+    private final RewardRepository rewardRepository;
 
     public void processPointPayment(Long memberId, PayPointRequest request) {
         Member member = memberRepository.findById(memberId)
@@ -96,5 +101,10 @@ public class PointService {
 
         point.payment(totalPrice);
         save(member, point, -totalPrice, food.getName());
+
+        Reward reward = rewardRepository.findRewardByMemberAndType(member, RewardDetail.THREE.type());
+        if (!Objects.isNull(reward) && !reward.getIsAchieved()) {
+            reward.achievedSuccess();
+        }
     }
 }
