@@ -64,4 +64,11 @@ public class VaccinationService {
 
         vaccination.modify(request.name(), request.year(), request.month(), request.day());
     }
+
+    public void deleteVaccinationInfo(Long vaccinationId) {
+        Vaccination vaccination = vaccinationRepository.findById(vaccinationId)
+                .orElseThrow(() -> new VaccinationNotFoundException(VACCINATION_NOT_FOUND));
+
+        vaccinationRepository.delete(vaccination);
+    }
 }

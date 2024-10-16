@@ -158,4 +158,48 @@ class VaccinationControllerTest extends ControllerTest {
             assertThat(res.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
         }
     }
+
+    @Nested
+    class deleteVaccinationInfoForPet_성공_테스트 {
+
+        @Test
+        void 보건정보를_삭제할_수_있다() {
+            // given
+            Member member = Member.builder()
+                    .name("test")
+                    .platformId("1")
+                    .build();
+            memberRepository.save(member);
+
+            Pet pet = Pet.builder()
+                    .name("하늘이")
+                    .age(1)
+                    .build();
+            petRepository.save(pet);
+
+            Vaccination vaccination = Vaccination.builder()
+                    .member(member)
+                    .pet(pet)
+                    .name("광견병")
+                    .timeYear(2024)
+                    .timeMonth(10)
+                    .timeDay(16)
+                    .build();
+            vaccinationRepository.save(vaccination);
+
+            // when
+            String cookie = getCookie("1");
+
+            ExtractableResponse<Response> res = RestAssured.given()
+                    .cookie("JSESSIONID", cookie)
+                    .contentType("application/json")
+                    .when()
+                    .delete("/api/v1/pets/1/vaccination/1")
+                    .then()
+                    .extract();
+
+            // then
+            assertThat(res.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+        }
+    }
 }
