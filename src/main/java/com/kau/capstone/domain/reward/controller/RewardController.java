@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class RewardController {
+public class RewardController implements RewardApi {
 
     private final RewardService rewardService;
     private final PointService pointService;

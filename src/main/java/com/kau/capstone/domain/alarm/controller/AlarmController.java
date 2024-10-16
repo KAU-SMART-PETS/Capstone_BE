@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class AlarmController {
+public class AlarmController implements AlarmApi {
 
     private final AlarmService alarmService;
 

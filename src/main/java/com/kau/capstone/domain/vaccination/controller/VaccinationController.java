@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class VaccinationController {
+public class VaccinationController implements VaccinationApi {
 
     private final VaccinationService vaccinationService;
 
