@@ -2,7 +2,6 @@ package com.kau.capstone.domain.vaccination.controller;
 
 import com.kau.capstone.domain.auth.dto.LoginInfo;
 import com.kau.capstone.domain.auth.util.LoginUser;
-import com.kau.capstone.domain.point.dto.HistoryResponse;
 import com.kau.capstone.domain.vaccination.dto.CreateVaccinationRequest;
 import com.kau.capstone.domain.vaccination.dto.PutVaccinationRequest;
 import com.kau.capstone.domain.vaccination.dto.VaccinationsResponse;

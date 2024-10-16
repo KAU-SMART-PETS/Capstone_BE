@@ -1,6 +1,5 @@
 package com.kau.capstone.domain.bluetooth.controller;
 
-import com.kau.capstone.domain.alarm.dto.AlarmResponse;
 import com.kau.capstone.domain.auth.dto.LoginInfo;
 import com.kau.capstone.domain.auth.util.LoginUser;
 import com.kau.capstone.domain.bluetooth.dto.BluetoothRegistryRequest;
