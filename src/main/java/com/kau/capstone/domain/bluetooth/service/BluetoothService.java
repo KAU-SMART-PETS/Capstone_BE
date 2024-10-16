@@ -9,6 +9,9 @@ import com.kau.capstone.domain.bluetooth.repository.OwnedBluetoothRepository;
 import com.kau.capstone.domain.member.entity.Member;
 import com.kau.capstone.domain.member.exception.MemberNotFoundException;
 import com.kau.capstone.domain.member.repository.MemberRepository;
+import com.kau.capstone.domain.reward.entity.Reward;
+import com.kau.capstone.domain.reward.entity.RewardDetail;
+import com.kau.capstone.domain.reward.repository.RewardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +28,7 @@ public class BluetoothService {
     private final MemberRepository memberRepository;
     private final BluetoothRepository bluetoothRepository;
     private final OwnedBluetoothRepository ownedBluetoothRepository;
+    private final RewardRepository rewardRepository;
 
     public void registryOwnedBluetooth(Long memberId, BluetoothRegistryRequest request) {
         Bluetooth bluetooth = Bluetooth.builder()
@@ -41,6 +45,11 @@ public class BluetoothService {
                 .bluetooth(bluetooth)
                 .build();
         ownedBluetoothRepository.save(ownedBluetooth);
+
+        Reward reward = rewardRepository.findRewardByMemberAndType(member, RewardDetail.TWO.type());
+        if (reward.getIsAchieved()) {
+            reward.achievedSuccess();
+        }
     }
 
     public OwnedBluetoothResponse getOwnedBluetoothInfo(Long memberId) {
