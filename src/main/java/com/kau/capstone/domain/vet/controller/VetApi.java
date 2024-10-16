@@ -24,7 +24,7 @@ public interface VetApi {
             description = "동물병원 세부 정보 조회 성공",
             content = @Content(schema = @Schema(implementation = VetDetailResponse.class))
     )
-    @GetMapping("/api/v1/vets/{vetId}")
+    @PostMapping("/api/v1/vets/{vetId}")
     ResponseEntity<VetDetailResponse> getVetDetailInfo(
             @Parameter(description = "동물병원 ID")
             @PathVariable Long vetId,

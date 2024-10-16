@@ -46,7 +46,7 @@ class VetControllerTest extends ControllerTest {
                     .contentType("application/json")
                     .body(request)
                     .when()
-                    .get("/api/v1/vets/1")
+                    .post("/api/v1/vets/1")
                     .then()
                     .extract();
             VetDetailResponse response = res.jsonPath().getObject("", VetDetailResponse.class);
