@@ -102,7 +102,7 @@ public class PointService {
         save(member, point, -totalPrice, food.getName());
 
         Reward reward = rewardRepository.findRewardByMemberAndType(member, RewardDetail.THREE.type());
-        if (reward.getIsAchieved()) {
+        if (!reward.getIsAchieved()) {
             reward.achievedSuccess();
         }
     }
