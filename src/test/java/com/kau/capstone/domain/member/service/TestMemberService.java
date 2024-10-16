@@ -1,5 +1,6 @@
 package com.kau.capstone.domain.member.service;
 
+import com.kau.capstone.domain.alarm.repository.AlarmRepository;
 import com.kau.capstone.domain.auth.dto.SignUserDto;
 import com.kau.capstone.domain.auth.dto.UserInfoDto;
 import com.kau.capstone.domain.member.repository.MemberRepository;
@@ -19,8 +20,9 @@ public class TestMemberService extends MemberService {
     public TestMemberService(MemberRepository memberRepository,
                              OwnedPetRepository ownedPetRepository,
                              PointRepository pointRepository,
-                             RewardRepository rewardRepository) {
-        super(memberRepository, ownedPetRepository, pointRepository, rewardRepository);
+                             RewardRepository rewardRepository,
+                             AlarmRepository alarmRepository) {
+        super(memberRepository, ownedPetRepository, pointRepository, rewardRepository, alarmRepository);
     }
 
     @Override

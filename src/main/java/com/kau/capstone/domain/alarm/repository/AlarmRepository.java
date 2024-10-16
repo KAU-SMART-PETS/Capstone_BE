@@ -12,4 +12,8 @@ public interface AlarmRepository extends JpaRepository<Alarm, Long> {
 
     @Query("SELECT a FROM Alarm a WHERE a.member = :member AND a.isVisible = true")
     List<Alarm> findAllAlarmByMember(@Param("member") Member member);
+
+    @Query("SELECT a FROM Alarm a WHERE a.member = :member AND a.type = :type")
+    Alarm findAlarmByMemberAndType(@Param("member") Member member,
+                                   @Param("type") Long type);
 }

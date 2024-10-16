@@ -39,4 +39,8 @@ public class Alarm {
 
     @Comment("알람 표기 여부")
     private Boolean isVisible;
+
+    public void doNotVisible() {
+        this.isVisible = false;
+    }
 }

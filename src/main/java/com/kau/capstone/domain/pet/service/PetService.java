@@ -3,6 +3,9 @@ package com.kau.capstone.domain.pet.service;
 import static com.kau.capstone.global.exception.ErrorCode.MEMBER_NOT_FOUND;
 import static com.kau.capstone.global.exception.ErrorCode.PET_INFO_NOT_FOUND;
 
+import com.kau.capstone.domain.alarm.entity.Alarm;
+import com.kau.capstone.domain.alarm.entity.AlarmDetail;
+import com.kau.capstone.domain.alarm.repository.AlarmRepository;
 import com.kau.capstone.domain.auth.dto.LoginInfo;
 import com.kau.capstone.domain.member.entity.Member;
 import com.kau.capstone.domain.member.entity.pet.OwnedPet;
@@ -37,6 +40,7 @@ public class PetService {
     private final MemberRepository memberRepository;
     private final OwnedPetRepository ownedPetRepository;
     private final RewardRepository rewardRepository;
+    private final AlarmRepository alarmRepository;
 
     @Transactional
     public void createPetInfo(LoginInfo loginInfo, PetRegistRequest petRegistRequest)
@@ -46,17 +50,7 @@ public class PetService {
         savedOwnedPet(loginInfo.memberId(), pet);
         uploadImage(petRegistRequest, pet);
         achievedCreatePetReward(loginInfo.memberId());
-    }
-
-    // 반려동물 등록하기 리워드 성공
-    private void achievedCreatePetReward(Long memberId) {
-        Member member = memberRepository.findById(memberId).orElseThrow(
-                () -> new MemberNotFoundException(MEMBER_NOT_FOUND));
-
-        Reward reward = rewardRepository.findRewardByMemberAndType(member, RewardDetail.ONE.type());
-        if (!Objects.isNull(reward) && !reward.getIsAchieved()) {
-            reward.achievedSuccess();
-        }
+        notVisibleCreatePetAlarm(loginInfo.memberId());
     }
 
     @Transactional
@@ -106,6 +100,28 @@ public class PetService {
             String imageUrl = s3Service.upload(petRegistRequest.getImage(), dirName,
                 "profileImage");
             pet.updateImageUrl(imageUrl);
+        }
+    }
+
+    // 반려동물 등록하기 리워드 성공
+    private void achievedCreatePetReward(Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                () -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+
+        Reward reward = rewardRepository.findRewardByMemberAndType(member, RewardDetail.ONE.type());
+        if (!Objects.isNull(reward) && !reward.getIsAchieved()) {
+            reward.achievedSuccess();
+        }
+    }
+
+    // 반려동물 알람 제거
+    private void notVisibleCreatePetAlarm(Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                () -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+
+        Alarm alarm = alarmRepository.findAlarmByMemberAndType(member, AlarmDetail.ONE.type());
+        if (!Objects.isNull(alarm) && alarm.getIsVisible()) {
+            alarm.doNotVisible();
         }
     }
 }
