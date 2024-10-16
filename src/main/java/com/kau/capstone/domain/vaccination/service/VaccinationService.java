@@ -7,8 +7,10 @@ import com.kau.capstone.domain.pet.entity.Pet;
 import com.kau.capstone.domain.pet.exception.PetNotFoundException;
 import com.kau.capstone.domain.pet.repository.PetRepository;
 import com.kau.capstone.domain.vaccination.dto.CreateVaccinationRequest;
+import com.kau.capstone.domain.vaccination.dto.PutVaccinationRequest;
 import com.kau.capstone.domain.vaccination.dto.VaccinationsResponse;
 import com.kau.capstone.domain.vaccination.entity.Vaccination;
+import com.kau.capstone.domain.vaccination.exception.VaccinationNotFoundException;
 import com.kau.capstone.domain.vaccination.repository.VaccinationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ import java.util.List;
 
 import static com.kau.capstone.global.exception.ErrorCode.MEMBER_NOT_FOUND;
 import static com.kau.capstone.global.exception.ErrorCode.PET_INFO_NOT_FOUND;
+import static com.kau.capstone.global.exception.ErrorCode.VACCINATION_NOT_FOUND;
 
 @Service
 @Transactional
@@ -53,5 +56,12 @@ public class VaccinationService {
                 .timeDay(request.day())
                 .build();
         vaccinationRepository.save(vaccination);
+    }
+
+    public void putVaccinationInfo(Long vaccinationId, PutVaccinationRequest request) {
+        Vaccination vaccination = vaccinationRepository.findById(vaccinationId)
+                .orElseThrow(() -> new VaccinationNotFoundException(VACCINATION_NOT_FOUND));
+
+        vaccination.modify(request.name(), request.year(), request.month(), request.day());
     }
 }

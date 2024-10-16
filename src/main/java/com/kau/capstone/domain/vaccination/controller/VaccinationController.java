@@ -3,6 +3,7 @@ package com.kau.capstone.domain.vaccination.controller;
 import com.kau.capstone.domain.auth.dto.LoginInfo;
 import com.kau.capstone.domain.auth.util.LoginUser;
 import com.kau.capstone.domain.vaccination.dto.CreateVaccinationRequest;
+import com.kau.capstone.domain.vaccination.dto.PutVaccinationRequest;
 import com.kau.capstone.domain.vaccination.dto.VaccinationsResponse;
 import com.kau.capstone.domain.vaccination.service.VaccinationService;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,5 +36,15 @@ public class VaccinationController {
         VaccinationsResponse response = vaccinationService.getVaccinationInfo(petId);
 
         return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/api/v1/pets/{petId}/vaccination/{vaccinationId}")
+    public ResponseEntity<Void> putVaccinationInfoForPet(@LoginUser LoginInfo loginInfo,
+                                                         @PathVariable Long petId,
+                                                         @PathVariable Long vaccinationId,
+                                                         @RequestBody PutVaccinationRequest request) {
+        vaccinationService.putVaccinationInfo(vaccinationId, request);
+
+        return ResponseEntity.noContent().build();
     }
 }

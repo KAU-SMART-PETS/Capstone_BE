@@ -48,4 +48,11 @@ public class Vaccination {
 
     @Comment("일")
     private Integer timeDay;
+
+    public void modify(String name, Integer year, Integer month, Integer day) {
+        this.name = name;
+        this.timeYear = year;
+        this.timeMonth = month;
+        this.timeDay = day;
+    }
 }
