@@ -26,7 +26,7 @@ public class RewardController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/api/v1/rewards/{rewardId}/points/payment")
+    @PostMapping("/api/v1/rewards/{rewardId}/points/deposit")
     public ResponseEntity<Void> earnRewardWithPoints(@LoginUser LoginInfo loginInfo,
                                                      @PathVariable Long rewardId) {
         pointService.processPointEarnForReward(loginInfo.memberId(), rewardId);
