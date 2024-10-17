@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -63,6 +62,18 @@ public class AuthController implements AuthApi {
     public ResponseEntity<Void> oauthLoginCode(@PathVariable String site,
                                                @RequestParam("code") String code,
                                                HttpServletRequest request) {
+        SignUserDto signUserDto = authService.loginAuthorizeUser(site, code);
+        request.getSession().setAttribute(LOGIN_ATTRIBUTE_NAME, signUserDto.memberId());
+
+        return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY)
+                .location(URI.create(HOME))
+                .build();
+    }
+
+    @GetMapping("/api/v1/oauth2/{site}/code")
+    public ResponseEntity<Void> oauthLoginCode2(@PathVariable String site,
+                                                @RequestParam("code") String code,
+                                                HttpServletRequest request) {
         SignUserDto signUserDto = authService.loginAuthorizeUser(site, code);
         request.getSession().setAttribute(LOGIN_ATTRIBUTE_NAME, signUserDto.memberId());
 
