@@ -203,8 +203,8 @@ class PointControllerTest extends ControllerTest {
             // then
             assertSoftly(soft -> {
                 assertThat(response.history().size()).isEqualTo(2);
-                assertThat(request2.point()).isEqualTo(response.history().get(0).changePoint());
-                assertThat(request1.point()).isEqualTo(-response.history().get(1).changePoint());
+                assertThat(request2.point()).isEqualTo(-response.history().get(0).changePoint());
+                assertThat(request1.point()).isEqualTo(response.history().get(1).changePoint());
             });
         }
 
