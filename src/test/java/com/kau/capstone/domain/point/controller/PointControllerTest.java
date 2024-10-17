@@ -152,7 +152,7 @@ class PointControllerTest extends ControllerTest {
     class getPointHistory_성공_테스트 {
 
         @Test
-        void 사용자는_자신의_포인트_내역을_볼_수_있다() {
+        void 사용자는_자신의_포인트_내역을_최신순으로_볼_수_있다() {
             // given - 초기 데이터 추가
             Point point = Point.builder()
                     .amount(5000L)
@@ -203,8 +203,8 @@ class PointControllerTest extends ControllerTest {
             // then
             assertSoftly(soft -> {
                 assertThat(response.history().size()).isEqualTo(2);
-                assertThat(request1.point()).isEqualTo(response.history().get(0).changePoint());
-                assertThat(request2.point()).isEqualTo(-response.history().get(1).changePoint());
+                assertThat(request2.point()).isEqualTo(response.history().get(0).changePoint());
+                assertThat(request1.point()).isEqualTo(-response.history().get(1).changePoint());
             });
         }
 
