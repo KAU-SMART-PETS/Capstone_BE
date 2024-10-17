@@ -25,7 +25,7 @@ public class PetRegistRequest {
     @NotNull
     private Integer gender;
 
-    private float weight;
+    private Double weight;
 
     @NotNull
     private Integer age;
