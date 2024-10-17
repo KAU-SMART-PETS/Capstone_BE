@@ -4,6 +4,7 @@ import com.kau.capstone.domain.auth.exception.AuthException;
 
 import java.util.Arrays;
 
+import static com.kau.capstone.global.exception.ErrorCode.SOCIAL_SITE_NOT_FOUND;
 import static com.kau.capstone.global.exception.ErrorCode.SOCIAL_SITE_NOT_SUPPORTED;
 
 public enum SocialSite {
@@ -23,6 +24,6 @@ public enum SocialSite {
         return Arrays.stream(SocialSite.values())
                 .filter(socialSite -> socialSite.site.toLowerCase().equals(site))
                 .findAny()
-                .orElseThrow(() -> new AuthException(SOCIAL_SITE_NOT_SUPPORTED));
+                .orElseThrow(() -> new AuthException(SOCIAL_SITE_NOT_FOUND));
     }
 }
