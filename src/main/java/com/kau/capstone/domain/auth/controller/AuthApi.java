@@ -69,6 +69,21 @@ public interface AuthApi {
             HttpServletRequest request
     );
 
+    @Operation(summary = "[사용X] 소셜 로그인", description = "테스트용으로 열어둔 소셜 로그인을 하는 곳입니다")
+    @ApiResponse(
+            responseCode = "301",
+            description = "소셜 로그인 성공"
+    )
+    @GetMapping("/api/v1/oauth2/{site}/code")
+    ResponseEntity<Void> oauthLoginCode2(
+            @Parameter(description = "소셜 로그인 사이트 (ex. naver, kakao")
+            @PathVariable String site,
+            @Parameter(description = "소셜 로그인시 사용하는 코드 (소셜 로그인 문서, 노션 infos 문서 참조)")
+            @RequestParam("code") String code,
+            @Parameter(description = "[전송X] 백엔드에서 자동으로 얻는 값입니다.")
+            HttpServletRequest request
+    );
+
     @Operation(summary = "소셜 로그인 로그아웃", description = "로그아웃 기능입니다.")
     @ApiResponse(
             responseCode = "301",
