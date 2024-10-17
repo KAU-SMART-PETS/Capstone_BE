@@ -12,6 +12,7 @@ public enum ErrorCode {
     INVALID_GENDER(HttpStatus.BAD_REQUEST, "유효하지 않은 성별입니다."),
     LOGIN_MEMBER_NOT_FOUND(HttpStatus.UNAUTHORIZED, "로그인 되지 않았거나, 존재하지 않는 유저로 로그인중입니다."),
     SOCIAL_SITE_NOT_SUPPORTED(HttpStatus.NOT_FOUND, "지원하지 않는 소셜 로그인 사이트입니다."),
+    SOCIAL_SITE_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 소셜 로그인 사이트입니다."),
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 회원입니다."),
     PET_INFO_NOT_FOUND(HttpStatus.NOT_FOUND, "반려동물 정보를 찾을 수 없습니다."),
     VET_NOT_FOUND(HttpStatus.NOT_FOUND, "동물병원 정보를 찾을 수 없습니다."),
