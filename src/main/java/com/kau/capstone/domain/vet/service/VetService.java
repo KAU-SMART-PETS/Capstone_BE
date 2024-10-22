@@ -21,7 +21,7 @@ public class VetService {
 
     private final VetRepository vetRepository;
 
-    public VetDetailResponse getVetInfo(Long vetId, MemberLocationRequest request) {
+    public VetDetailResponse getVetDetailInfo(Long vetId, MemberLocationRequest request) {
         Vet vet = vetRepository.findById(vetId)
                 .orElseThrow(() -> new VetNotFoundException(VET_NOT_FOUND));
         Double vetToMemberDistance = vet.calculateDistanceToMember(request.latitude(), request.longitude());

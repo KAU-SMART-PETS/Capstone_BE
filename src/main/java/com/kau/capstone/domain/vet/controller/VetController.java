@@ -6,7 +6,6 @@ import com.kau.capstone.domain.vet.dto.VetsResponse;
 import com.kau.capstone.domain.vet.service.VetService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +20,7 @@ public class VetController implements VetApi {
     @PostMapping(path = "/api/v1/vets/{vetId}")
     public ResponseEntity<VetDetailResponse> getVetDetailInfo(@PathVariable Long vetId,
                                                               @RequestBody MemberLocationRequest memberLocationRequest) {
-        VetDetailResponse response = vetService.getVetInfo(vetId, memberLocationRequest);
+        VetDetailResponse response = vetService.getVetDetailInfo(vetId, memberLocationRequest);
 
         return ResponseEntity.ok(response);
     }
