@@ -9,7 +9,9 @@ public record VetDetailResponse(
         String name,
         String address,
         String telephone,
-        Double vetToMemberDistance
+        Double vetToMemberDistance,
+        Double latitude,
+        Double longitude
 ) {
 
     public static VetDetailResponse toResponse(Vet vet, Double vetToMemberDistance) {
@@ -19,6 +21,8 @@ public record VetDetailResponse(
                 .address(vet.getAddress())
                 .telephone(vet.getTelephone())
                 .vetToMemberDistance(vetToMemberDistance)
+                .latitude(vet.getLatitude())
+                .longitude(vet.getLongitude())
                 .build();
     }
 }
