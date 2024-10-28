@@ -19,15 +19,12 @@ public class PetRegistRequest {
     @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-z0-9-_]{1,10}$", message = "이름은 특수문자를 제외한 1~10자리여야 합니다.")
     private String name;
 
-    @NotNull
     private Integer petType;
 
-    @NotNull
     private Integer gender;
 
     private Double weight;
 
-    @NotNull
     private Integer age;
 
     private MultipartFile image;
