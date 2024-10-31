@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.kau.capstone.global.exception.ErrorCode.MEMBER_NOT_FOUND;
 import static com.kau.capstone.global.exception.ErrorCode.POINT_NOT_ENOUGH;
@@ -49,9 +50,12 @@ public class MemberService {
     public SignUserDto findOrCreateMember(String site, UserInfoDto userInfoDto) {
         String platformId = String.valueOf(userInfoDto.id());
 
-        return memberRepository.findByPlatformId(platformId)
-                .map(member -> SignUserDto.of(FALSE, member.getId()))
-                .orElseGet(() -> save(site, userInfoDto));
+        Optional<Member> member = memberRepository.findByPlatformId(platformId);
+        if (member.isPresent()) {
+            member.get().updateToken(userInfoDto.refreshToken());
+            return SignUserDto.of(FALSE, member.get().getId());
+        }
+        return save(site, userInfoDto);
     }
 
     private SignUserDto save(String site, UserInfoDto userInfoDto) {
