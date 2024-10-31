@@ -101,4 +101,8 @@ public class Member extends BaseEntity {
     public void connectPoint(Point point) {
         this.point = point;
     }
+
+    public void updateToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
 }
