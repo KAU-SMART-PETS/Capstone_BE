@@ -65,9 +65,7 @@ public class AuthController implements AuthApi {
         SignUserDto signUserDto = authService.loginAuthorizeUser(site, code);
         request.getSession().setAttribute(LOGIN_ATTRIBUTE_NAME, signUserDto.memberId());
 
-        return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY)
-                .location(URI.create(HOME))
-                .build();
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/api/v1/oauth2/{site}/code")
@@ -77,9 +75,7 @@ public class AuthController implements AuthApi {
         SignUserDto signUserDto = authService.loginAuthorizeUser(site, code);
         request.getSession().setAttribute(LOGIN_ATTRIBUTE_NAME, signUserDto.memberId());
 
-        return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY)
-                .location(URI.create(HOME))
-                .build();
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/api/v1/oauth2/logout")
@@ -92,8 +88,6 @@ public class AuthController implements AuthApi {
         Cookie cookie = authService.expireCookie();
         response.addCookie(cookie);
 
-        return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY)
-                .location(URI.create(HOME))
-                .build();
+        return ResponseEntity.ok().build();
     }
 }

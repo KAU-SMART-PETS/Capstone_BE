@@ -56,7 +56,7 @@ public interface AuthApi {
 
     @Operation(summary = "소셜 로그인", description = "소셜 로그인을 하는 곳입니다 (각 소셜 로그인 문서 참조)")
     @ApiResponse(
-            responseCode = "301",
+            responseCode = "200",
             description = "소셜 로그인 성공"
     )
     @PostMapping("/api/v1/oauth2/{site}/code")
@@ -71,7 +71,7 @@ public interface AuthApi {
 
     @Operation(summary = "[사용X] 소셜 로그인", description = "테스트용으로 열어둔 소셜 로그인을 하는 곳입니다")
     @ApiResponse(
-            responseCode = "301",
+            responseCode = "200",
             description = "소셜 로그인 성공"
     )
     @GetMapping("/api/v1/oauth2/{site}/code")
@@ -86,7 +86,7 @@ public interface AuthApi {
 
     @Operation(summary = "소셜 로그인 로그아웃", description = "로그아웃 기능입니다.")
     @ApiResponse(
-            responseCode = "301",
+            responseCode = "200",
             description = "로그아웃 성공"
     )
     @PostMapping("/api/v1/oauth2/logout")
