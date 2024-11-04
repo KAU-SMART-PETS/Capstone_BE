@@ -121,6 +121,6 @@ public class MemberService {
             }
         }
 
-        return OwnedPetsResponse.toResponse(ownedPets);
+        return OwnedPetsResponse.toResponse(pets);
     }
 }
