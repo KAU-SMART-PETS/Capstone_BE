@@ -65,7 +65,11 @@ public class PetService {
     public void deletePetInfo(Long petId) {
         Pet pet = findByPetId(petId);
         pet.deletePet();
-        s3Service.delete(pet);
+
+        if (!Objects.isNull(pet.getImageUrl())) {
+            s3Service.delete(pet);
+        }
+
         petRepository.save(pet);
     }
 
@@ -106,7 +110,7 @@ public class PetService {
     // 반려동물 등록하기 리워드 성공
     private void achievedCreatePetReward(Long memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(
-                () -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+            () -> new MemberNotFoundException(MEMBER_NOT_FOUND));
 
         Reward reward = rewardRepository.findRewardByMemberAndType(member, RewardDetail.ONE.type());
         if (!Objects.isNull(reward) && !reward.getIsAchieved()) {
@@ -117,7 +121,7 @@ public class PetService {
     // 반려동물 알람 제거
     private void notVisibleCreatePetAlarm(Long memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(
-                () -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+            () -> new MemberNotFoundException(MEMBER_NOT_FOUND));
 
         Alarm alarm = alarmRepository.findAlarmByMemberAndType(member, AlarmDetail.ONE.type());
         if (!Objects.isNull(alarm) && alarm.getIsVisible()) {
