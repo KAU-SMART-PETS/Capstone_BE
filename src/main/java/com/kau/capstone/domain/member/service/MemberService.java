@@ -22,6 +22,8 @@ import com.kau.capstone.domain.point.repository.PointRepository;
 import com.kau.capstone.domain.reward.entity.Reward;
 import com.kau.capstone.domain.reward.entity.RewardDetail;
 import com.kau.capstone.domain.reward.repository.RewardRepository;
+import java.util.ArrayList;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -111,6 +113,13 @@ public class MemberService {
                 .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
 
         List<Pet> ownedPets = ownedPetRepository.findPetsByMember(member);
+
+        List<Pet> pets = new ArrayList<>();
+        for (Pet pet : ownedPets) {
+            if (Objects.isNull(pet.getDeletedAt())) {
+                pets.add(pet);
+            }
+        }
 
         return OwnedPetsResponse.toResponse(ownedPets);
     }
