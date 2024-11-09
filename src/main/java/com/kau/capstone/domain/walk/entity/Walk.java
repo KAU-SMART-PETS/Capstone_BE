@@ -3,7 +3,6 @@ package com.kau.capstone.domain.walk.entity;
 import com.kau.capstone.domain.member.entity.Member;
 import com.kau.capstone.domain.pet.entity.Pet;
 import com.kau.capstone.global.common.BaseEntity;
-import jakarta.annotation.PostConstruct;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -14,10 +13,12 @@ import jakarta.persistence.ManyToOne;
 import lombok.*;
 import org.hibernate.annotations.Comment;
 
-import java.time.LocalDateTime;
+import java.util.Date;
+
 
 @Entity
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -40,8 +41,9 @@ public class Walk extends BaseEntity {
     private Pet pet;
 
     @Comment("측정 일자")
-    private String dataIntDt;
+    private Date dataIntDt;
 
+    @Comment("이동 거리")
     private Double distance;
 
     @Comment("소모 칼로리")
@@ -67,7 +69,7 @@ public class Walk extends BaseEntity {
         return barkPoint * UNIT_KCAL_PER_STEP;
     }
 
-    public static Walk create(Member member, Pet pet, String dataIntDt, Double distance, Long step, String walkingTime, Double tLux, Double avgK, Double avgLux, String startTime, String endTime) {
+    public static Walk create(Member member, Pet pet, Date dataIntDt, Double distance, Long step, String walkingTime, Double tLux, Double avgK, Double avgLux, String startTime, String endTime) {
         Double kcal = step * UNIT_KCAL_PER_STEP;
         return Walk.builder()
                 .member(member)
