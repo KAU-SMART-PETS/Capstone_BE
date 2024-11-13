@@ -12,6 +12,11 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
 
+server:
+  servlet:
+    session:
+      timeout: 999d
+
 kakao:
   rest-api-key: ${PROD_KAKAO_REST_API_KEY}
   redirect-uri: ${PROD_KAKAO_REDIRECT_URI}
