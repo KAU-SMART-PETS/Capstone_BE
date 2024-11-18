@@ -191,7 +191,7 @@ public class WalkService {
         // 기준값 설정 (고정값 또는 동적으로 설정 가능)
         final double MAX_DISTANCE = 35000.0;  // 주간 최대 산책 거리 (35km)
         final long MAX_STEPS = 70000;         // 주간 최대 걸음 수 (10,000보 × 7일)
-        final long MAX_WALKING_TIME = 25200;  // 주간 최대 산책 시간 (3600초 × 7일)
+        final long MAX_WALKING_TIME = 50400;  // 주간 최대 산책 시간 (7200초 × 7일)
         final double MAX_LUX = 70000.0;       // 주간 최대 누적 조도량
         final double MAX_UV = 56000.0;        // 주간 최대 평균 색온도
         final double MAX_VITAMIN = 35000.0;   // 주간 최대 평균 조도량
