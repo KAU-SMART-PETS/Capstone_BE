@@ -11,14 +11,14 @@ import java.time.format.DateTimeFormatter;
 public class WalkResponse {
     private String startDate;
     private String endDate;
-    private String walkingTime;
+    private Long walkingTime;
     private Double distance;
     private Double calories;
     private Long step;
 
     public WalkResponse(LocalDateTime startDate,
                         LocalDateTime endDate,
-                        String walkingTime,
+                        Long walkingTime,
                         Double distance,
                         Double calories,
                         Long step) {

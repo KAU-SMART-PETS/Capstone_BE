@@ -10,6 +10,6 @@ import java.util.Date;
 public class WalkRecentDataResponse {
     private String petName;
     private String walkDate;
-    private String walkTime;
+    private Long walkTime;
     private Double distance;
 }
