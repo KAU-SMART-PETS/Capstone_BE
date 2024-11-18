@@ -17,5 +17,8 @@ public interface WalkRepository extends JpaRepository<Walk,Long> {
 
     @Query("SELECT w FROM Walk w WHERE w.pet = :pet AND YEAR(w.dataIntDt) = :year AND MONTH(w.dataIntDt) = :month")
     List<Walk> findByPetAndYearAndMonth(@Param("pet") Pet pet, @Param("year") int year, @Param("month") int month);
+
+    @Query("SELECT w FROM Walk w WHERE w.pet = :pet AND w.dataIntDt BETWEEN :startDate AND :endDate")
+    List<Walk> findByPetAndDateBetween(@Param("pet") Pet pet, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 }
 

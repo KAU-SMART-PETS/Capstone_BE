@@ -1,10 +1,7 @@
 package com.kau.capstone.domain.walk.controller;
 
 import com.kau.capstone.domain.walk.dto.request.WalkRequest;
-import com.kau.capstone.domain.walk.dto.response.WalkDailySummaryResponse;
-import com.kau.capstone.domain.walk.dto.response.WalkMonthlyResponse;
-import com.kau.capstone.domain.walk.dto.response.WalkRecentDataListResponse;
-import com.kau.capstone.domain.walk.dto.response.WalkResponse;
+import com.kau.capstone.domain.walk.dto.response.*;
 import com.kau.capstone.domain.walk.service.WalkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -39,8 +36,8 @@ public class WalkController {
     // 일간 산책 기록 가져오기
     @GetMapping("/daily/{platformId}/{petName}")
     public ResponseEntity<WalkDailySummaryResponse> dailyWalk(@PathVariable String platformId,
-                                                                 @PathVariable String petName,
-                                                                 @RequestParam LocalDate date) {
+                                                              @PathVariable String petName,
+                                                              @RequestParam LocalDate date) {
 
         WalkDailySummaryResponse response = walkService.getDailySummary(platformId, petName, date);
         return ResponseEntity.ok(response);
@@ -51,7 +48,7 @@ public class WalkController {
     public ResponseEntity<WalkMonthlyResponse> monthlyWalk(@PathVariable String platformId,
                                                            @PathVariable String petName,
                                                            @RequestParam int year,
-                                                           @RequestParam int month){
+                                                           @RequestParam int month) {
 
         WalkMonthlyResponse response = walkService.getMonthlyWalkData(platformId, petName, year, month);
         return ResponseEntity.ok(response);
@@ -59,5 +56,12 @@ public class WalkController {
     }
 
     // 일주일 통계 데이터
+    @GetMapping("/week/{platformId}/{petName}")
+    public ResponseEntity<WalkWeeklySummaryResponse> weeklyWalk(@PathVariable String platformId,
+                                                                @PathVariable String petName,
+                                                                @RequestParam LocalDate date) {
+        WalkWeeklySummaryResponse response = walkService.getWeeklySummary(platformId, petName, date);
+        return ResponseEntity.ok(response);
+    }
 
 }
