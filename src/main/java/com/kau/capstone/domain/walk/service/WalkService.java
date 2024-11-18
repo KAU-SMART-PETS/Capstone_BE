@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -84,22 +85,18 @@ public class WalkService {
         List<Pet> pets = ownedPetRepository.findPetsByMember(member);
 
         // 날짜 포맷 설정
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 
         // 각 반려동물의 가장 최근 산책 기록을 가져옴
         List<WalkRecentDataResponse> recentWalks = pets.stream()
-                .map(pet -> {
-                    Walk walk = walkRepository.findTopByPetOrderByDataIntDtDesc(pet)
-                            .orElse(null);
-
-                    // 산책 기록이 있을 경우에만 데이터를 반환
-                    return walk != null ? new WalkRecentDataResponse(
-                            pet.getName(),  // 반려동물 이름
-                            dateFormat.format(walk.getDataIntDt()), // 측정 일자
-                            walk.getWalkingTime(),  // 산책 시간
-                            walk.getDistance()  // 산책 거리
-                    ) : null;
-                })
+                .map(pet -> walkRepository.findTopByPetOrderByDataIntDtDesc(pet)
+                        .map(walk -> new WalkRecentDataResponse(
+                                pet.getName(),  // 반려동물 이름
+                                walk.getDataIntDt().format(dateFormat), // 측정 일자
+                                walk.getWalkingTime(),  // 산책 시간
+                                walk.getDistance()  // 산책 거리
+                        ))
+                        .orElse(null)) // Walk가 없으면 null 반환
                 .filter(Objects::nonNull)  // null 값을 필터링
                 .collect(Collectors.toList());
 
