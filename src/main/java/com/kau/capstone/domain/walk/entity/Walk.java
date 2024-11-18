@@ -13,6 +13,7 @@ import jakarta.persistence.ManyToOne;
 import lombok.*;
 import org.hibernate.annotations.Comment;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 
@@ -61,16 +62,16 @@ public class Walk extends BaseEntity {
 
     private Double avgLux;
 
-    private String startTime;
+    private LocalDateTime startTime;
 
-    private String endTime;
+    private LocalDateTime endTime;
 
-    private Double calculateKcal(Long barkPoint) {
-        return barkPoint * UNIT_KCAL_PER_STEP;
+    private static Double calculateKcal(Long step) {
+        return step * UNIT_KCAL_PER_STEP;
     }
 
-    public static Walk create(Member member, Pet pet, Date dataIntDt, Double distance, Long step, String walkingTime, Double tLux, Double avgK, Double avgLux, String startTime, String endTime) {
-        Double kcal = step * UNIT_KCAL_PER_STEP;
+    public static Walk create(Member member, Pet pet, Date dataIntDt, Double distance, Long step, String walkingTime, Double tLux, Double avgK, Double avgLux, LocalDateTime startTime, LocalDateTime endTime) {
+        Double kcal = calculateKcal(step);
         return Walk.builder()
                 .member(member)
                 .pet(pet)

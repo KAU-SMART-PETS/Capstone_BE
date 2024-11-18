@@ -4,9 +4,13 @@ import com.kau.capstone.domain.pet.entity.Pet;
 import com.kau.capstone.domain.walk.entity.Walk;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 public interface WalkRepository extends JpaRepository<Walk,Long> {
     Optional<Walk> findTopByPetOrderByDataIntDtDesc(Pet pet);
+
+    List<Walk> findByPetAndDataIntDt(Pet pet, Date dataIntDt);
 }
 
