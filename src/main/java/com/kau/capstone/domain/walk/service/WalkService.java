@@ -13,7 +13,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -36,15 +35,15 @@ public class WalkService {
         Member member = memberRepository.findByPlatformId(platformId)
                 .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다"));
 
-        // 반려 동물 객체 조회
-        Pet pet = petRepository.findByName(petName)
-                .orElseThrow(() -> new IllegalArgumentException("반려동물을 찾을 수 없습니다"));
+        // 반려동물 객체 조회
+        Pet pet = ownedPetRepository.findPetByMemberAndPetName(member, petName)
+                .orElseThrow(() -> new IllegalArgumentException("해당 반려동물은 유저의 반려동물이 아닙니다"));
 
-        // 유저의 소유 반려동물인지 체크 -> 없어도 상관 없을 것 같긴하지만?
-        List<Pet> pets = ownedPetRepository.findPetsByMember(member);
-        if (!pets.contains(pet)) {
-            throw new IllegalArgumentException("해당 반려동물은 유저의 반려동물이 아닙니다");
-        }
+//        // 유저의 소유 반려동물인지 체크 -> 없어도 상관 없을 것 같긴하지만?
+//        List<Pet> pets = ownedPetRepository.findPetsByMember(member);
+//        if (!pets.contains(pet)) {
+//            throw new IllegalArgumentException("해당 반려동물은 유저의 반려동물이 아닙니다");
+//        }
 
         // 엔티티 생성
         Walk walk = Walk.create(
@@ -104,9 +103,14 @@ public class WalkService {
     }
 
     public WalkDailySummaryResponse getDailySummary(String platformId, String petName, LocalDate date) {
-        // 반려동물 조회
-        Pet pet = petRepository.findByName(petName)
-                .orElseThrow(() -> new IllegalArgumentException("반려동물을 찾을 수 없습니다"));
+
+        // 유저 객체 조회
+        Member member = memberRepository.findByPlatformId(platformId)
+                .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다"));
+
+        // 반려동물 객체 조회
+        Pet pet = ownedPetRepository.findPetByMemberAndPetName(member, petName)
+                .orElseThrow(() -> new IllegalArgumentException("해당 반려동물은 유저의 반려동물이 아닙니다"));
 
         // 해당 날짜의 산책 데이터 조회
         List<Walk> dailyWalks = walkRepository.findByPetAndDataIntDt(pet, date);
@@ -147,9 +151,13 @@ public class WalkService {
     }
 
     public WalkMonthlyResponse getMonthlyWalkData(String platformId, String petName, int year, int month) {
-        // 반려동물 조회
-        Pet pet = petRepository.findByName(petName)
-                .orElseThrow(() -> new IllegalArgumentException("반려동물을 찾을 수 없습니다"));
+        // 유저 객체 조회
+        Member member = memberRepository.findByPlatformId(platformId)
+                .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다"));
+
+        // 반려동물 객체 조회
+        Pet pet = ownedPetRepository.findPetByMemberAndPetName(member, petName)
+                .orElseThrow(() -> new IllegalArgumentException("해당 반려동물은 유저의 반려동물이 아닙니다"));
 
         // 해당 년/월에 해당하는 산책 기록 조회
         List<Walk> monthlyWalks = walkRepository.findByPetAndYearAndMonth(pet, year, month);
@@ -166,9 +174,13 @@ public class WalkService {
     }
 
     public WalkWeeklySummaryResponse getWeeklySummary(String platformId, String petName, LocalDate date) {
-        // 반려동물 조회
-        Pet pet = petRepository.findByName(petName)
-                .orElseThrow(() -> new IllegalArgumentException("반려동물을 찾을 수 없습니다"));
+        // 유저 객체 조회
+        Member member = memberRepository.findByPlatformId(platformId)
+                .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다"));
+
+        // 반려동물 객체 조회
+        Pet pet = ownedPetRepository.findPetByMemberAndPetName(member, petName)
+                .orElseThrow(() -> new IllegalArgumentException("해당 반려동물은 유저의 반려동물이 아닙니다"));
 
         // 주간 날짜 범위 계산 (월요일 ~ 일요일)
         LocalDate startOfWeek = date.with(java.time.DayOfWeek.MONDAY);

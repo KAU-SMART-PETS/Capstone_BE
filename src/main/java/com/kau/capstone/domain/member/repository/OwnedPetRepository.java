@@ -8,9 +8,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface OwnedPetRepository extends JpaRepository<OwnedPet, Long> {
 
     @Query("SELECT o.pet FROM OwnedPet o WHERE o.member = :member")
     List<Pet> findPetsByMember(@Param("member") Member member);
-}
+
+
+    @Query("SELECT op.pet FROM OwnedPet op WHERE op.member = :member AND op.pet.name = :petName")
+    Optional<Pet> findPetByMemberAndPetName(@Param("member") Member member, @Param("petName") String petName);}
