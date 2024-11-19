@@ -1,15 +1,14 @@
 package com.kau.capstone.domain.pet.entity;
 
 import com.kau.capstone.domain.pet.dto.request.PetRegistRequest;
+import com.kau.capstone.domain.walk.entity.Walk;
 import com.kau.capstone.global.common.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -48,8 +47,12 @@ public class Pet extends BaseEntity {
     @Comment("반려동물 이미지")
     private String imageUrl;
 
+    @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Walk> walks = new ArrayList<>();
+
     @Builder
     public Pet(String name, PetType petType, Gender gender, double weight, Integer age) {
+
         this.name = name;
         this.petType = petType;
         this.gender = gender;
@@ -71,6 +74,16 @@ public class Pet extends BaseEntity {
 
     public void updateImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public void addWalk(Walk walk) {
+        walks.add(walk);
+        walk.setPet(this);
+    }
+
+    public void removeWalk(Walk walk) {
+        walks.remove(walk);
+        walk.setPet(null);
     }
 }
 
