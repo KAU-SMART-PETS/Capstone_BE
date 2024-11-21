@@ -34,6 +34,17 @@ public class AIController {
         return ResponseEntity.ok(aiResponse);
     }
 
+    //반려동물 비문 등록
+    @PostMapping("/nose/regist")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<?> registPetNose(
+        @RequestPart("animalImage") MultipartFile image,
+        @RequestParam("petId") Long petId
+    ) {
+        String response = aiService.registPetNose(image, petId);
+        return ResponseEntity.ok(response);
+    }
+
 
 }
 
