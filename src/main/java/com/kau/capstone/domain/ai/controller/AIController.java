@@ -16,13 +16,13 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/ai")
+@RequestMapping("/api/v1")
 public class AIController {
 
     private final AIService aiService;
 
     // 강아지, 고양이 질병 분류
-    @PostMapping("eye")
+    @PostMapping("/eye")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Object> analyzePetImage(@RequestPart("AnimalImage") MultipartFile image,
                                                   @RequestParam("PetType") String petType) {
@@ -31,8 +31,7 @@ public class AIController {
 
         return ResponseEntity.ok(aiResponse);
     }
+
+
 }
-
-    // 비문 처리(Ai 팀 개발 완료 시 시작 예정)
-
 
