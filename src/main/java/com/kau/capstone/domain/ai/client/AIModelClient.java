@@ -24,7 +24,7 @@ public class AIModelClient {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    public Map<String, Object> analyzeImage(String imageUrl, String petType, String format) {
+    public Map<String, Object> analyzeImage(String imageUrl, String petType) {
         String aiModelUrl = "http://43.201.197.176:5000/eye";
 
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(aiModelUrl)
@@ -57,7 +57,7 @@ public class AIModelClient {
             throw new RuntimeException(
                 "AI 모델 서버에서 오류 발생: 503 SERVICE_UNAVAILABLE - " + e.getMessage());
         } catch (RestClientException e) {
-            log.error(format, e.getMessage());
+            log.error("AI 모델 서버와 통신 중 오류 발생: {}", e.getMessage());
             // 상태 코드 500 (Internal Server Error)로 설정
             throw new RuntimeException(
                 "AI 모델 서버에서 오류 발생: 500 INTERNAL_SERVER_ERROR - " + e.getMessage());
