@@ -1,15 +1,14 @@
 package com.kau.capstone.domain.ai.service;
 
 
-
 import com.kau.capstone.domain.ai.AIImage;
 import com.kau.capstone.domain.ai.client.AIModelClient;
 import com.kau.capstone.domain.ai.infra.S3StorageService;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import java.util.Map;
 
 @Slf4j
 @Service
@@ -31,5 +30,17 @@ public class AIService {
         s3StorageService.deleteImage(savedImage.getUrl());
 
         return aiResponse;
+    }
+
+    public String registPetNose(MultipartFile image, Long petId) {
+        // S3에 이미지 저장
+        AIImage savedImage = s3StorageService.uploadImage(image);
+
+        String response = aiModelClient.registNoseImage(savedImage.getUrl(), petId);
+
+        // S3에서 이미지 삭제
+        s3StorageService.deleteImage(savedImage.getUrl());
+
+        return response;
     }
 }
