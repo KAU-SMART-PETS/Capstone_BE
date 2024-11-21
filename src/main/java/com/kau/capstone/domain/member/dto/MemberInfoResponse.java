@@ -6,7 +6,6 @@ import lombok.Builder;
 @Builder
 public record MemberInfoResponse (
         String name,
-        String platformId,
         String email,
         String phoneNumber,
         Long point,
@@ -18,7 +17,6 @@ public record MemberInfoResponse (
     public static MemberInfoResponse toResponse(Member member) {
         return MemberInfoResponse.builder()
                 .name(member.getName())
-                .platformId(member.getPlatformId())
                 .email(member.getEmail())
                 .phoneNumber(member.getPhoneNumber())
                 .point(member.getPoint().getAmount())
