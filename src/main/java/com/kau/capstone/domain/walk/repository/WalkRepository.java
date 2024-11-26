@@ -2,6 +2,7 @@ package com.kau.capstone.domain.walk.repository;
 
 import com.kau.capstone.domain.pet.entity.Pet;
 import com.kau.capstone.domain.walk.entity.Walk;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,5 +21,8 @@ public interface WalkRepository extends JpaRepository<Walk,Long> {
 
     @Query("SELECT w FROM Walk w WHERE w.pet = :pet AND w.dataIntDt BETWEEN :startDate AND :endDate")
     List<Walk> findByPetAndDateBetween(@Param("pet") Pet pet, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+
+    @Query("SELECT w FROM Walk w WHERE w.pet = :pet ORDER BY w.dataIntDt DESC")
+    List<Walk> findTop5ByPetOrderByDataIntDtDesc(@Param("pet") Pet pet, Pageable pageable);
 }
 

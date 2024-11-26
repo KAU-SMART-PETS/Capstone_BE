@@ -29,7 +29,7 @@ public class WalkController {
     }
 
     // 최근 산책 기록 가져오기
-    @GetMapping("/recent/")
+    @GetMapping("/recent")
     public ResponseEntity<WalkRecentDataListResponse> latestWalk(@LoginUser LoginInfo loginUser) {
         WalkRecentDataListResponse response = walkService.getWalkRecentData(loginUser.memberId());
         return ResponseEntity.ok(response);
@@ -58,7 +58,7 @@ public class WalkController {
     }
 
     // 일주일 통계 데이터
-    @GetMapping("/week/{petId}")
+    @GetMapping("/weekly/{petId}")
     public ResponseEntity<WalkWeeklySummaryResponse> weeklyWalk(@LoginUser LoginInfo loginUser,
                                                                 @PathVariable Long petId,
                                                                 @RequestParam LocalDate date) {
