@@ -29,9 +29,9 @@ public class WalkController {
     }
 
     // 최근 산책 기록 가져오기
-    @GetMapping("/recent/")
-    public ResponseEntity<WalkRecentDataListResponse> latestWalk(@LoginUser LoginInfo loginUser) {
-        WalkRecentDataListResponse response = walkService.getWalkRecentData(loginUser.memberId());
+    @GetMapping("/recent/{memberId}")
+    public ResponseEntity<WalkRecentDataListResponse> latestWalk(@PathVariable Long memberId) {
+        WalkRecentDataListResponse response = walkService.getWalkRecentData(memberId);
         return ResponseEntity.ok(response);
     }
 

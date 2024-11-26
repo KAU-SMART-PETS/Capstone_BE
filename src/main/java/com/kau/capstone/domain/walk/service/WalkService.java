@@ -11,6 +11,7 @@ import com.kau.capstone.domain.walk.entity.Walk;
 import com.kau.capstone.domain.walk.repository.WalkRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -81,17 +82,15 @@ public class WalkService {
         // 날짜 포맷 설정
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 
-        // 각 반려동물의 가장 최근 산책 기록을 가져옴
+        // 각 반려동물의 최근 5개 산책 기록을 가져옴
         List<WalkRecentDataResponse> recentWalks = pets.stream()
-                .map(pet -> walkRepository.findTopByPetOrderByDataIntDtDesc(pet)
+                .flatMap(pet -> walkRepository.findTop5ByPetOrderByDataIntDtDesc(pet, Pageable.ofSize(5)).stream()
                         .map(walk -> new WalkRecentDataResponse(
-                                pet.getName(),  // 반려동물 이름
+                                pet.getName(),                     // 반려동물 이름
                                 walk.getDataIntDt().format(dateFormat), // 측정 일자
-                                walk.getWalkingTime(),  // 산책 시간
-                                walk.getDistance()  // 산책 거리
-                        ))
-                        .orElse(null)) // Walk가 없으면 null 반환
-                .filter(Objects::nonNull)  // null 값을 필터링
+                                walk.getWalkingTime(),             // 산책 시간
+                                walk.getDistance()                 // 산책 거리
+                        )))
                 .collect(Collectors.toList());
 
         return new WalkRecentDataListResponse(recentWalks);
