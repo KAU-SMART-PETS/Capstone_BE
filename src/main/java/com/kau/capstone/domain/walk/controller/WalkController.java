@@ -59,10 +59,10 @@ public class WalkController {
 
     // 일주일 통계 데이터
     @GetMapping("/weekly/{petId}")
-    public ResponseEntity<WalkWeeklySummaryResponse> weeklyWalk(@LoginUser LoginInfo loginUser,
-                                                                @PathVariable Long petId,
-                                                                @RequestParam LocalDate date) {
-        WalkWeeklySummaryResponse response = walkService.getWeeklySummary(loginUser.memberId(), petId, date);
+    public ResponseEntity<WalkWeeklySummaryListResponse> weeklyWalk(@LoginUser LoginInfo loginUser,
+                                                                    @PathVariable Long petId,
+                                                                    @RequestParam LocalDate date) {
+        WalkWeeklySummaryListResponse response = walkService.getWeeklySummaryList(loginUser.memberId(), petId, date);
         return ResponseEntity.ok(response);
     }
 

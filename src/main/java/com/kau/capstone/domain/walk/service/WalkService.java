@@ -135,6 +135,7 @@ public class WalkService {
 
         // 응답 생성
         return new WalkDailySummaryResponse(
+                date,
                 walkingDistancePercent,
                 100 - walkingTimePercent, // 휴식량은 전체 시간에서 걷는 시간을 뺀 값으로 가정
                 stepCountPercent,
@@ -167,54 +168,60 @@ public class WalkService {
         return new WalkMonthlyResponse(walkDates);
     }
 
-    public WalkWeeklySummaryResponse getWeeklySummary(Long memberId, Long petId, LocalDate date) {
+    public WalkWeeklySummaryListResponse getWeeklySummaryList(Long memberId, Long petId, LocalDate date) {
         // 유저 객체 조회
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다"));
+            .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다"));
 
         // 반려동물 객체 조회
         Pet pet = ownedPetRepository.findPetByMemberAndPetId(memberId, petId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 반려동물은 유저의 반려동물이 아닙니다"));
+            .orElseThrow(() -> new IllegalArgumentException("해당 반려동물은 유저의 반려동물이 아닙니다"));
 
         // 주간 날짜 범위 계산 (월요일 ~ 일요일)
         LocalDate startOfWeek = date.with(java.time.DayOfWeek.MONDAY);
         LocalDate endOfWeek = date.with(java.time.DayOfWeek.SUNDAY);
 
-        // 주간 산책 데이터 조회
-        List<Walk> weeklyWalks = walkRepository.findByPetAndDateBetween(pet, startOfWeek, endOfWeek);
+        // 주간 데이터를 날짜별로 조회
+        List<LocalDate> weekDates = startOfWeek.datesUntil(endOfWeek.plusDays(1)).collect(Collectors.toList());
+        List<WalkDailySummaryResponse> dailySummaries = weekDates.stream()
+            .map(day -> {
+                List<Walk> dailyWalks = walkRepository.findByPetAndDataIntDt(pet, day);
 
-        // 주간 데이터 합산
-        double totalDistance = weeklyWalks.stream().mapToDouble(Walk::getDistance).sum();
-        long totalSteps = weeklyWalks.stream().mapToLong(Walk::getStep).sum();
-        long totalWalkingTime = weeklyWalks.stream().mapToLong(Walk::getWalkingTime).sum();
-        double totalLux = weeklyWalks.stream().mapToDouble(Walk::getTLux).sum();
-        double avgK = weeklyWalks.stream().mapToDouble(Walk::getAvgK).average().orElse(0);
-        double avgLux = weeklyWalks.stream().mapToDouble(Walk::getAvgLux).average().orElse(0);
+                // 일별 통계 계산
+                double totalDistance = dailyWalks.stream().mapToDouble(Walk::getDistance).sum();
+                long totalSteps = dailyWalks.stream().mapToLong(Walk::getStep).sum();
+                long totalWalkingTime = dailyWalks.stream().mapToLong(Walk::getWalkingTime).sum();
+                double totalLux = dailyWalks.stream().mapToDouble(Walk::getTLux).sum();
+                double avgK = dailyWalks.stream().mapToDouble(Walk::getAvgK).average().orElse(0);
+                double avgLux = dailyWalks.stream().mapToDouble(Walk::getAvgLux).average().orElse(0);
 
-        // 기준값 설정 (고정값 또는 동적으로 설정 가능)
-        final double MAX_DISTANCE = 35000.0;  // 주간 최대 산책 거리 (35km)
-        final long MAX_STEPS = 70000;         // 주간 최대 걸음 수 (10,000보 × 7일)
-        final long MAX_WALKING_TIME = 50400;  // 주간 최대 산책 시간 (7200초 × 7일)
-        final double MAX_LUX = 70000.0;       // 주간 최대 누적 조도량
-        final double MAX_UV = 56000.0;        // 주간 최대 평균 색온도
-        final double MAX_VITAMIN = 35000.0;   // 주간 최대 평균 조도량
+                // 기준 값 설정
+                final double MAX_DISTANCE = 5000.0;  // 5km
+                final long MAX_STEPS = 10000;        // 10,000보
+                final long MAX_WALKING_TIME = 7200;  // 2시간
+                final double MAX_LUX = 10000.0;
+                final double MAX_UV = 8000.0;
+                final double MAX_VITAMIN = 5000.0;
 
-        // 퍼센트 계산
-        int walkingDistancePercent = (int) Math.min((totalDistance / MAX_DISTANCE) * 100, 100);
-        int stepCountPercent = (int) Math.min((double) totalSteps / MAX_STEPS * 100, 100);
-        int walkingTimePercent = (int) Math.min((double) totalWalkingTime / MAX_WALKING_TIME * 100, 100);
-        int sunlightExposurePercent = (int) Math.min((totalLux / MAX_LUX) * 100, 100);
-        int uvExposurePercent = (int) Math.min((avgK / MAX_UV) * 100, 100);
-        int vitaminSynthesisPercent = (int) Math.min((avgLux / MAX_VITAMIN) * 100, 100);
+                // 퍼센트 계산
+                int walkingDistancePercent = (int) Math.min((totalDistance / MAX_DISTANCE) * 100, 100);
+                int stepCountPercent = (int) Math.min((double) totalSteps / MAX_STEPS * 100, 100);
+                int walkingTimePercent = (int) Math.min((double) totalWalkingTime / MAX_WALKING_TIME * 100, 100);
+                int sunlightExposurePercent = (int) Math.min((totalLux / MAX_LUX) * 100, 100);
+                int uvExposurePercent = (int) Math.min((avgK / MAX_UV) * 100, 100);
+                int vitaminSynthesisPercent = (int) Math.min((avgLux / MAX_VITAMIN) * 100, 100);
 
-        // 응답 생성
-        return new WalkWeeklySummaryResponse(
-                walkingDistancePercent,
-                100 - walkingTimePercent, // 휴식량은 전체 시간 대비 걷는 시간으로 계산
-                stepCountPercent,
-                sunlightExposurePercent,
-                uvExposurePercent,
-                vitaminSynthesisPercent
-        );
+                return new WalkDailySummaryResponse(
+                    day,                        // 날짜 추가
+                    walkingDistancePercent,
+                    100 - walkingTimePercent,  // 휴식량
+                    stepCountPercent,
+                    sunlightExposurePercent,
+                    uvExposurePercent,
+                    vitaminSynthesisPercent
+                );
+            }).collect(Collectors.toList());
+
+        return new WalkWeeklySummaryListResponse(dailySummaries);
     }
 }
