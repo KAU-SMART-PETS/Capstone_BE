@@ -6,6 +6,7 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,6 +43,15 @@ public class AIController {
         @RequestParam("petId") Long petId
     ) {
         String response = aiService.registPetNose(image, petId);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/nose/test")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<?> testPetNose(
+        @RequestPart("animalImage") MultipartFile image
+    ){
+        Long response = aiService.testPetNose(image);
         return ResponseEntity.ok(response);
     }
 
