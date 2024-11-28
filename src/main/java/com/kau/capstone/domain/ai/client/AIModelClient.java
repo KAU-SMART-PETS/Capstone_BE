@@ -115,7 +115,7 @@ public class AIModelClient {
             // Map<String, Object>로 Json 응답 받기
             ResponseEntity<Long> response = restTemplate.exchange(
                 uriBuilder.toUriString(),
-                HttpMethod.POST,
+                HttpMethod.GET,
                 requestEntity,
                 Long.class
             );
