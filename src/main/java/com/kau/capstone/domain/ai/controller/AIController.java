@@ -51,7 +51,7 @@ public class AIController {
     public ResponseEntity<?> testPetNose(
         @RequestPart("animalImage") MultipartFile image
     ){
-        Long response = aiService.testPetNose(image);
+        Map<String, Object> response = aiService.testPetNose(image);
         return ResponseEntity.ok(response);
     }
 

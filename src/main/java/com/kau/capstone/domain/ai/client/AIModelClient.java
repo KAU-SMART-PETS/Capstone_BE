@@ -102,7 +102,7 @@ public class AIModelClient {
         }
     }
 
-    public Long testNoseImage(String imageUrl) {
+    public Map<String, Object> testNoseImage(String imageUrl) {
         String aiModelUrl = "http://3.35.41.30:5000/nose/test";
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(aiModelUrl)
             .queryParam("imageUrl", imageUrl);
@@ -113,13 +113,13 @@ public class AIModelClient {
         HttpEntity<String> requestEntity = new HttpEntity<>(headers);
         try {
             // Map<String, Object>로 Json 응답 받기
-            ResponseEntity<Long> response = restTemplate.exchange(
+            ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
                 uriBuilder.toUriString(),
                 HttpMethod.GET,
                 requestEntity,
-                Long.class
+                new ParameterizedTypeReference<Map<String, Object>>() {
+                }
             );
-
             return response.getBody();
         } catch (HttpStatusCodeException e) {
             String errorMessage = extractErrorMessage(e.getResponseBodyAsString());

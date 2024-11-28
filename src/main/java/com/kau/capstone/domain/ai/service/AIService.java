@@ -44,9 +44,9 @@ public class AIService {
         return response;
     }
 
-    public Long testPetNose(MultipartFile image){
+    public Map<String, Object> testPetNose(MultipartFile image){
         AIImage savedImage = s3StorageService.uploadImage(image);
-        Long response = aiModelClient.testNoseImage(savedImage.getUrl());
+        Map<String, Object> response = aiModelClient.testNoseImage(savedImage.getUrl());
         s3StorageService.deleteImage(savedImage.getUrl());
         return response;
     }
