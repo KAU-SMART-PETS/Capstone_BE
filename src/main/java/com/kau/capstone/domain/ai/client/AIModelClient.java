@@ -102,6 +102,43 @@ public class AIModelClient {
         }
     }
 
+    public Map<String, Object> testNoseImage(String imageUrl) {
+        String aiModelUrl = "http://3.35.41.30:5000/nose/test";
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(aiModelUrl)
+            .queryParam("imageUrl", imageUrl);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Type", "application/json");
+
+        HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+        try {
+            // Map<String, Object>로 Json 응답 받기
+            ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
+                uriBuilder.toUriString(),
+                HttpMethod.GET,
+                requestEntity,
+                new ParameterizedTypeReference<Map<String, Object>>() {
+                }
+            );
+            return response.getBody();
+        } catch (HttpStatusCodeException e) {
+            String errorMessage = extractErrorMessage(e.getResponseBodyAsString());
+            log.error("AI 모델 서버에서 오류 발생: {}", e.getResponseBodyAsString());
+            throw new RuntimeException(
+                "AI 모델 서버에서 오류 발생: " + e.getStatusCode() + " - " + errorMessage);
+        } catch (ResourceAccessException e) {
+            log.error("AI 모델 서버에 접근할 수 없음: {}", e.getMessage());
+            // 상태 코드 503 (Service Unavailable)로 설정
+            throw new RuntimeException(
+                "AI 모델 서버에서 오류 발생: 503 SERVICE_UNAVAILABLE - " + e.getMessage());
+        } catch (RestClientException e) {
+            log.error("AI 모델 서버와 통신 중 오류 발생: {}", e.getMessage());
+            // 상태 코드 500 (Internal Server Error)로 설정
+            throw new RuntimeException(
+                "AI 모델 서버에서 오류 발생: 500 INTERNAL_SERVER_ERROR - " + e.getMessage());
+        }
+    }
+
 
     // HTML 데이터 가공 로직
     private String extractErrorMessage(String htmlMessage) {
