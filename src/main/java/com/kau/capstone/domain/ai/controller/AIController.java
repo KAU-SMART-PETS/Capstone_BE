@@ -46,7 +46,7 @@ public class AIController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/nose/test")
+    @PostMapping("/nose/test")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> testPetNose(
         @RequestPart("animalImage") MultipartFile image
