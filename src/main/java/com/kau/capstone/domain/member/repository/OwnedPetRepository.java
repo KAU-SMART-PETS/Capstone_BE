@@ -18,4 +18,8 @@ public interface OwnedPetRepository extends JpaRepository<OwnedPet, Long> {
 
     @Query("SELECT op.pet FROM OwnedPet op WHERE op.member.id = :memberId AND op.pet.id = :petId")
     Optional<Pet> findPetByMemberAndPetId(@Param("memberId") Long memberId, @Param("petId") Long petId);
+
+    @Query("SELECT COUNT(o) > 0 FROM OwnedPet o WHERE o.member = :member AND o.pet = :pet")
+    Boolean existsByMemberAndPet(@Param("member") Member member, @Param("pet") Pet pet);
+
 }

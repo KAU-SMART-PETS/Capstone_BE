@@ -8,7 +8,10 @@ import com.kau.capstone.domain.member.repository.MemberRepository;
 import com.kau.capstone.domain.member.repository.OwnedPetRepository;
 import com.kau.capstone.domain.pet.dto.request.PetRegistReqV2;
 import com.kau.capstone.domain.pet.dto.request.PetRegistRequest;
+import com.kau.capstone.domain.pet.dto.response.PetResV2;
 import com.kau.capstone.domain.pet.entity.Pet;
+import com.kau.capstone.domain.pet.exception.PetAndMemberNotMatchedException;
+import com.kau.capstone.domain.pet.exception.PetNotFoundException;
 import com.kau.capstone.domain.pet.repository.PetRepository;
 import com.kau.capstone.domain.pet.util.PetMapperV2;
 import com.kau.capstone.global.common.s3.S3Service;
@@ -33,6 +36,17 @@ public class PetServiceV2 {
         );
     }
 
+    private Pet findPetById(Long petId){
+        return petRepository.findByIdAndDeletedAtIsNull(petId).orElseThrow(
+            () -> new PetNotFoundException("pet not found")
+        );
+    }
+
+    private void checkOwnedPetByMember(Member member, Pet pet){
+        if(!ownedPetRepository.existsByMemberAndPet(member, pet))
+            throw new PetAndMemberNotMatchedException("pet and member not matched");
+    }
+
     @Transactional
     public void createPetInfo(LoginInfo loginInfo, PetRegistReqV2 petRegistReqV2)
         throws IOException {
@@ -40,6 +54,14 @@ public class PetServiceV2 {
         Pet pet = savePet(petRegistReqV2);
         saveOwnedPet(loginInfo.memberId(), pet);
         uploadImage(petRegistReqV2.getImage(), pet);
+    }
+
+    @Transactional(readOnly = true)
+    public PetResV2 getPetInfo(LoginInfo loginInfo, Long petId){
+        Member member = this.findMemberById(loginInfo.memberId());
+        Pet pet = this.findPetById(petId);
+        checkOwnedPetByMember(member, pet);
+        return PetMapperV2.toPetResV2Dto(pet);
     }
 
     private Pet savePet(PetRegistReqV2 petRegistReqV2){

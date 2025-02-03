@@ -3,15 +3,18 @@ package com.kau.capstone.domain.pet.controller;
 import com.kau.capstone.domain.auth.dto.LoginInfo;
 import com.kau.capstone.domain.auth.util.LoginUser;
 import com.kau.capstone.domain.pet.dto.request.PetRegistReqV2;
-import com.kau.capstone.domain.pet.dto.request.PetRegistRequest;
-import com.kau.capstone.domain.pet.service.PetService;
+import com.kau.capstone.domain.pet.dto.response.PetInfoResponse;
+import com.kau.capstone.domain.pet.dto.response.PetResV2;
 import com.kau.capstone.domain.pet.service.PetServiceV2;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -31,5 +34,15 @@ public class PetRestControllerV2 {
     ) throws IOException {
         petService.createPetInfo(loginInfo, petRegistReq);
         return ResponseEntity.status(HttpStatus.CREATED).body("반려동물 정보를 성공적으로 저장하였습니다.");
+    }
+
+    @GetMapping("/{pet_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<PetResV2> getPetInfo(
+        @LoginUser LoginInfo loginInfo,
+        @PathVariable("pet_id") Long petId
+    ){
+        PetResV2 petRes = petService.getPetInfo(loginInfo, petId);
+        return ResponseEntity.status(HttpStatus.OK).body(petRes);
     }
 }

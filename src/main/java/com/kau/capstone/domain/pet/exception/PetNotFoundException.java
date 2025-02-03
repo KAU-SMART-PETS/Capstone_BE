@@ -8,4 +8,8 @@ public class PetNotFoundException extends ApplicationException {
     public PetNotFoundException(ErrorCode errorCode) {
         super(errorCode);
     }
+
+    public PetNotFoundException(String message){
+        super(message);
+    }
 }
