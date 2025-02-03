@@ -8,6 +8,7 @@ import com.kau.capstone.domain.member.repository.MemberRepository;
 import com.kau.capstone.domain.member.repository.OwnedPetRepository;
 import com.kau.capstone.domain.pet.dto.request.PetRegistReqV2;
 import com.kau.capstone.domain.pet.dto.request.PetRegistRequest;
+import com.kau.capstone.domain.pet.dto.request.PetReqV2;
 import com.kau.capstone.domain.pet.dto.response.PetResV2;
 import com.kau.capstone.domain.pet.dto.response.PetsResV2;
 import com.kau.capstone.domain.pet.entity.Pet;
@@ -71,6 +72,15 @@ public class PetServiceV2 {
         Member member = this.findMemberById(loginInfo.memberId());
         List<Pet> pets = ownedPetRepository.findPetsByMember(member);
         return PetMapperV2.toPetsRes(pets);
+    }
+
+    @Transactional
+    public void updatePetInfo(LoginInfo loginInfo, Long petId, PetReqV2 petRequest){
+        Member member = this.findMemberById(loginInfo.memberId());
+        Pet pet = this.findPetById(petId);
+        checkOwnedPetByMember(member, pet);
+        pet.updatePetV2(petRequest);
+        petRepository.save(pet);
     }
 
     private Pet savePet(PetRegistReqV2 petRegistReqV2){

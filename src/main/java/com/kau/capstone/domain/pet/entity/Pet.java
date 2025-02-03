@@ -1,6 +1,7 @@
 package com.kau.capstone.domain.pet.entity;
 
 import com.kau.capstone.domain.pet.dto.request.PetRegistRequest;
+import com.kau.capstone.domain.pet.dto.request.PetReqV2;
 import com.kau.capstone.domain.pet.dto.response.PetResV2;
 import com.kau.capstone.domain.pet.dto.response.PetsResV2;
 import com.kau.capstone.domain.walk.entity.Walk;
@@ -98,6 +99,15 @@ public class Pet extends BaseEntity {
 
     public PetResV2 toPetResDto(){
         return new PetResV2(this.name, this.petType, this.gender, this.weight, this.age, this.breed, this.imageUrl);
+    }
+
+    public void updatePetV2(PetReqV2 petRequest){
+        this.name = petRequest.name();
+        this.petType = PetType.fromInt(petRequest.petType());
+        this.gender = Gender.fromInt(petRequest.gender());
+        this.age = petRequest.age();
+        this.weight = petRequest.weight();
+        this.breed = petRequest.breed();
     }
 }
 
