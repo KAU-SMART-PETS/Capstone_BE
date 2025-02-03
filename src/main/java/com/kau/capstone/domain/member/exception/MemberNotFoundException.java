@@ -8,4 +8,8 @@ public class MemberNotFoundException extends ApplicationException {
     public MemberNotFoundException(ErrorCode errorCode) {
         super(errorCode);
     }
+
+    public MemberNotFoundException(String message) {
+        super(message);
+    }
 }

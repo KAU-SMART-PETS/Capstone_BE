@@ -32,4 +32,9 @@ public class OwnedPet {
     @ManyToOne
     @JoinColumn(name = "pet_id")
     private Pet pet;
+
+    public OwnedPet(Member member, Pet pet){
+        this.member = member;
+        this.pet = pet;
+    }
 }

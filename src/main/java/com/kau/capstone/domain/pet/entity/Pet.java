@@ -44,6 +44,10 @@ public class Pet extends BaseEntity {
     @Column(nullable = false)
     private Integer age;
 
+    @Comment("품종")
+    @Column(length = 20)
+    private String breed;
+
     @Comment("반려동물 이미지")
     private String imageUrl;
 
@@ -51,13 +55,13 @@ public class Pet extends BaseEntity {
     private List<Walk> walks = new ArrayList<>();
 
     @Builder
-    public Pet(String name, PetType petType, Gender gender, double weight, Integer age) {
-
+    public Pet(String name, PetType petType, Gender gender, double weight, Integer age, String breed) {
         this.name = name;
         this.petType = petType;
         this.gender = gender;
         this.weight = weight;
         this.age = age;
+        this.breed = breed;
     }
 
     public void updatePet(PetRegistRequest petRegistRequest) {
