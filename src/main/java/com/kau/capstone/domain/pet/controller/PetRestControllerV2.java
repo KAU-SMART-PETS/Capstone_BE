@@ -5,10 +5,12 @@ import com.kau.capstone.domain.auth.util.LoginUser;
 import com.kau.capstone.domain.pet.dto.request.PetRegistReqV2;
 import com.kau.capstone.domain.pet.dto.response.PetInfoResponse;
 import com.kau.capstone.domain.pet.dto.response.PetResV2;
+import com.kau.capstone.domain.pet.dto.response.PetsResV2;
 import com.kau.capstone.domain.pet.service.PetServiceV2;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import java.io.IOException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,5 +46,14 @@ public class PetRestControllerV2 {
     ){
         PetResV2 petRes = petService.getPetInfo(loginInfo, petId);
         return ResponseEntity.status(HttpStatus.OK).body(petRes);
+    }
+
+    @GetMapping("")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<PetsResV2>> getPetsInfo(
+        @LoginUser LoginInfo loginInfo
+    ){
+        List<PetsResV2> pets = petService.getPetsInfo(loginInfo);
+        return ResponseEntity.status(HttpStatus.OK).body(pets);
     }
 }

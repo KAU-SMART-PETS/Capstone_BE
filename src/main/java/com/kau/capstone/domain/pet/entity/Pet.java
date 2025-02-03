@@ -1,6 +1,7 @@
 package com.kau.capstone.domain.pet.entity;
 
 import com.kau.capstone.domain.pet.dto.request.PetRegistRequest;
+import com.kau.capstone.domain.pet.dto.response.PetsResV2;
 import com.kau.capstone.domain.walk.entity.Walk;
 import com.kau.capstone.global.common.BaseEntity;
 import jakarta.persistence.*;
@@ -88,6 +89,10 @@ public class Pet extends BaseEntity {
     public void removeWalk(Walk walk) {
         walks.remove(walk);
         walk.setPet(null);
+    }
+
+    public PetsResV2 toPetsResDto(){
+        return new PetsResV2(this.id, this.name, this.imageUrl);
     }
 }
 

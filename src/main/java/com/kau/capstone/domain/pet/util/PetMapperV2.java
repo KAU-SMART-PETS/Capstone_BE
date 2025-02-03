@@ -4,7 +4,10 @@ import com.kau.capstone.domain.member.entity.Member;
 import com.kau.capstone.domain.member.entity.pet.OwnedPet;
 import com.kau.capstone.domain.pet.dto.request.PetRegistReqV2;
 import com.kau.capstone.domain.pet.dto.response.PetResV2;
+import com.kau.capstone.domain.pet.dto.response.PetsResV2;
 import com.kau.capstone.domain.pet.entity.Pet;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -25,6 +28,16 @@ public class PetMapperV2 {
         return new PetResV2(pet.getName(), pet.getPetType(),
             pet.getGender(), pet.getWeight(), pet.getAge(),
             pet.getBreed(), pet.getImageUrl());
+    }
+
+    public static List<PetsResV2> toPetsRes(List<Pet> pets){
+        List<PetsResV2> petList = new ArrayList<>();
+
+        for(Pet pet: pets){
+            petList.add(pet.toPetsResDto());
+        }
+
+        return petList;
     }
 
 

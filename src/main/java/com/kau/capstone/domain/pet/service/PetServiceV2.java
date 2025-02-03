@@ -9,6 +9,7 @@ import com.kau.capstone.domain.member.repository.OwnedPetRepository;
 import com.kau.capstone.domain.pet.dto.request.PetRegistReqV2;
 import com.kau.capstone.domain.pet.dto.request.PetRegistRequest;
 import com.kau.capstone.domain.pet.dto.response.PetResV2;
+import com.kau.capstone.domain.pet.dto.response.PetsResV2;
 import com.kau.capstone.domain.pet.entity.Pet;
 import com.kau.capstone.domain.pet.exception.PetAndMemberNotMatchedException;
 import com.kau.capstone.domain.pet.exception.PetNotFoundException;
@@ -16,6 +17,7 @@ import com.kau.capstone.domain.pet.repository.PetRepository;
 import com.kau.capstone.domain.pet.util.PetMapperV2;
 import com.kau.capstone.global.common.s3.S3Service;
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -62,6 +64,13 @@ public class PetServiceV2 {
         Pet pet = this.findPetById(petId);
         checkOwnedPetByMember(member, pet);
         return PetMapperV2.toPetResV2Dto(pet);
+    }
+
+    @Transactional(readOnly = true)
+    public List<PetsResV2> getPetsInfo(LoginInfo loginInfo){
+        Member member = this.findMemberById(loginInfo.memberId());
+        List<Pet> pets = ownedPetRepository.findPetsByMember(member);
+        return PetMapperV2.toPetsRes(pets);
     }
 
     private Pet savePet(PetRegistReqV2 petRegistReqV2){
