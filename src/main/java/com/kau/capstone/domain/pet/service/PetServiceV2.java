@@ -7,7 +7,6 @@ import com.kau.capstone.domain.member.exception.MemberNotFoundException;
 import com.kau.capstone.domain.member.repository.MemberRepository;
 import com.kau.capstone.domain.member.repository.OwnedPetRepository;
 import com.kau.capstone.domain.pet.dto.request.PetRegistReqV2;
-import com.kau.capstone.domain.pet.dto.request.PetRegistRequest;
 import com.kau.capstone.domain.pet.dto.request.PetReqV2;
 import com.kau.capstone.domain.pet.dto.response.PetResV2;
 import com.kau.capstone.domain.pet.dto.response.PetsResV2;
@@ -25,29 +24,33 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class PetServiceV2 {
+
     private final S3Service s3Service;
     private final PetRepository petRepository;
     private final MemberRepository memberRepository;
     private final OwnedPetRepository ownedPetRepository;
-    private Member findMemberById(Long memberId){
+
+    private Member findMemberById(Long memberId) {
         return memberRepository.findById(memberId).orElseThrow(
             () -> new MemberNotFoundException("member not found")
         );
     }
 
-    private Pet findPetById(Long petId){
+    private Pet findPetById(Long petId) {
         return petRepository.findByIdAndDeletedAtIsNull(petId).orElseThrow(
             () -> new PetNotFoundException("pet not found")
         );
     }
 
-    private void checkOwnedPetByMember(Member member, Pet pet){
-        if(!ownedPetRepository.existsByMemberAndPet(member, pet))
+    private void checkOwnedPetByMember(Member member, Pet pet) {
+        if (!ownedPetRepository.existsByMemberAndPet(member, pet)) {
             throw new PetAndMemberNotMatchedException("pet and member not matched");
+        }
     }
 
     @Transactional
@@ -60,7 +63,7 @@ public class PetServiceV2 {
     }
 
     @Transactional(readOnly = true)
-    public PetResV2 getPetInfo(LoginInfo loginInfo, Long petId){
+    public PetResV2 getPetInfo(LoginInfo loginInfo, Long petId) {
         Member member = this.findMemberById(loginInfo.memberId());
         Pet pet = this.findPetById(petId);
         checkOwnedPetByMember(member, pet);
@@ -68,14 +71,14 @@ public class PetServiceV2 {
     }
 
     @Transactional(readOnly = true)
-    public List<PetsResV2> getPetsInfo(LoginInfo loginInfo){
+    public List<PetsResV2> getPetsInfo(LoginInfo loginInfo) {
         Member member = this.findMemberById(loginInfo.memberId());
         List<Pet> pets = ownedPetRepository.findPetsByMember(member);
         return PetMapperV2.toPetsRes(pets);
     }
 
     @Transactional
-    public void updatePetInfo(LoginInfo loginInfo, Long petId, PetReqV2 petRequest){
+    public void updatePetInfo(LoginInfo loginInfo, Long petId, PetReqV2 petRequest) {
         Member member = this.findMemberById(loginInfo.memberId());
         Pet pet = this.findPetById(petId);
         checkOwnedPetByMember(member, pet);
@@ -84,7 +87,7 @@ public class PetServiceV2 {
     }
 
     @Transactional
-    public void deletePet(LoginInfo loginInfo, Long petId){
+    public void deletePet(LoginInfo loginInfo, Long petId) {
         Member member = this.findMemberById(loginInfo.memberId());
         Pet pet = this.findPetById(petId);
         checkOwnedPetByMember(member, pet);
@@ -94,19 +97,19 @@ public class PetServiceV2 {
         petRepository.save(pet);
     }
 
-    private void deleteImage(Pet pet){
+    private void deleteImage(Pet pet) {
         if (!Objects.isNull(pet.getImageUrl())) {
             s3Service.delete(pet);
         }
     }
 
-    private Pet savePet(PetRegistReqV2 petRegistReqV2){
+    private Pet savePet(PetRegistReqV2 petRegistReqV2) {
         Pet pet = PetMapperV2.toPet(petRegistReqV2);
         petRepository.save(pet);
         return pet;
     }
 
-    private void saveOwnedPet(Long memberId, Pet pet){
+    private void saveOwnedPet(Long memberId, Pet pet) {
         Member member = findMemberById(memberId);
         OwnedPet ownedPet = PetMapperV2.toOwnedPet(member, pet);
         ownedPetRepository.save(ownedPet);

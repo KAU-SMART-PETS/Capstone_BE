@@ -20,18 +20,18 @@ public class PetMapperV2 {
             petRegistReq.getAge(), petRegistReq.getBreed());
     }
 
-    public static OwnedPet toOwnedPet(Member member, Pet pet){
+    public static OwnedPet toOwnedPet(Member member, Pet pet) {
         return new OwnedPet(member, pet);
     }
 
-    public static PetResV2 toPetResV2Dto(Pet pet){
+    public static PetResV2 toPetResV2Dto(Pet pet) {
         return pet.toPetResDto();
     }
 
-    public static List<PetsResV2> toPetsRes(List<Pet> pets){
+    public static List<PetsResV2> toPetsRes(List<Pet> pets) {
         List<PetsResV2> petList = new ArrayList<>();
 
-        for(Pet pet: pets){
+        for (Pet pet : pets) {
             petList.add(pet.toPetsResDto());
         }
 

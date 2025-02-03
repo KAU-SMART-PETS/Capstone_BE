@@ -1,6 +1,5 @@
 package com.kau.capstone.domain.pet.dto.request;
 
-import com.kau.capstone.domain.pet.entity.Pet;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 

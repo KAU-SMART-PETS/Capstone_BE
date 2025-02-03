@@ -3,13 +3,10 @@ package com.kau.capstone.domain.pet.controller;
 import com.kau.capstone.domain.auth.dto.LoginInfo;
 import com.kau.capstone.domain.auth.util.LoginUser;
 import com.kau.capstone.domain.pet.dto.request.PetRegistReqV2;
-import com.kau.capstone.domain.pet.dto.request.PetRegistRequest;
 import com.kau.capstone.domain.pet.dto.request.PetReqV2;
-import com.kau.capstone.domain.pet.dto.response.PetInfoResponse;
 import com.kau.capstone.domain.pet.dto.response.PetResV2;
 import com.kau.capstone.domain.pet.dto.response.PetsResV2;
 import com.kau.capstone.domain.pet.service.PetServiceV2;
-import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.io.IOException;
@@ -32,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("api/v2/pets")
 public class PetRestControllerV2 {
+
     private final PetServiceV2 petService;
 
     @PostMapping("")
@@ -49,7 +47,7 @@ public class PetRestControllerV2 {
     public ResponseEntity<PetResV2> getPetInfo(
         @LoginUser LoginInfo loginInfo,
         @PathVariable("pet_id") Long petId
-    ){
+    ) {
         PetResV2 petRes = petService.getPetInfo(loginInfo, petId);
         return ResponseEntity.status(HttpStatus.OK).body(petRes);
     }
@@ -58,14 +56,14 @@ public class PetRestControllerV2 {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<PetsResV2>> getPetsInfo(
         @LoginUser LoginInfo loginInfo
-    ){
+    ) {
         List<PetsResV2> pets = petService.getPetsInfo(loginInfo);
         return ResponseEntity.status(HttpStatus.OK).body(pets);
     }
 
     @PatchMapping("/{pet_id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> updatePetInfo(
+    public ResponseEntity<String> updatePetInfo(
         @LoginUser LoginInfo loginInfo,
         @PathVariable("pet_id") @NotNull Long petId,
         @Valid @RequestBody PetReqV2 petRequest
@@ -76,10 +74,10 @@ public class PetRestControllerV2 {
 
     @DeleteMapping("/{pet_id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> deletePet(
+    public ResponseEntity<String> deletePet(
         @LoginUser LoginInfo loginInfo,
         @PathVariable("pet_id") @NotNull Long petId
-    ){
+    ) {
         petService.deletePet(loginInfo, petId);
         return ResponseEntity.status(HttpStatus.OK).body("반려동물 정보를 삭제하였습니다");
 

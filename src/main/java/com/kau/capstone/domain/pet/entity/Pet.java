@@ -6,12 +6,18 @@ import com.kau.capstone.domain.pet.dto.response.PetResV2;
 import com.kau.capstone.domain.pet.dto.response.PetsResV2;
 import com.kau.capstone.domain.walk.entity.Walk;
 import com.kau.capstone.global.common.BaseEntity;
-import jakarta.persistence.*;
-
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -58,7 +64,8 @@ public class Pet extends BaseEntity {
     private List<Walk> walks = new ArrayList<>();
 
     @Builder
-    public Pet(String name, PetType petType, Gender gender, double weight, Integer age, String breed) {
+    public Pet(String name, PetType petType, Gender gender, double weight, Integer age,
+        String breed) {
         this.name = name;
         this.petType = petType;
         this.gender = gender;
@@ -93,15 +100,16 @@ public class Pet extends BaseEntity {
         walk.setPet(null);
     }
 
-    public PetsResV2 toPetsResDto(){
+    public PetsResV2 toPetsResDto() {
         return new PetsResV2(this.id, this.name, this.imageUrl);
     }
 
-    public PetResV2 toPetResDto(){
-        return new PetResV2(this.name, this.petType, this.gender, this.weight, this.age, this.breed, this.imageUrl);
+    public PetResV2 toPetResDto() {
+        return new PetResV2(this.name, this.petType, this.gender, this.weight, this.age, this.breed,
+            this.imageUrl);
     }
 
-    public void updatePetV2(PetReqV2 petRequest){
+    public void updatePetV2(PetReqV2 petRequest) {
         this.name = petRequest.name();
         this.petType = PetType.fromInt(petRequest.petType());
         this.gender = Gender.fromInt(petRequest.gender());
