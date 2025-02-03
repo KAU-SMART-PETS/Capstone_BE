@@ -25,9 +25,7 @@ public class PetMapperV2 {
     }
 
     public static PetResV2 toPetResV2Dto(Pet pet){
-        return new PetResV2(pet.getName(), pet.getPetType(),
-            pet.getGender(), pet.getWeight(), pet.getAge(),
-            pet.getBreed(), pet.getImageUrl());
+        return pet.toPetResDto();
     }
 
     public static List<PetsResV2> toPetsRes(List<Pet> pets){
