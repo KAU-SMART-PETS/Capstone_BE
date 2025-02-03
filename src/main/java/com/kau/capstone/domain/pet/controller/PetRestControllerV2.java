@@ -17,6 +17,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -71,6 +72,17 @@ public class PetRestControllerV2 {
     ) {
         petService.updatePetInfo(loginInfo, petId, petRequest);
         return ResponseEntity.status(HttpStatus.OK).body("반려동물 정보를 성공적으로 수정하였습니다.");
+    }
+
+    @DeleteMapping("/{pet_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<?> deletePet(
+        @LoginUser LoginInfo loginInfo,
+        @PathVariable("pet_id") @NotNull Long petId
+    ){
+        petService.deletePet(loginInfo, petId);
+        return ResponseEntity.status(HttpStatus.OK).body("반려동물 정보를 삭제하였습니다");
+
     }
 
 

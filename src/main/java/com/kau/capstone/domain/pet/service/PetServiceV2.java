@@ -83,6 +83,23 @@ public class PetServiceV2 {
         petRepository.save(pet);
     }
 
+    @Transactional
+    public void deletePet(LoginInfo loginInfo, Long petId){
+        Member member = this.findMemberById(loginInfo.memberId());
+        Pet pet = this.findPetById(petId);
+        checkOwnedPetByMember(member, pet);
+        pet.deletePet();
+        this.deleteImage(pet);
+
+        petRepository.save(pet);
+    }
+
+    private void deleteImage(Pet pet){
+        if (!Objects.isNull(pet.getImageUrl())) {
+            s3Service.delete(pet);
+        }
+    }
+
     private Pet savePet(PetRegistReqV2 petRegistReqV2){
         Pet pet = PetMapperV2.toPet(petRegistReqV2);
         petRepository.save(pet);
