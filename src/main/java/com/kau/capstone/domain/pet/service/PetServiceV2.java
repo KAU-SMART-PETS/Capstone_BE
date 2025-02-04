@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -84,6 +85,14 @@ public class PetServiceV2 {
         checkOwnedPetByMember(member, pet);
         pet.updatePetV2(petRequest);
         petRepository.save(pet);
+    }
+
+    @Transactional
+    public void updatePetImage(LoginInfo loginInfo, Long petId, MultipartFile image) throws IOException{
+        Member member = this.findMemberById(loginInfo.memberId());
+        Pet pet = this.findPetById(petId);
+        checkOwnedPetByMember(member, pet);
+        uploadImage(image, pet);
     }
 
     @Transactional

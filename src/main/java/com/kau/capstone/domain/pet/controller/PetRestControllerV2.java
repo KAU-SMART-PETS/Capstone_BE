@@ -23,8 +23,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -71,6 +73,17 @@ public class PetRestControllerV2 {
     ) {
         petService.updatePetInfo(loginInfo, petId, petRequest);
         return ApiResponse.ok("수정 완료");
+    }
+
+    @PatchMapping("/{pet_id}/images")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<ApiResponse<String>> updatePetImage(
+        @LoginUser LoginInfo loginInfo,
+        @PathVariable("pet_id") @NotNull Long petId,
+        @RequestParam MultipartFile image
+    ) throws IOException{
+        petService.updatePetImage(loginInfo, petId, image);
+        return ApiResponse.ok("이미지 수정 완료");
     }
 
     @DeleteMapping("/{pet_id}")
