@@ -37,19 +37,19 @@ public class PetServiceV2 {
 
     private Member findMemberById(Long memberId) {
         return memberRepository.findById(memberId).orElseThrow(
-            () -> new MemberNotFoundException("member not found")
+            () -> new MemberNotFoundException("회원 정보를 찾을 수 없습니다")
         );
     }
 
     private Pet findPetById(Long petId) {
         return petRepository.findByIdAndDeletedAtIsNull(petId).orElseThrow(
-            () -> new PetNotFoundException("pet not found")
+            () -> new PetNotFoundException("반려동물 정보를 찾을 수 없습니다")
         );
     }
 
     private void checkOwnedPetByMember(Member member, Pet pet) {
         if (!ownedPetRepository.existsByMemberAndPet(member, pet)) {
-            throw new PetAndMemberNotMatchedException("pet and member not matched");
+            throw new PetAndMemberNotMatchedException("회원과 매칭되는 반려동물이 없습니다");
         }
     }
 
