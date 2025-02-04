@@ -1,5 +1,6 @@
 package com.kau.capstone.domain.pet.controller;
 
+import com.kau.capstone._core.dto.ApiResponse;
 import com.kau.capstone.domain.auth.dto.LoginInfo;
 import com.kau.capstone.domain.auth.util.LoginUser;
 import com.kau.capstone.domain.pet.dto.request.PetRegistReqV2;
@@ -34,52 +35,52 @@ public class PetRestControllerV2 {
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<String> createPetInfo(
+    public ResponseEntity<ApiResponse<String>> createPetInfo(
         @LoginUser LoginInfo loginInfo,
         @Valid @ModelAttribute("petRegistReq") PetRegistReqV2 petRegistReq
     ) throws IOException {
         petService.createPetInfo(loginInfo, petRegistReq);
-        return ResponseEntity.status(HttpStatus.CREATED).body("반려동물 정보를 성공적으로 저장하였습니다.");
+        return ApiResponse.ok("생성 완료");
     }
 
     @GetMapping("/{pet_id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<PetResV2> getPetInfo(
+    public ResponseEntity<ApiResponse<PetResV2>> getPetInfo(
         @LoginUser LoginInfo loginInfo,
         @PathVariable("pet_id") Long petId
     ) {
         PetResV2 petRes = petService.getPetInfo(loginInfo, petId);
-        return ResponseEntity.status(HttpStatus.OK).body(petRes);
+        return ApiResponse.ok(petRes);
     }
 
     @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<PetsResV2>> getPetsInfo(
+    public ResponseEntity<ApiResponse<List<PetsResV2>>> getPetsInfo(
         @LoginUser LoginInfo loginInfo
     ) {
         List<PetsResV2> pets = petService.getPetsInfo(loginInfo);
-        return ResponseEntity.status(HttpStatus.OK).body(pets);
+        return ApiResponse.ok(pets);
     }
 
     @PatchMapping("/{pet_id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> updatePetInfo(
+    public ResponseEntity<ApiResponse<String>> updatePetInfo(
         @LoginUser LoginInfo loginInfo,
         @PathVariable("pet_id") @NotNull Long petId,
         @Valid @RequestBody PetReqV2 petRequest
     ) {
         petService.updatePetInfo(loginInfo, petId, petRequest);
-        return ResponseEntity.status(HttpStatus.OK).body("반려동물 정보를 성공적으로 수정하였습니다.");
+        return ApiResponse.ok("수정 완료");
     }
 
     @DeleteMapping("/{pet_id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> deletePet(
+    public ResponseEntity<ApiResponse<String>> deletePet(
         @LoginUser LoginInfo loginInfo,
         @PathVariable("pet_id") @NotNull Long petId
     ) {
         petService.deletePet(loginInfo, petId);
-        return ResponseEntity.status(HttpStatus.OK).body("반려동물 정보를 삭제하였습니다");
+        return ApiResponse.ok("삭제 완료");
 
     }
 
