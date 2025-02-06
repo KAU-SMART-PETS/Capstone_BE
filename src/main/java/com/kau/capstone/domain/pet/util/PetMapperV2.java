@@ -11,13 +11,11 @@ import lombok.NoArgsConstructor;
 public class PetMapperV2 {
 
     public static Pet toPet(PetRegistReqV2 petRegistReq) {
-        return new Pet(petRegistReq.getName(), petRegistReq.getPetType(),
-            petRegistReq.getGender(), petRegistReq.getWeight(),
-            petRegistReq.getAge(), petRegistReq.getBreed());
+        return Pet.of(petRegistReq);
     }
 
     public static OwnedPet toOwnedPet(Member member, Pet pet) {
-        return new OwnedPet(member, pet);
+        return OwnedPet.of(member, pet);
     }
 
 }
