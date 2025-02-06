@@ -88,7 +88,7 @@ public class PetService {
 
     public Pet findByPetId(Long petId) {
         return petRepository.findById(petId).orElseThrow(
-            () -> new PetNotFoundException(PET_INFO_NOT_FOUND)
+            () -> new PetNotFoundException()
         );
     }
 

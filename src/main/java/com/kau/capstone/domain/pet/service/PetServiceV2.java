@@ -43,13 +43,13 @@ public class PetServiceV2 {
 
     private Pet findPetById(Long petId) {
         return petRepository.findByIdAndDeletedAtIsNull(petId).orElseThrow(
-            () -> new PetNotFoundException("반려동물 정보를 찾을 수 없습니다")
+            () -> new PetNotFoundException()
         );
     }
 
     private void checkOwnedPetByMember(Member member, Pet pet) {
         if (!ownedPetRepository.existsByMemberAndPet(member, pet)) {
-            throw new PetAndMemberNotMatchedException("회원과 매칭되는 반려동물이 없습니다");
+            throw new PetAndMemberNotMatchedException();
         }
     }
 
