@@ -5,8 +5,8 @@ import com.kau.capstone.domain.auth.dto.LoginInfo;
 import com.kau.capstone.domain.auth.util.LoginUser;
 import com.kau.capstone.domain.pet.dto.request.PetRegistReqV2;
 import com.kau.capstone.domain.pet.dto.request.PetReqV2;
+import com.kau.capstone.domain.pet.dto.response.OwnedPetsResV2;
 import com.kau.capstone.domain.pet.dto.response.PetResV2;
-import com.kau.capstone.domain.pet.dto.response.PetsResV2;
 import com.kau.capstone.domain.pet.service.PetServiceV2;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -57,10 +57,10 @@ public class PetRestControllerV2 {
 
     @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<ApiResponse<List<PetsResV2>>> getPetsInfo(
+    public ResponseEntity<ApiResponse<OwnedPetsResV2>> getPetsInfo(
         @LoginUser LoginInfo loginInfo
     ) {
-        List<PetsResV2> pets = petService.getPetsInfo(loginInfo);
+        OwnedPetsResV2 pets = petService.getPetsInfo(loginInfo);
         return ApiResponse.ok(pets);
     }
 

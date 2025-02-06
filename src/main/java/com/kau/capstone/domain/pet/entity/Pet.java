@@ -2,8 +2,6 @@ package com.kau.capstone.domain.pet.entity;
 
 import com.kau.capstone.domain.pet.dto.request.PetRegistRequest;
 import com.kau.capstone.domain.pet.dto.request.PetReqV2;
-import com.kau.capstone.domain.pet.dto.response.PetResV2;
-import com.kau.capstone.domain.pet.dto.response.PetsResV2;
 import com.kau.capstone.domain.walk.entity.Walk;
 import com.kau.capstone.global.common.BaseEntity;
 import jakarta.persistence.CascadeType;
@@ -88,25 +86,6 @@ public class Pet extends BaseEntity {
 
     public void updateImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
-    }
-
-    public void addWalk(Walk walk) {
-        walks.add(walk);
-        walk.setPet(this);
-    }
-
-    public void removeWalk(Walk walk) {
-        walks.remove(walk);
-        walk.setPet(null);
-    }
-
-    public PetsResV2 toPetsResDto() {
-        return new PetsResV2(this.id, this.name, this.imageUrl);
-    }
-
-    public PetResV2 toPetResDto() {
-        return new PetResV2(this.name, this.petType, this.gender, this.weight, this.age, this.breed,
-            this.imageUrl);
     }
 
     public void updatePetV2(PetReqV2 petRequest) {

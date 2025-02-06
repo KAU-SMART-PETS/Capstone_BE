@@ -8,8 +8,8 @@ import com.kau.capstone.domain.member.repository.MemberRepository;
 import com.kau.capstone.domain.member.repository.OwnedPetRepository;
 import com.kau.capstone.domain.pet.dto.request.PetRegistReqV2;
 import com.kau.capstone.domain.pet.dto.request.PetReqV2;
+import com.kau.capstone.domain.pet.dto.response.OwnedPetsResV2;
 import com.kau.capstone.domain.pet.dto.response.PetResV2;
-import com.kau.capstone.domain.pet.dto.response.PetsResV2;
 import com.kau.capstone.domain.pet.entity.Pet;
 import com.kau.capstone.domain.pet.exception.PetAndMemberNotMatchedException;
 import com.kau.capstone.domain.pet.exception.PetNotFoundException;
@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -68,14 +67,14 @@ public class PetServiceV2 {
         Member member = this.findMemberById(loginInfo.memberId());
         Pet pet = this.findPetById(petId);
         checkOwnedPetByMember(member, pet);
-        return PetMapperV2.toPetResV2Dto(pet);
+        return PetResV2.toResponse(pet);
     }
 
     @Transactional(readOnly = true)
-    public List<PetsResV2> getPetsInfo(LoginInfo loginInfo) {
+    public OwnedPetsResV2 getPetsInfo(LoginInfo loginInfo) {
         Member member = this.findMemberById(loginInfo.memberId());
         List<Pet> pets = ownedPetRepository.findPetsByMember(member);
-        return PetMapperV2.toPetsRes(pets);
+        return OwnedPetsResV2.toResponse(pets);
     }
 
     @Transactional

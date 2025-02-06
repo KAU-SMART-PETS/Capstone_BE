@@ -3,11 +3,7 @@ package com.kau.capstone.domain.pet.util;
 import com.kau.capstone.domain.member.entity.Member;
 import com.kau.capstone.domain.member.entity.pet.OwnedPet;
 import com.kau.capstone.domain.pet.dto.request.PetRegistReqV2;
-import com.kau.capstone.domain.pet.dto.response.PetResV2;
-import com.kau.capstone.domain.pet.dto.response.PetsResV2;
 import com.kau.capstone.domain.pet.entity.Pet;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -23,20 +19,5 @@ public class PetMapperV2 {
     public static OwnedPet toOwnedPet(Member member, Pet pet) {
         return new OwnedPet(member, pet);
     }
-
-    public static PetResV2 toPetResV2Dto(Pet pet) {
-        return pet.toPetResDto();
-    }
-
-    public static List<PetsResV2> toPetsRes(List<Pet> pets) {
-        List<PetsResV2> petList = new ArrayList<>();
-
-        for (Pet pet : pets) {
-            petList.add(pet.toPetsResDto());
-        }
-
-        return petList;
-    }
-
 
 }
