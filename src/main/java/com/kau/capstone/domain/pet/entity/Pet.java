@@ -63,7 +63,7 @@ public class Pet extends BaseEntity {
     private List<Walk> walks = new ArrayList<>();
 
     @Builder
-    public Pet(String name, PetType petType, Gender gender, double weight, Integer age,
+    private Pet(String name, PetType petType, Gender gender, double weight, Integer age,
         String breed) {
         this.name = name;
         this.petType = petType;
