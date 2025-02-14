@@ -26,8 +26,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("api/v2/pets")
+@RequiredArgsConstructor
 public class PetRestControllerV2 {
 
     private final PetServiceV2 petService;
