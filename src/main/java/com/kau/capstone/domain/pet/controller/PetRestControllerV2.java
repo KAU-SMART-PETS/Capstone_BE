@@ -44,7 +44,7 @@ public class PetRestControllerV2 {
     @GetMapping("/{pet_id}")
     public ResponseEntity<ApiResponse<PetResV2>> getPetInfo(
         @LoginUser LoginInfo loginInfo,
-        @PathVariable("pet_id") Long petId
+        @PathVariable("pet_id") @NotNull Long petId
     ) {
         PetResV2 petRes = petService.getPetInfo(loginInfo, petId);
         return ApiResponse.ok(petRes);
