@@ -21,6 +21,7 @@ import com.kau.capstone.domain.pet.util.PetMapper;
 import com.kau.capstone.domain.reward.entity.Reward;
 import com.kau.capstone.domain.reward.entity.RewardDetail;
 import com.kau.capstone.domain.reward.repository.RewardRepository;
+import com.kau.capstone.global.common.s3.FileService;
 import com.kau.capstone.global.common.s3.S3Service;
 import java.io.IOException;
 import java.util.Objects;
@@ -41,6 +42,7 @@ public class PetService {
     private final OwnedPetRepository ownedPetRepository;
     private final RewardRepository rewardRepository;
     private final AlarmRepository alarmRepository;
+    private final FileService fileService;
 
     @Transactional
     public void createPetInfo(LoginInfo loginInfo, PetRegistRequest petRegistRequest)
@@ -65,11 +67,7 @@ public class PetService {
     public void deletePetInfo(Long petId) {
         Pet pet = findByPetId(petId);
         pet.deletePet();
-
-        if (!Objects.isNull(pet.getImageUrl())) {
-            s3Service.delete(pet);
-        }
-
+        fileService.deleteImage(pet.getImageUrl());
         petRepository.save(pet);
     }
 
@@ -98,11 +96,10 @@ public class PetService {
         return PetMapper.toGetResponseDTO(pet);
     }
 
-    private void uploadImage(PetRegistRequest petRegistRequest, Pet pet) throws IOException {
+    private void uploadImage(PetRegistRequest petRegistRequest, Pet pet) {
         if (!Objects.isNull(petRegistRequest.getImage())) {
-            String dirName = pet.getId().toString() + "/profile";
-            String imageUrl = s3Service.upload(petRegistRequest.getImage(), dirName,
-                "profileImage");
+            String dirName = pet.getId() + "/profile";
+            String imageUrl = fileService.uploadImage(petRegistRequest.getImage(), dirName);
             pet.updateImageUrl(imageUrl);
         }
     }
