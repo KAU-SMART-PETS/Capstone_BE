@@ -36,7 +36,7 @@ public class PetRestControllerV2 {
     public ResponseEntity<ApiResponse<String>> createPetInfo(
         @LoginUser LoginInfo loginInfo,
         @Valid @ModelAttribute("petRegistReq") PetRegistReqV2 petRegistReq
-    ) throws IOException {
+    ) {
         petService.createPetInfo(loginInfo, petRegistReq);
         return ApiResponse.ok("생성 완료");
     }
@@ -44,7 +44,7 @@ public class PetRestControllerV2 {
     @GetMapping("/{pet_id}")
     public ResponseEntity<ApiResponse<PetResV2>> getPetInfo(
         @LoginUser LoginInfo loginInfo,
-        @PathVariable("pet_id") @NotNull Long petId
+        @PathVariable("pet_id") Long petId
     ) {
         PetResV2 petRes = petService.getPetInfo(loginInfo, petId);
         return ApiResponse.ok(petRes);
@@ -61,7 +61,7 @@ public class PetRestControllerV2 {
     @PatchMapping("/{pet_id}")
     public ResponseEntity<ApiResponse<String>> updatePetInfo(
         @LoginUser LoginInfo loginInfo,
-        @PathVariable("pet_id") @NotNull Long petId,
+        @PathVariable("pet_id") Long petId,
         @Valid @RequestBody PetReqV2 petRequest
     ) {
         petService.updatePetInfo(loginInfo, petId, petRequest);
@@ -71,9 +71,9 @@ public class PetRestControllerV2 {
     @PatchMapping("/{pet_id}/images")
     public ResponseEntity<ApiResponse<String>> updatePetImage(
         @LoginUser LoginInfo loginInfo,
-        @PathVariable("pet_id") @NotNull Long petId,
+        @PathVariable("pet_id") Long petId,
         @RequestParam MultipartFile image
-    ) throws IOException {
+    ) {
         petService.updatePetImage(loginInfo, petId, image);
         return ApiResponse.ok("이미지 수정 완료");
     }
@@ -81,7 +81,7 @@ public class PetRestControllerV2 {
     @DeleteMapping("/{pet_id}")
     public ResponseEntity<ApiResponse<String>> deletePet(
         @LoginUser LoginInfo loginInfo,
-        @PathVariable("pet_id") @NotNull Long petId
+        @PathVariable("pet_id") Long petId
     ) {
         petService.deletePet(loginInfo, petId);
         return ApiResponse.ok("삭제 완료");
