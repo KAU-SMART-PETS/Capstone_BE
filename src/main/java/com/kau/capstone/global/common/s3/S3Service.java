@@ -4,13 +4,11 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.kau.capstone.domain.pet.entity.Pet;
-import java.io.IOException;
+import com.kau.capstone.global.common.s3.exception.FileNotExistException;
 import java.io.InputStream;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Service
@@ -25,19 +23,7 @@ public class S3Service {
         this.bucket = bucket;
     }
 
-    public String upload(MultipartFile multipartFile, String dirName, String fileName)
-        throws IOException {
-        String fileRoute = dirName + "/" + fileName;
-        log.info("fileName: " + fileRoute);
-
-        String contentType = multipartFile.getContentType();
-        InputStream inputStream = multipartFile.getInputStream();
-        String uploadImageUrl = putS3(fileRoute, contentType, inputStream);
-
-        return uploadImageUrl;
-    }
-
-    private String putS3(String fileRoute, String contentType, InputStream inputStream) {
+    protected String putS3(String fileRoute, String contentType, InputStream inputStream) {
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(contentType);  // MIME 타입 지정
 
@@ -46,12 +32,11 @@ public class S3Service {
         return amazonS3.getUrl(bucket, fileRoute).toString();
     }
 
-    public void delete(Pet pet) {
-        String key = pet.getImageUrl().split("amazonaws.com/")[1];
-        log.info(key);
-
+    protected void delete(String key) {
         if (amazonS3.doesObjectExist(bucket, key)) {
             amazonS3.deleteObject(bucket, key);
+        } else {
+            throw new FileNotExistException();
         }
     }
 
