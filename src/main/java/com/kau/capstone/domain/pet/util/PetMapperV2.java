@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PetMapperV2 {
 
-    public static Pet toPet(PetRegistReqV2 petRegistReq) {
-        return Pet.of(petRegistReq);
+    public static Pet toPet(PetRegistReqV2 petRegistReq, Member member) {
+        return Pet.of(petRegistReq, member);
     }
 
     public static OwnedPet toOwnedPet(Member member, Pet pet) {
