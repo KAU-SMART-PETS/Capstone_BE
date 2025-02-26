@@ -1,5 +1,6 @@
 package com.kau.capstone.domain.pet.entity;
 
+import com.kau.capstone.domain.member.entity.Member;
 import com.kau.capstone.domain.pet.dto.request.PetRegistReqV2;
 import com.kau.capstone.domain.pet.dto.request.PetRegistRequest;
 import com.kau.capstone.domain.pet.dto.request.PetReqV2;
@@ -13,6 +14,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -31,7 +34,7 @@ public class Pet extends BaseEntity {
     @Id
     @Comment("반려동물 식별자")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     @Comment("반려동물 이름")
     @Column(length = 10, nullable = false)
@@ -50,7 +53,7 @@ public class Pet extends BaseEntity {
 
     @Comment("나이")
     @Column(nullable = false)
-    private Integer age;
+    private int age;
 
     @Comment("품종")
     @Column(length = 20)
@@ -59,23 +62,28 @@ public class Pet extends BaseEntity {
     @Comment("반려동물 이미지")
     private String imageUrl;
 
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
+
     @OneToMany(mappedBy = "pet", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Walk> walks = new ArrayList<>();
 
     @Builder
     private Pet(String name, PetType petType, Gender gender, double weight, Integer age,
-        String breed) {
+        String breed, Member member) {
         this.name = name;
         this.petType = petType;
         this.gender = gender;
         this.weight = weight;
         this.age = age;
         this.breed = breed;
+        this.member = member;
     }
 
-    public static Pet of(PetRegistReqV2 petRegistReq) {
+    public static Pet of(PetRegistReqV2 petRegistReq, Member member) {
         return new Pet(petRegistReq.getName(), petRegistReq.getPetType(), petRegistReq.getGender(),
-            petRegistReq.getWeight(), petRegistReq.getAge(), petRegistReq.getBreed());
+            petRegistReq.getWeight(), petRegistReq.getAge(), petRegistReq.getBreed(), member);
     }
 
     public void updatePet(PetRegistRequest petRegistRequest) {
