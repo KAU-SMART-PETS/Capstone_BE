@@ -72,9 +72,7 @@ public class PetService {
     }
 
     private void savedOwnedPet(Long memberId, Pet pet) {
-        Member member = memberRepository.findById(memberId).orElseThrow(
-            () -> new MemberNotFoundException(MEMBER_NOT_FOUND)
-        );
+        Member member = memberRepository.getById(memberId);
 
         OwnedPet ownedPet = OwnedPet.builder()
             .member(member)
@@ -106,8 +104,7 @@ public class PetService {
 
     // 반려동물 등록하기 리워드 성공
     private void achievedCreatePetReward(Long memberId) {
-        Member member = memberRepository.findById(memberId).orElseThrow(
-            () -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+        Member member = memberRepository.getById(memberId);
 
         Reward reward = rewardRepository.findRewardByMemberAndType(member, RewardDetail.ONE.type());
         if (!Objects.isNull(reward) && !reward.getIsAchieved()) {
@@ -117,8 +114,7 @@ public class PetService {
 
     // 반려동물 알람 제거
     private void notVisibleCreatePetAlarm(Long memberId) {
-        Member member = memberRepository.findById(memberId).orElseThrow(
-            () -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+        Member member = memberRepository.getById(memberId);
 
         Alarm alarm = alarmRepository.findAlarmByMemberAndType(member, AlarmDetail.ONE.type());
         if (!Objects.isNull(alarm) && alarm.getIsVisible()) {

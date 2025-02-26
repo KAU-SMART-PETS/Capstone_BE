@@ -38,8 +38,7 @@ public class BluetoothService {
                 .build();
         bluetoothRepository.save(bluetooth);
 
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+        Member member = memberRepository.getById(memberId);
 
         OwnedBluetooth ownedBluetooth = OwnedBluetooth.builder()
                 .member(member)
@@ -54,8 +53,7 @@ public class BluetoothService {
     }
 
     public OwnedBluetoothResponse getOwnedBluetoothInfo(Long memberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+        Member member = memberRepository.getById(memberId);
 
         List<Bluetooth> bluetooth = ownedBluetoothRepository.findBluetoothByMember(member);
 

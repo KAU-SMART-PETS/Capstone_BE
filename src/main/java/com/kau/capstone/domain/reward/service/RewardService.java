@@ -23,8 +23,7 @@ public class RewardService {
     private final RewardRepository rewardRepository;
 
     public RewardsResponse getRewardsInfo(Long memberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+        Member member = memberRepository.getById(memberId);
 
         List<Reward> rewards = rewardRepository.findRewardsByMember(member);
 

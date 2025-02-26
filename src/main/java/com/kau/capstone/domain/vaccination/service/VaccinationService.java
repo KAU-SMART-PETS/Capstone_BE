@@ -41,8 +41,7 @@ public class VaccinationService {
     }
 
     public void createVaccinationInfo(Long memberId, Long petId, CreateVaccinationRequest request) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+        Member member = memberRepository.getById(memberId);
 
         Pet pet = petRepository.findById(petId)
                 .orElseThrow(() -> new PetNotFoundException());
