@@ -37,7 +37,7 @@ public class Vaccination {
     @JoinColumn(name = "pet_id")
     private Pet pet;
 
-    @Comment("예바접종 이름")
+    @Comment("예방접종 이름")
     private String name;
 
     @Comment("연도")
