@@ -15,6 +15,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 
+import java.time.LocalDate;
+
 @Entity
 @Getter
 @Builder
@@ -40,14 +42,10 @@ public class Vaccination {
     @Comment("예방접종 이름")
     private String name;
 
-    @Comment("연도")
-    private Integer timeYear;
+    @Comment("접종시기")
+    private LocalDate vaccinatedAt;
 
-    @Comment("월")
-    private Integer timeMonth;
 
-    @Comment("일")
-    private Integer timeDay;
 
     public void modify(String name, Integer year, Integer month, Integer day) {
         this.name = name;
