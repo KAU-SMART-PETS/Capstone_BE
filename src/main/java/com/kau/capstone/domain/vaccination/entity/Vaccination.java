@@ -2,6 +2,8 @@ package com.kau.capstone.domain.vaccination.entity;
 
 import com.kau.capstone.domain.member.entity.Member;
 import com.kau.capstone.domain.pet.entity.Pet;
+import com.kau.capstone.domain.vaccination.dto.CreateVaccinationRequest;
+import com.kau.capstone.domain.vaccination.dto.PutVaccinationRequest;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -9,8 +11,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
@@ -19,8 +19,6 @@ import java.time.LocalDate;
 
 @Entity
 @Getter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Vaccination {
 
@@ -45,12 +43,24 @@ public class Vaccination {
     @Comment("접종시기")
     private LocalDate vaccinatedAt;
 
-
-
-    public void modify(String name, Integer year, Integer month, Integer day) {
+    private Vaccination(Member member, Pet pet, String name, LocalDate vaccinatedAt) {
+        this.member = member;
+        this.pet = pet;
         this.name = name;
-        this.timeYear = year;
-        this.timeMonth = month;
-        this.timeDay = day;
+        this.vaccinatedAt = vaccinatedAt;
+    }
+
+    public static Vaccination of(Member member, Pet pet, CreateVaccinationRequest request) {
+        return new Vaccination(
+                member,
+                pet,
+                request.name(),
+                LocalDate.of(request.year(), request.month(), request.day())
+        );
+    }
+
+    public void modify(PutVaccinationRequest request) {
+        this.name = request.name();
+        this.vaccinatedAt = LocalDate.of(request.year(), request.month(), request.day());
     }
 }

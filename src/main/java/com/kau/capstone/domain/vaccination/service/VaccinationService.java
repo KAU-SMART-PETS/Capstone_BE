@@ -47,14 +47,7 @@ public class VaccinationService {
         Pet pet = petRepository.findById(petId)
                 .orElseThrow(() -> new PetNotFoundException(PET_INFO_NOT_FOUND));
 
-        Vaccination vaccination = Vaccination.builder()
-                .member(member)
-                .pet(pet)
-                .name(request.name())
-                .timeYear(request.year())
-                .timeMonth(request.month())
-                .timeDay(request.day())
-                .build();
+        Vaccination vaccination = Vaccination.of(member, pet, request);
         vaccinationRepository.save(vaccination);
     }
 
@@ -62,7 +55,7 @@ public class VaccinationService {
         Vaccination vaccination = vaccinationRepository.findById(vaccinationId)
                 .orElseThrow(() -> new VaccinationNotFoundException(VACCINATION_NOT_FOUND));
 
-        vaccination.modify(request.name(), request.year(), request.month(), request.day());
+        vaccination.modify(request);
     }
 
     public void deleteVaccinationInfo(Long vaccinationId) {
