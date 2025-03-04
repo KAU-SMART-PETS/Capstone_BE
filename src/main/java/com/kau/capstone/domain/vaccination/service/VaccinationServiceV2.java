@@ -1,17 +1,15 @@
 package com.kau.capstone.domain.vaccination.service;
 
 import static com.kau.capstone.global.exception.ErrorCode.PET_INFO_NOT_FOUND;
-import static com.kau.capstone.global.exception.ErrorCode.VACCINATION_NOT_FOUND;
 
 import com.kau.capstone.domain.member.repository.MemberRepository;
 import com.kau.capstone.domain.pet.entity.Pet;
 import com.kau.capstone.domain.pet.exception.PetNotFoundException;
 import com.kau.capstone.domain.pet.repository.PetRepository;
 import com.kau.capstone.domain.vaccination.dto.CreateVaccinationRequestV2;
-import com.kau.capstone.domain.vaccination.dto.PutVaccinationRequest;
+import com.kau.capstone.domain.vaccination.dto.PutVaccinationRequestV2;
 import com.kau.capstone.domain.vaccination.dto.VaccinationsResponse;
 import com.kau.capstone.domain.vaccination.entity.Vaccination;
-import com.kau.capstone.domain.vaccination.exception.VaccinationNotFoundException;
 import com.kau.capstone.domain.vaccination.repository.VaccinationRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -43,14 +41,14 @@ public class VaccinationServiceV2 {
 //
 //        return VaccinationsResponse.toResponse(pet, vaccinations);
 //    }
-//
-//    public void putVaccinationInfo(Long vaccinationId, PutVaccinationRequest request) {
-//        Vaccination vaccination = vaccinationRepository.findById(vaccinationId)
-//                .orElseThrow(() -> new VaccinationNotFoundException(VACCINATION_NOT_FOUND));
-//
-//        vaccination.modify(request);
-//    }
-//
+
+    @Transactional
+    public void putVaccinationInfo(Long vaccinationId, PutVaccinationRequestV2 request) {
+        Vaccination vaccination = vaccinationRepository.getById(vaccinationId);
+        vaccination.modify(request);
+    }
+
+    @Transactional
     public void deleteVaccinationInfo(Long vaccinationId) {
         Vaccination vaccination = vaccinationRepository.getById(vaccinationId);
         vaccinationRepository.delete(vaccination);

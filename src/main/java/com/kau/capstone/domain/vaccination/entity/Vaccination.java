@@ -4,6 +4,7 @@ import com.kau.capstone.domain.pet.entity.Pet;
 import com.kau.capstone.domain.vaccination.dto.CreateVaccinationRequest;
 import com.kau.capstone.domain.vaccination.dto.CreateVaccinationRequestV2;
 import com.kau.capstone.domain.vaccination.dto.PutVaccinationRequest;
+import com.kau.capstone.domain.vaccination.dto.PutVaccinationRequestV2;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -63,5 +64,10 @@ public class Vaccination {
     public void modify(PutVaccinationRequest request) {
         this.name = request.name();
         this.vaccinatedAt = LocalDate.of(request.year(), request.month(), request.day());
+    }
+
+    public void modify(PutVaccinationRequestV2 request) {
+        this.name = request.name();
+        this.vaccinatedAt = request.vaccinatedAt();
     }
 }
