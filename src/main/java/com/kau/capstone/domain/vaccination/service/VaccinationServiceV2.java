@@ -33,6 +33,7 @@ public class VaccinationServiceV2 {
         vaccinationRepository.save(vaccination);
     }
 
+    @Transactional(readOnly = true)
     public VaccinationsResV2 getVaccinationInfo(Long petId) {
         Pet pet = petRepository.findById(petId)
                 .orElseThrow(() -> new PetNotFoundException(PET_INFO_NOT_FOUND));
