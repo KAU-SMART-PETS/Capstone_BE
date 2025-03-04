@@ -1,8 +1,8 @@
 package com.kau.capstone.domain.vaccination.entity;
 
-import com.kau.capstone.domain.member.entity.Member;
 import com.kau.capstone.domain.pet.entity.Pet;
 import com.kau.capstone.domain.vaccination.dto.CreateVaccinationRequest;
+import com.kau.capstone.domain.vaccination.dto.CreateVaccinationRequestV2;
 import com.kau.capstone.domain.vaccination.dto.PutVaccinationRequest;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -49,6 +49,14 @@ public class Vaccination {
                 pet,
                 request.name(),
                 LocalDate.of(request.year(), request.month(), request.day())
+        );
+    }
+
+    public static Vaccination of(Pet pet, CreateVaccinationRequestV2 request) {
+        return new Vaccination(
+            pet,
+            request.name(),
+            request.vaccinatedAt()
         );
     }
 
