@@ -11,5 +11,5 @@ import java.util.List;
 public interface VaccinationRepository extends JpaRepository<Vaccination, Long> {
 
     @Query("SELECT v FROM Vaccination v WHERE v.pet = :pet ORDER BY v.vaccinatedAt DESC")
-    List<Vaccination> findAllByMemberAndPet(@Param("pet") Pet pet);
+    List<Vaccination> findAllByPet(@Param("pet") Pet pet);
 }

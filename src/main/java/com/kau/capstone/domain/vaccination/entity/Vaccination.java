@@ -28,11 +28,6 @@ public class Vaccination {
     private Long id;
 
     @ManyToOne
-    @Comment("사용자 연결")
-    @JoinColumn(name = "member_id")
-    private Member member;
-
-    @ManyToOne
     @Comment("반려동물 연결")
     @JoinColumn(name = "pet_id")
     private Pet pet;
@@ -43,16 +38,14 @@ public class Vaccination {
     @Comment("접종시기")
     private LocalDate vaccinatedAt;
 
-    private Vaccination(Member member, Pet pet, String name, LocalDate vaccinatedAt) {
-        this.member = member;
+    private Vaccination(Pet pet, String name, LocalDate vaccinatedAt) {
         this.pet = pet;
         this.name = name;
         this.vaccinatedAt = vaccinatedAt;
     }
 
-    public static Vaccination of(Member member, Pet pet, CreateVaccinationRequest request) {
+    public static Vaccination of(Pet pet, CreateVaccinationRequest request) {
         return new Vaccination(
-                member,
                 pet,
                 request.name(),
                 LocalDate.of(request.year(), request.month(), request.day())

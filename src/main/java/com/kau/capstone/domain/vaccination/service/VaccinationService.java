@@ -1,7 +1,5 @@
 package com.kau.capstone.domain.vaccination.service;
 
-import com.kau.capstone.domain.member.entity.Member;
-import com.kau.capstone.domain.member.exception.MemberNotFoundException;
 import com.kau.capstone.domain.member.repository.MemberRepository;
 import com.kau.capstone.domain.pet.entity.Pet;
 import com.kau.capstone.domain.pet.exception.PetNotFoundException;
@@ -18,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.kau.capstone.global.exception.ErrorCode.MEMBER_NOT_FOUND;
 import static com.kau.capstone.global.exception.ErrorCode.PET_INFO_NOT_FOUND;
 import static com.kau.capstone.global.exception.ErrorCode.VACCINATION_NOT_FOUND;
 
@@ -35,19 +32,16 @@ public class VaccinationService {
         Pet pet = petRepository.findById(petId)
                 .orElseThrow(() -> new PetNotFoundException(PET_INFO_NOT_FOUND));
 
-        List<Vaccination> vaccinations = vaccinationRepository.findAllByMemberAndPet(pet);
+        List<Vaccination> vaccinations = vaccinationRepository.findAllByPet(pet);
 
         return VaccinationsResponse.toResponse(pet, vaccinations);
     }
 
-    public void createVaccinationInfo(Long memberId, Long petId, CreateVaccinationRequest request) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
-
+    public void createVaccinationInfo(Long petId, CreateVaccinationRequest request) {
         Pet pet = petRepository.findById(petId)
                 .orElseThrow(() -> new PetNotFoundException(PET_INFO_NOT_FOUND));
 
-        Vaccination vaccination = Vaccination.of(member, pet, request);
+        Vaccination vaccination = Vaccination.of(pet, request);
         vaccinationRepository.save(vaccination);
     }
 
