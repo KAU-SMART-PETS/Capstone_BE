@@ -5,7 +5,7 @@ import com.kau.capstone.domain.auth.dto.LoginInfo;
 import com.kau.capstone.domain.auth.util.LoginUser;
 import com.kau.capstone.domain.vaccination.dto.CreateVaccinationRequestV2;
 import com.kau.capstone.domain.vaccination.dto.PutVaccinationRequestV2;
-import com.kau.capstone.domain.vaccination.dto.VaccinationsResponse;
+import com.kau.capstone.domain.vaccination.dto.VaccinationsResponseV2;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -35,18 +35,17 @@ public interface VaccinationApiV2 {
         @Parameter(description = "보건정보 관련 이름, 접종시기") @RequestBody CreateVaccinationRequestV2 request
     );
 
-//    @Operation(summary = "반려동물 보건정보 목록 조회", description = "반려견에게 등록된 보건정보 목록입니다.")
-//    @ApiResponse(
-//            responseCode = "200",
-//            description = "보건정보 목록 조회 성공",
-//            content = @Content(schema = @Schema(implementation = VaccinationsResponse.class))
-//    )
-//    @GetMapping("/api/v1/pets/{petId}/vaccination")
-//    ResponseEntity<VaccinationsResponse> getVaccinationInfoForPet(
-//            @Parameter(description = "반려동물 ID")
-//            @PathVariable Long petId
-//    );
-//
+    @Operation(summary = "반려동물 보건정보 목록 조회 v2", description = "반려견에게 등록된 보건정보 목록입니다.")
+    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+        responseCode = "200",
+        description = "보건정보 목록 조회 성공",
+        content = @Content(schema = @Schema(implementation = VaccinationsResponseV2.class))
+    )
+    @GetMapping("/api/v2/pets/{petId}/vaccination")
+    ResponseEntity<ApiResponse<VaccinationsResponseV2>> getVaccinationInfoForPet(
+        @Parameter(description = "반려동물 ID") @PathVariable Long petId
+    );
+
     @Operation(summary = "보건정보 수정 v2", description = "반려견에게 등록된 보건정보를 수정하는 기능입니다.")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(
         responseCode = "200",

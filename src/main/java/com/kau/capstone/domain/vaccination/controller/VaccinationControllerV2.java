@@ -5,7 +5,7 @@ import com.kau.capstone.domain.auth.dto.LoginInfo;
 import com.kau.capstone.domain.auth.util.LoginUser;
 import com.kau.capstone.domain.vaccination.dto.CreateVaccinationRequestV2;
 import com.kau.capstone.domain.vaccination.dto.PutVaccinationRequestV2;
-import com.kau.capstone.domain.vaccination.dto.VaccinationsResponse;
+import com.kau.capstone.domain.vaccination.dto.VaccinationsResponseV2;
 import com.kau.capstone.domain.vaccination.service.VaccinationServiceV2;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -34,13 +34,14 @@ public class VaccinationControllerV2 implements VaccinationApiV2 {
         return ApiResponse.create();
     }
 
-//    @GetMapping("/api/v1/pets/{petId}/vaccination")
-//    public ResponseEntity<VaccinationsResponse> getVaccinationInfoForPet(@PathVariable Long petId) {
-//        VaccinationsResponse response = vaccinationService.getVaccinationInfo(petId);
-//
-//        return ResponseEntity.ok(response);
-//    }
-//
+    @GetMapping("/api/v2/pets/{petId}/vaccination")
+    public ResponseEntity<ApiResponse<VaccinationsResponseV2>> getVaccinationInfoForPet(
+        @PathVariable Long petId
+    ) {
+        VaccinationsResponseV2 response = vaccinationService.getVaccinationInfo(petId);
+        return ApiResponse.ok(response);
+    }
+
     @PutMapping("/api/v2/pets/{petId}/vaccination/{vaccinationId}")
     public ResponseEntity<ApiResponse<Void>> putVaccinationInfoForPet(
         @LoginUser LoginInfo loginInfo,

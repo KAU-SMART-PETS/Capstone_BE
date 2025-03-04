@@ -8,7 +8,7 @@ import com.kau.capstone.domain.pet.exception.PetNotFoundException;
 import com.kau.capstone.domain.pet.repository.PetRepository;
 import com.kau.capstone.domain.vaccination.dto.CreateVaccinationRequestV2;
 import com.kau.capstone.domain.vaccination.dto.PutVaccinationRequestV2;
-import com.kau.capstone.domain.vaccination.dto.VaccinationsResponse;
+import com.kau.capstone.domain.vaccination.dto.VaccinationsResponseV2;
 import com.kau.capstone.domain.vaccination.entity.Vaccination;
 import com.kau.capstone.domain.vaccination.repository.VaccinationRepository;
 import java.util.List;
@@ -33,14 +33,13 @@ public class VaccinationServiceV2 {
         vaccinationRepository.save(vaccination);
     }
 
-//    public VaccinationsResponse getVaccinationInfo(Long petId) {
-//        Pet pet = petRepository.findById(petId)
-//                .orElseThrow(() -> new PetNotFoundException(PET_INFO_NOT_FOUND));
-//
-//        List<Vaccination> vaccinations = vaccinationRepository.findAllByPet(pet);
-//
-//        return VaccinationsResponse.toResponse(pet, vaccinations);
-//    }
+    public VaccinationsResponseV2 getVaccinationInfo(Long petId) {
+        Pet pet = petRepository.findById(petId)
+                .orElseThrow(() -> new PetNotFoundException(PET_INFO_NOT_FOUND));
+
+        List<Vaccination> vaccinations = vaccinationRepository.findAllByPet(pet);
+        return VaccinationsResponseV2.of(pet, vaccinations);
+    }
 
     @Transactional
     public void putVaccinationInfo(Long vaccinationId, PutVaccinationRequestV2 request) {
