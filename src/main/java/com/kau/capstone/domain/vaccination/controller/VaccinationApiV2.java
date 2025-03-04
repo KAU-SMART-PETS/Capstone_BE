@@ -3,14 +3,13 @@ package com.kau.capstone.domain.vaccination.controller;
 import com.kau.capstone._core.dto.ApiResponse;
 import com.kau.capstone.domain.auth.dto.LoginInfo;
 import com.kau.capstone.domain.auth.util.LoginUser;
-import com.kau.capstone.domain.vaccination.dto.CreateVaccinationRequestV2;
-import com.kau.capstone.domain.vaccination.dto.PutVaccinationRequestV2;
-import com.kau.capstone.domain.vaccination.dto.VaccinationsResponseV2;
+import com.kau.capstone.domain.vaccination.dto.CreateVaccinationReqV2;
+import com.kau.capstone.domain.vaccination.dto.PutVaccinationReqV2;
+import com.kau.capstone.domain.vaccination.dto.VaccinationsResV2;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,17 +31,17 @@ public interface VaccinationApiV2 {
     ResponseEntity<ApiResponse<Void>> createVaccinationInfoForPet(
         @Parameter(description = "로그인 정보") @LoginUser LoginInfo loginInfo,
         @Parameter(description = "반려동물 ID") @PathVariable Long petId,
-        @Parameter(description = "보건정보 관련 이름, 접종시기") @RequestBody CreateVaccinationRequestV2 request
+        @Parameter(description = "보건정보 관련 이름, 접종시기") @RequestBody CreateVaccinationReqV2 request
     );
 
     @Operation(summary = "반려동물 보건정보 목록 조회 v2", description = "반려견에게 등록된 보건정보 목록입니다.")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(
         responseCode = "200",
         description = "보건정보 목록 조회 성공",
-        content = @Content(schema = @Schema(implementation = VaccinationsResponseV2.class))
+        content = @Content(schema = @Schema(implementation = VaccinationsResV2.class))
     )
     @GetMapping("/api/v2/pets/{petId}/vaccination")
-    ResponseEntity<ApiResponse<VaccinationsResponseV2>> getVaccinationInfoForPet(
+    ResponseEntity<ApiResponse<VaccinationsResV2>> getVaccinationInfoForPet(
         @Parameter(description = "반려동물 ID") @PathVariable Long petId
     );
 
@@ -56,7 +55,7 @@ public interface VaccinationApiV2 {
         @Parameter(description = "로그인 정보") @LoginUser LoginInfo loginInfo,
         @Parameter(description = "반려동물 ID") @PathVariable Long petId,
         @Parameter(description = "보건정보 ID") @PathVariable Long vaccinationId,
-        @Parameter(description = "수정할 보건정보 관련 이름, 접종시기") @RequestBody PutVaccinationRequestV2 request
+        @Parameter(description = "수정할 보건정보 관련 이름, 접종시기") @RequestBody PutVaccinationReqV2 request
     );
 
     @Operation(summary = "보건정보 삭제 v2", description = "반려견에게 등록된 보건정보를 삭제하는 기능입니다.")

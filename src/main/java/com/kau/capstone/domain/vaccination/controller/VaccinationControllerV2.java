@@ -3,12 +3,11 @@ package com.kau.capstone.domain.vaccination.controller;
 import com.kau.capstone._core.dto.ApiResponse;
 import com.kau.capstone.domain.auth.dto.LoginInfo;
 import com.kau.capstone.domain.auth.util.LoginUser;
-import com.kau.capstone.domain.vaccination.dto.CreateVaccinationRequestV2;
-import com.kau.capstone.domain.vaccination.dto.PutVaccinationRequestV2;
-import com.kau.capstone.domain.vaccination.dto.VaccinationsResponseV2;
+import com.kau.capstone.domain.vaccination.dto.CreateVaccinationReqV2;
+import com.kau.capstone.domain.vaccination.dto.PutVaccinationReqV2;
+import com.kau.capstone.domain.vaccination.dto.VaccinationsResV2;
 import com.kau.capstone.domain.vaccination.service.VaccinationServiceV2;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,17 +27,17 @@ public class VaccinationControllerV2 implements VaccinationApiV2 {
     public ResponseEntity<ApiResponse<Void>> createVaccinationInfoForPet(
         @LoginUser LoginInfo loginInfo,
         @PathVariable Long petId,
-        @RequestBody CreateVaccinationRequestV2 request
+        @RequestBody CreateVaccinationReqV2 request
     ) {
         vaccinationService.createVaccinationInfo(petId, request);
         return ApiResponse.create();
     }
 
     @GetMapping("/api/v2/pets/{petId}/vaccination")
-    public ResponseEntity<ApiResponse<VaccinationsResponseV2>> getVaccinationInfoForPet(
+    public ResponseEntity<ApiResponse<VaccinationsResV2>> getVaccinationInfoForPet(
         @PathVariable Long petId
     ) {
-        VaccinationsResponseV2 response = vaccinationService.getVaccinationInfo(petId);
+        VaccinationsResV2 response = vaccinationService.getVaccinationInfo(petId);
         return ApiResponse.ok(response);
     }
 
@@ -47,7 +46,7 @@ public class VaccinationControllerV2 implements VaccinationApiV2 {
         @LoginUser LoginInfo loginInfo,
         @PathVariable Long petId,
         @PathVariable Long vaccinationId,
-        @RequestBody PutVaccinationRequestV2 request
+        @RequestBody PutVaccinationReqV2 request
     ) {
         vaccinationService.putVaccinationInfo(vaccinationId, request);
         return ApiResponse.ok();

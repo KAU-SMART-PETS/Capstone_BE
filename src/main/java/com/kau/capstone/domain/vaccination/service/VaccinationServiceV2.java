@@ -6,9 +6,9 @@ import com.kau.capstone.domain.member.repository.MemberRepository;
 import com.kau.capstone.domain.pet.entity.Pet;
 import com.kau.capstone.domain.pet.exception.PetNotFoundException;
 import com.kau.capstone.domain.pet.repository.PetRepository;
-import com.kau.capstone.domain.vaccination.dto.CreateVaccinationRequestV2;
-import com.kau.capstone.domain.vaccination.dto.PutVaccinationRequestV2;
-import com.kau.capstone.domain.vaccination.dto.VaccinationsResponseV2;
+import com.kau.capstone.domain.vaccination.dto.CreateVaccinationReqV2;
+import com.kau.capstone.domain.vaccination.dto.PutVaccinationReqV2;
+import com.kau.capstone.domain.vaccination.dto.VaccinationsResV2;
 import com.kau.capstone.domain.vaccination.entity.Vaccination;
 import com.kau.capstone.domain.vaccination.repository.VaccinationRepository;
 import java.util.List;
@@ -25,7 +25,7 @@ public class VaccinationServiceV2 {
     private final VaccinationRepository vaccinationRepository;
 
     @Transactional
-    public void createVaccinationInfo(Long petId, CreateVaccinationRequestV2 request) {
+    public void createVaccinationInfo(Long petId, CreateVaccinationReqV2 request) {
         Pet pet = petRepository.findById(petId)
             .orElseThrow(() -> new PetNotFoundException(PET_INFO_NOT_FOUND));
 
@@ -33,16 +33,16 @@ public class VaccinationServiceV2 {
         vaccinationRepository.save(vaccination);
     }
 
-    public VaccinationsResponseV2 getVaccinationInfo(Long petId) {
+    public VaccinationsResV2 getVaccinationInfo(Long petId) {
         Pet pet = petRepository.findById(petId)
                 .orElseThrow(() -> new PetNotFoundException(PET_INFO_NOT_FOUND));
 
         List<Vaccination> vaccinations = vaccinationRepository.findAllByPet(pet);
-        return VaccinationsResponseV2.of(pet, vaccinations);
+        return VaccinationsResV2.of(pet, vaccinations);
     }
 
     @Transactional
-    public void putVaccinationInfo(Long vaccinationId, PutVaccinationRequestV2 request) {
+    public void putVaccinationInfo(Long vaccinationId, PutVaccinationReqV2 request) {
         Vaccination vaccination = vaccinationRepository.getById(vaccinationId);
         vaccination.modify(request);
     }
