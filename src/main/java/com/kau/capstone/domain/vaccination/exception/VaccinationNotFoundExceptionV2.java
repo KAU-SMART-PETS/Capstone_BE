@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 
 public class VaccinationNotFoundExceptionV2 extends ApiException {
 
-    private static final String message = "보건 정보를 찾을 수 없습니다.";
+    private static final String message = "존재하지 않은 보건정보입니다.";
 
     public VaccinationNotFoundExceptionV2() {
         super(HttpStatus.NOT_FOUND, message);
