@@ -64,18 +64,16 @@ public interface VaccinationApiV2 {
 //            @RequestBody PutVaccinationRequest request
 //    );
 //
-//    @Operation(summary = "보건정보 삭제", description = "반려견에게 등록된 보건정보를 삭제하는 기능입니다.")
-//    @ApiResponse(
-//            responseCode = "204",
-//            description = "보건정보 삭제 성공"
-//    )
-//    @DeleteMapping("/api/v1/pets/{petId}/vaccination/{vaccinationId}")
-//    ResponseEntity<Void> deleteVaccinationInfoForPet(
-//            @Parameter(description = "로그인 정보")
-//            @LoginUser LoginInfo loginInfo,
-//            @Parameter(description = "반려동물 ID")
-//            @PathVariable Long petId,
-//            @Parameter(description = "보건정보 ID")
-//            @PathVariable Long vaccinationId
-//    );
+    @Operation(summary = "보건정보 삭제 v2", description = "반려견에게 등록된 보건정보를 삭제하는 기능입니다.")
+    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200",
+            description = "보건정보 삭제 성공"
+    )
+    @DeleteMapping("/api/v2/pets/{petId}/vaccination/{vaccinationId}")
+    ResponseEntity<ApiResponse<Void>> deleteVaccinationInfoForPet(
+            @Parameter(description = "로그인 정보") @LoginUser LoginInfo loginInfo,
+            @Parameter(description = "반려동물 ID") @PathVariable Long petId,
+            @Parameter(description = "보건정보 ID") @PathVariable Long vaccinationId
+    );
+
 }

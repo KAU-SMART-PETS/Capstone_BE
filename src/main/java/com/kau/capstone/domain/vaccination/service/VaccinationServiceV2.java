@@ -51,10 +51,9 @@ public class VaccinationServiceV2 {
 //        vaccination.modify(request);
 //    }
 //
-//    public void deleteVaccinationInfo(Long vaccinationId) {
-//        Vaccination vaccination = vaccinationRepository.findById(vaccinationId)
-//                .orElseThrow(() -> new VaccinationNotFoundException(VACCINATION_NOT_FOUND));
-//
-//        vaccinationRepository.delete(vaccination);
-//    }
+    public void deleteVaccinationInfo(Long vaccinationId) {
+        Vaccination vaccination = vaccinationRepository.getById(vaccinationId);
+        vaccinationRepository.delete(vaccination);
+    }
+
 }

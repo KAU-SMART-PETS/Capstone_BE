@@ -51,12 +51,14 @@ public class VaccinationControllerV2 implements VaccinationApiV2 {
 //        return ResponseEntity.noContent().build();
 //    }
 //
-//    @DeleteMapping("/api/v1/pets/{petId}/vaccination/{vaccinationId}")
-//    public ResponseEntity<Void> deleteVaccinationInfoForPet(@LoginUser LoginInfo loginInfo,
-//        @PathVariable Long petId,
-//        @PathVariable Long vaccinationId) {
-//        vaccinationService.deleteVaccinationInfo(vaccinationId);
-//
-//        return ResponseEntity.noContent().build();
-//    }
+    @DeleteMapping("/api/v2/pets/{petId}/vaccination/{vaccinationId}")
+    public ResponseEntity<ApiResponse<Void>> deleteVaccinationInfoForPet(
+        @LoginUser LoginInfo loginInfo,
+        @PathVariable Long petId,
+        @PathVariable Long vaccinationId
+    ) {
+        vaccinationService.deleteVaccinationInfo(vaccinationId);
+        return ApiResponse.ok();
+    }
+
 }
