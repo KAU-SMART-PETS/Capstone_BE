@@ -15,8 +15,6 @@ public record FoodsResponse(
                 .map(FoodResponse::toResponse)
                 .toList();
 
-        return FoodsResponse.builder()
-                .foods(foodResponses)
-                .build();
+        return new FoodsResponse(foodResponses);
     }
 }

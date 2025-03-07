@@ -11,10 +11,10 @@ public record FoodResponse(
 ) {
 
     public static FoodResponse toResponse(Food food) {
-        return FoodResponse.builder()
-                .id(food.getId())
-                .imageUrl(food.getImageUrl())
-                .price(food.getPrice())
-                .build();
+        return new FoodResponse(
+                food.getId(),
+                food.getImageUrl(),
+                food.getPrice()
+        );
     }
 }
