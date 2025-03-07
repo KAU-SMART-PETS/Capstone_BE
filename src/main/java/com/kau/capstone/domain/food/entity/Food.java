@@ -13,11 +13,8 @@ import org.hibernate.annotations.Comment;
 
 @Entity
 @Getter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Food {
-
     @Id
     @Comment("강아지 사료 식별자")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,5 +27,11 @@ public class Food {
     private String imageUrl;
 
     @Comment("사료 가격")
-    private Long price;
+    private long price;
+
+    private Food(String name, String imageUrl, Long price) {
+        this.name = name;
+        this.imageUrl = imageUrl;
+        this.price = price;
+    }
 }
