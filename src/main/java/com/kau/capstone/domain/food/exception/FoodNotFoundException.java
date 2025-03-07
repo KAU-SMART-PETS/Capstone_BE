@@ -5,7 +5,7 @@ import com.kau.capstone.global.exception.ErrorCode;
 
 public class FoodNotFoundException extends ApplicationException {
 
-    public FoodNotFoundException(ErrorCode errorCode) {
-        super(errorCode);
+    public FoodNotFoundException() {
+        super(ErrorCode.FOOD_NOT_FOUND);
     }
 }
