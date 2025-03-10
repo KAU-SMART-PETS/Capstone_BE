@@ -32,7 +32,7 @@ public class VaccinationService {
         Pet pet = petRepository.findById(petId)
                 .orElseThrow(() -> new PetNotFoundException(PET_INFO_NOT_FOUND));
 
-        List<Vaccination> vaccinations = vaccinationRepository.findAllByPet(pet);
+        List<Vaccination> vaccinations = vaccinationRepository.findAllByPetOrderByVaccinatedAtDesc(pet);
 
         return VaccinationsResponse.toResponse(pet, vaccinations);
     }
