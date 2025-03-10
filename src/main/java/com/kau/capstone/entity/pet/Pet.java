@@ -4,6 +4,8 @@ import com.kau.capstone.entity.member.Member;
 import com.kau.capstone.v1.pet.dto.request.PetRegistRequest;
 import com.kau.capstone.entity.walk.Walk;
 import com.kau.capstone.global.common.BaseEntity;
+import com.kau.capstone.v2.pet.dto.request.PetRegistReqV2;
+import com.kau.capstone.v2.pet.dto.request.PetReqV2;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
