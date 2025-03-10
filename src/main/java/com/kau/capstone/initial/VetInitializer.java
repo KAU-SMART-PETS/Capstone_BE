@@ -1,7 +1,7 @@
 package com.kau.capstone.initial;
 
-import com.kau.capstone.domain.vet.entity.Vet;
-import com.kau.capstone.domain.vet.repository.VetRepository;
+import com.kau.capstone.entity.vet.Vet;
+import com.kau.capstone.entity.vet.repository.VetRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
