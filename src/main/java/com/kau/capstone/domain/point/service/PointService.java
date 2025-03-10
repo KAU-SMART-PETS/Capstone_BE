@@ -48,8 +48,7 @@ public class PointService {
     private final AlarmRepository alarmRepository;
 
     public void processPointPayment(Long memberId, PayPointRequest request) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+        Member member = memberRepository.getById(memberId);
 
         Point point = member.getPoint();
 
@@ -62,8 +61,7 @@ public class PointService {
     }
 
     public void processPointEarn(Long memberId, EarnPointRequest request) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+        Member member = memberRepository.getById(memberId);
 
         Point point = member.getPoint();
 
@@ -72,8 +70,7 @@ public class PointService {
     }
 
     public HistoryResponse getPointHistory(Long memberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+        Member member = memberRepository.getById(memberId);
 
         List<History> histories = historyRepository.findHistoriesByMember(member);
 
@@ -93,8 +90,7 @@ public class PointService {
     }
 
     public void processPointPaymentForFood(Long memberId, Long foodId, Long deliveryFee) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+        Member member = memberRepository.getById(memberId);
         Point point = member.getPoint();
 
         Food food = foodRepository.findById(foodId)
@@ -120,8 +116,7 @@ public class PointService {
     }
 
     public void processPointEarnForReward(Long memberId, Long rewardId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+        Member member = memberRepository.getById(memberId);
         Point point = member.getPoint();
 
         Reward reward = rewardRepository.findById(rewardId)

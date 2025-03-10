@@ -33,7 +33,7 @@ public class VaccinationService {
 
     public VaccinationsResponse getVaccinationInfo(Long petId) {
         Pet pet = petRepository.findById(petId)
-                .orElseThrow(() -> new PetNotFoundException(PET_INFO_NOT_FOUND));
+                .orElseThrow(() -> new PetNotFoundException());
 
         List<Vaccination> vaccinations = vaccinationRepository.findAllByMemberAndPet(pet);
 
@@ -41,11 +41,10 @@ public class VaccinationService {
     }
 
     public void createVaccinationInfo(Long memberId, Long petId, CreateVaccinationRequest request) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+        Member member = memberRepository.getById(memberId);
 
         Pet pet = petRepository.findById(petId)
-                .orElseThrow(() -> new PetNotFoundException(PET_INFO_NOT_FOUND));
+                .orElseThrow(() -> new PetNotFoundException());
 
         Vaccination vaccination = Vaccination.builder()
                 .member(member)

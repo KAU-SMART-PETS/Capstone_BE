@@ -23,8 +23,7 @@ public class AlarmService {
     private final AlarmRepository alarmRepository;
 
     public AlarmResponse getAlarmInfo(Long memberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+        Member member = memberRepository.getById(memberId);
 
         List<Alarm> alarms = alarmRepository.findAllAlarmByMember(member);
 

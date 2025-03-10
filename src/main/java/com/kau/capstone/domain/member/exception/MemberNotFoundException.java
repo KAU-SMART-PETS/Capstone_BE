@@ -1,11 +1,13 @@
 package com.kau.capstone.domain.member.exception;
 
-import com.kau.capstone.global.exception.ApplicationException;
-import com.kau.capstone.global.exception.ErrorCode;
+import com.kau.capstone._core.exception.ApiException;
+import org.springframework.http.HttpStatus;
 
-public class MemberNotFoundException extends ApplicationException {
+public class MemberNotFoundException extends ApiException {
 
-    public MemberNotFoundException(ErrorCode errorCode) {
-        super(errorCode);
+    private static String message = "회원 정보를 찾을 수 없습니다.";
+
+    public MemberNotFoundException() {
+        super(HttpStatus.NOT_FOUND, message);
     }
 }

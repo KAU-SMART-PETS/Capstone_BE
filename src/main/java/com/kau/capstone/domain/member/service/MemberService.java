@@ -85,8 +85,7 @@ public class MemberService {
     }
 
     public Member findById(Long memberId) {
-        return memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+        return memberRepository.getById(memberId);
     }
 
     @Transactional(propagation = REQUIRES_NEW)
@@ -95,22 +94,19 @@ public class MemberService {
     }
 
     public MemberInfoResponse getMemberInfo(Long memberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+        Member member = memberRepository.getById(memberId);
 
         return MemberInfoResponse.toResponse(member);
     }
 
     public void putMemberInfo(Long memberId, ModifyMemberRequest request) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+        Member member = memberRepository.getById(memberId);
 
         member.updateInfo(request.email(), request.phoneNumber(), request.smsOptIn(), request.emailOptIn());
     }
 
     public OwnedPetsResponse getOwnedPets(Long memberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+        Member member = memberRepository.getById(memberId);
 
         List<Pet> ownedPets = ownedPetRepository.findPetsByMember(member);
 

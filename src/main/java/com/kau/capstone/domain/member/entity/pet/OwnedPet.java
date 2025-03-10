@@ -32,4 +32,13 @@ public class OwnedPet {
     @ManyToOne
     @JoinColumn(name = "pet_id")
     private Pet pet;
+
+    public OwnedPet(Member member, Pet pet) {
+        this.member = member;
+        this.pet = pet;
+    }
+
+    public static OwnedPet of(Member member, Pet pet) {
+        return new OwnedPet(member, pet);
+    }
 }
