@@ -1,18 +1,14 @@
 package com.kau.capstone.domain.member.controller;
 
-import com.kau.capstone.domain.auth.util.SocialSite;
-import com.kau.capstone.domain.point.dto.EarnPointRequest;
-import com.kau.capstone.domain.member.dto.MemberInfoResponse;
-import com.kau.capstone.domain.member.dto.ModifyMemberRequest;
-import com.kau.capstone.domain.member.dto.OwnedPetsResponse;
-import com.kau.capstone.domain.point.dto.PayPointRequest;
-import com.kau.capstone.domain.member.entity.Member;
-import com.kau.capstone.domain.member.entity.pet.OwnedPet;
-import com.kau.capstone.domain.pet.entity.Pet;
-import com.kau.capstone.domain.point.entity.Point;
+import com.kau.capstone.v1.auth.util.SocialSite;
+import com.kau.capstone.v1.member.dto.MemberInfoResponse;
+import com.kau.capstone.v1.member.dto.ModifyMemberRequest;
+import com.kau.capstone.v1.member.dto.OwnedPetsResponse;
+import com.kau.capstone.entity.member.Member;
+import com.kau.capstone.entity.member.OwnedPet;
+import com.kau.capstone.entity.pet.Pet;
+import com.kau.capstone.entity.point.Point;
 import com.kau.capstone.global.common.ControllerTest;
-import com.kau.capstone.global.common.ResponseDTO;
-import com.kau.capstone.global.exception.ErrorCode;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;

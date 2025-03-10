@@ -1,12 +1,13 @@
 package com.kau.capstone.domain.member.service;
 
-import com.kau.capstone.domain.alarm.repository.AlarmRepository;
-import com.kau.capstone.domain.auth.dto.SignUserDto;
-import com.kau.capstone.domain.auth.dto.UserInfoDto;
-import com.kau.capstone.domain.member.repository.MemberRepository;
-import com.kau.capstone.domain.member.repository.OwnedPetRepository;
-import com.kau.capstone.domain.point.repository.PointRepository;
-import com.kau.capstone.domain.reward.repository.RewardRepository;
+import com.kau.capstone.entity.alarm.repository.AlarmRepository;
+import com.kau.capstone.v1.auth.dto.SignUserDto;
+import com.kau.capstone.v1.auth.dto.UserInfoDto;
+import com.kau.capstone.entity.member.repository.MemberRepository;
+import com.kau.capstone.entity.member.repository.OwnedPetRepository;
+import com.kau.capstone.entity.point.repository.PointRepository;
+import com.kau.capstone.entity.reward.repository.RewardRepository;
+import com.kau.capstone.v1.member.service.MemberService;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;

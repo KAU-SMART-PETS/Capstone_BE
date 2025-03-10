@@ -1,8 +1,8 @@
 package com.kau.capstone.domain.alarm.controller;
 
-import com.kau.capstone.domain.alarm.dto.AlarmResponse;
-import com.kau.capstone.domain.food.entity.Food;
-import com.kau.capstone.domain.point.dto.DeliveryFeeRequest;
+import com.kau.capstone.v1.alarm.dto.AlarmResponse;
+import com.kau.capstone.entity.food.Food;
+import com.kau.capstone.v1.point.dto.DeliveryFeeRequest;
 import com.kau.capstone.global.common.ControllerTest;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
