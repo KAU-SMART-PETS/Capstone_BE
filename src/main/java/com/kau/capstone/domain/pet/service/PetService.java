@@ -1,15 +1,11 @@
 package com.kau.capstone.domain.pet.service;
 
-import static com.kau.capstone.global.exception.ErrorCode.MEMBER_NOT_FOUND;
-import static com.kau.capstone.global.exception.ErrorCode.PET_INFO_NOT_FOUND;
-
 import com.kau.capstone.domain.alarm.entity.Alarm;
 import com.kau.capstone.domain.alarm.entity.AlarmDetail;
 import com.kau.capstone.domain.alarm.repository.AlarmRepository;
 import com.kau.capstone.domain.auth.dto.LoginInfo;
 import com.kau.capstone.domain.member.entity.Member;
 import com.kau.capstone.domain.member.entity.pet.OwnedPet;
-import com.kau.capstone.domain.member.exception.MemberNotFoundException;
 import com.kau.capstone.domain.member.repository.MemberRepository;
 import com.kau.capstone.domain.member.repository.OwnedPetRepository;
 import com.kau.capstone.domain.pet.dto.request.PetRegistRequest;
@@ -22,7 +18,6 @@ import com.kau.capstone.domain.reward.entity.Reward;
 import com.kau.capstone.domain.reward.entity.RewardDetail;
 import com.kau.capstone.domain.reward.repository.RewardRepository;
 import com.kau.capstone.global.common.s3.FileService;
-import com.kau.capstone.global.common.s3.S3Service;
 import java.io.IOException;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -34,8 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class PetService {
-
-    private final S3Service s3Service;
 
     private final PetRepository petRepository;
     private final MemberRepository memberRepository;

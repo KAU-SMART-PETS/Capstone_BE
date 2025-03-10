@@ -8,6 +8,6 @@ public class FileIOException extends ApiException {
     private static final String message = "inputstream io exception";
 
     public FileIOException() {
-        super(HttpStatus.CONFLICT, message);
+        super(HttpStatus.BAD_REQUEST, message);
     }
 }
