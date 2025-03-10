@@ -10,7 +10,6 @@ import com.kau.capstone.global.common.ControllerTest;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Nested;
@@ -18,7 +17,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.SoftAssertions.*;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @SuppressWarnings("NonAsciiCharacters")
@@ -80,14 +78,7 @@ class VaccinationControllerTest extends ControllerTest {
                     .build();
             petRepository.save(pet);
 
-            Vaccination vaccination = Vaccination.builder()
-                    .member(member)
-                    .pet(pet)
-                    .name("광견병")
-                    .timeYear(2024)
-                    .timeMonth(10)
-                    .timeDay(16)
-                    .build();
+            Vaccination vaccination = Vaccination.of(pet, new CreateVaccinationRequest("광견병", 2024, 10, 16));
             vaccinationRepository.save(vaccination);
 
             // when
@@ -130,14 +121,7 @@ class VaccinationControllerTest extends ControllerTest {
                     .build();
             petRepository.save(pet);
 
-            Vaccination vaccination = Vaccination.builder()
-                    .member(member)
-                    .pet(pet)
-                    .name("광견병")
-                    .timeYear(2024)
-                    .timeMonth(10)
-                    .timeDay(16)
-                    .build();
+            Vaccination vaccination = Vaccination.of(pet, new CreateVaccinationRequest("광견병", 2024, 10, 16));
             vaccinationRepository.save(vaccination);
 
             PutVaccinationRequest request = new PutVaccinationRequest("켄넬코프", 2025, 11, 17);
@@ -177,14 +161,7 @@ class VaccinationControllerTest extends ControllerTest {
                     .build();
             petRepository.save(pet);
 
-            Vaccination vaccination = Vaccination.builder()
-                    .member(member)
-                    .pet(pet)
-                    .name("광견병")
-                    .timeYear(2024)
-                    .timeMonth(10)
-                    .timeDay(16)
-                    .build();
+            Vaccination vaccination = Vaccination.of(pet, new CreateVaccinationRequest("광견병", 2024, 10, 16));
             vaccinationRepository.save(vaccination);
 
             // when

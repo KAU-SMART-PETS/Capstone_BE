@@ -1,9 +1,7 @@
 package com.kau.capstone.domain.vaccination.dto;
 
 import com.kau.capstone.domain.vaccination.entity.Vaccination;
-import lombok.Builder;
 
-@Builder
 public record OneVaccinationResponse(
         Long id,
         String name,
@@ -13,12 +11,12 @@ public record OneVaccinationResponse(
 ) {
 
     public static OneVaccinationResponse toResponse(Vaccination vaccination) {
-        return OneVaccinationResponse.builder()
-                .id(vaccination.getId())
-                .name(vaccination.getName())
-                .year(vaccination.getTimeYear())
-                .month(vaccination.getTimeMonth())
-                .day(vaccination.getTimeDay())
-                .build();
+        return new OneVaccinationResponse(
+                vaccination.getId(),
+                vaccination.getName(),
+                vaccination.getVaccinatedAt().getYear(),
+                vaccination.getVaccinatedAt().getMonthValue(),
+                vaccination.getVaccinatedAt().getDayOfMonth()
+        );
     }
 }

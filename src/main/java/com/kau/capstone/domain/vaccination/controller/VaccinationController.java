@@ -27,7 +27,7 @@ public class VaccinationController implements VaccinationApi {
     public ResponseEntity<Void> createVaccinationInfoForPet(@LoginUser LoginInfo loginInfo,
                                                             @PathVariable Long petId,
                                                             @RequestBody CreateVaccinationRequest request) {
-        vaccinationService.createVaccinationInfo(loginInfo.memberId(), petId, request);
+        vaccinationService.createVaccinationInfo(petId, request);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
