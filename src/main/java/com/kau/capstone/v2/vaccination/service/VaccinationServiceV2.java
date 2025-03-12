@@ -1,11 +1,11 @@
-package com.kau.capstone.v1.vaccination.service;
+package com.kau.capstone.v2.vaccination.service;
 
 import com.kau.capstone.entity.pet.Pet;
 import com.kau.capstone.entity.pet.repository.PetRepository;
 import com.kau.capstone.v1.pet.exception.PetNotFoundException;
-import com.kau.capstone.v1.vaccination.dto.CreateVaccinationReqV2;
-import com.kau.capstone.v1.vaccination.dto.PutVaccinationReqV2;
-import com.kau.capstone.v1.vaccination.dto.VaccinationsResV2;
+import com.kau.capstone.v2.vaccination.dto.CreateVaccinationReqV2;
+import com.kau.capstone.v2.vaccination.dto.PutVaccinationReqV2;
+import com.kau.capstone.v2.vaccination.dto.VaccinationsResV2;
 import com.kau.capstone.entity.vaccination.Vaccination;
 import com.kau.capstone.entity.vaccination.repository.VaccinationRepository;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.kau.capstone.v1.vaccination.dto;
+package com.kau.capstone.v2.vaccination.dto;
 
 import java.time.LocalDate;
 

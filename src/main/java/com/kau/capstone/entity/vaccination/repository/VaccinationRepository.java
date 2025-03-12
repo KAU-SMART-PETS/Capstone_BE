@@ -2,7 +2,7 @@ package com.kau.capstone.entity.vaccination.repository;
 
 import com.kau.capstone.entity.pet.Pet;
 import com.kau.capstone.entity.vaccination.Vaccination;
-import com.kau.capstone.domain.vaccination.exception.VaccinationNotFoundExceptionV2;
+import com.kau.capstone.v2.vaccination.exception.VaccinationNotFoundExceptionV2;
 import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;

@@ -1,12 +1,12 @@
-package com.kau.capstone.v1.vaccination.controller;
+package com.kau.capstone.v2.vaccination.controller;
 
 import com.kau.capstone._core.dto.ApiResponse;
 import com.kau.capstone.v1.auth.dto.LoginInfo;
 import com.kau.capstone.v1.auth.util.LoginUser;
-import com.kau.capstone.v1.vaccination.dto.CreateVaccinationReqV2;
-import com.kau.capstone.v1.vaccination.dto.PutVaccinationReqV2;
-import com.kau.capstone.v1.vaccination.dto.VaccinationsResV2;
-import com.kau.capstone.v1.vaccination.service.VaccinationServiceV2;
+import com.kau.capstone.v2.vaccination.dto.CreateVaccinationReqV2;
+import com.kau.capstone.v2.vaccination.dto.PutVaccinationReqV2;
+import com.kau.capstone.v2.vaccination.dto.VaccinationsResV2;
+import com.kau.capstone.v2.vaccination.service.VaccinationServiceV2;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;

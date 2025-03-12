@@ -2,9 +2,9 @@ package com.kau.capstone.entity.vaccination;
 
 import com.kau.capstone.entity.pet.Pet;
 import com.kau.capstone.v1.vaccination.dto.CreateVaccinationRequest;
-import com.kau.capstone.v1.vaccination.dto.CreateVaccinationReqV2;
+import com.kau.capstone.v2.vaccination.dto.CreateVaccinationReqV2;
 import com.kau.capstone.v1.vaccination.dto.PutVaccinationRequest;
-import com.kau.capstone.v1.vaccination.dto.PutVaccinationReqV2;
+import com.kau.capstone.v2.vaccination.dto.PutVaccinationReqV2;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

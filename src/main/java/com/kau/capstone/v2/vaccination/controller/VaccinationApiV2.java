@@ -1,11 +1,11 @@
-package com.kau.capstone.v1.vaccination.controller;
+package com.kau.capstone.v2.vaccination.controller;
 
 import com.kau.capstone._core.dto.ApiResponse;
 import com.kau.capstone.v1.auth.dto.LoginInfo;
 import com.kau.capstone.v1.auth.util.LoginUser;
-import com.kau.capstone.v1.vaccination.dto.CreateVaccinationReqV2;
-import com.kau.capstone.v1.vaccination.dto.PutVaccinationReqV2;
-import com.kau.capstone.v1.vaccination.dto.VaccinationsResV2;
+import com.kau.capstone.v2.vaccination.dto.CreateVaccinationReqV2;
+import com.kau.capstone.v2.vaccination.dto.PutVaccinationReqV2;
+import com.kau.capstone.v2.vaccination.dto.VaccinationsResV2;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;

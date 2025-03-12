@@ -1,4 +1,4 @@
-package com.kau.capstone.domain.vaccination.exception;
+package com.kau.capstone.v2.vaccination.exception;
 
 import com.kau.capstone._core.exception.ApiException;
 import org.springframework.http.HttpStatus;
