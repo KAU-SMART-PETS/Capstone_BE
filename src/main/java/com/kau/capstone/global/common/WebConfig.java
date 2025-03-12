@@ -1,8 +1,8 @@
 package com.kau.capstone.global.common;
 
-import com.kau.capstone.domain.auth.util.AuthArgumentResolver;
-import com.kau.capstone.domain.auth.util.AuthHandlerInterceptor;
-import com.kau.capstone.domain.pet.util.PetHandlerInterceptor;
+import com.kau.capstone.v1.auth.util.AuthArgumentResolver;
+import com.kau.capstone.v1.auth.util.AuthHandlerInterceptor;
+import com.kau.capstone.v1.pet.util.PetHandlerInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;

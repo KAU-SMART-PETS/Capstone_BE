@@ -1,7 +1,7 @@
 package com.kau.capstone.initial;
 
-import com.kau.capstone.domain.food.entity.Food;
-import com.kau.capstone.domain.food.repository.FoodRepository;
+import com.kau.capstone.entity.food.Food;
+import com.kau.capstone.entity.food.repository.FoodRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;

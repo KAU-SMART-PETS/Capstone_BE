@@ -1,18 +1,16 @@
 package com.kau.capstone.domain.food.controller;
 
-import com.kau.capstone.domain.food.dto.FoodsResponse;
-import com.kau.capstone.domain.food.entity.Food;
-import com.kau.capstone.domain.member.entity.Member;
-import com.kau.capstone.domain.point.dto.DeliveryFeeRequest;
-import com.kau.capstone.domain.point.dto.PayPointRequest;
-import com.kau.capstone.domain.point.entity.Point;
+import com.kau.capstone.v1.food.dto.FoodsResponse;
+import com.kau.capstone.entity.food.Food;
+import com.kau.capstone.entity.member.Member;
+import com.kau.capstone.v1.point.dto.DeliveryFeeRequest;
+import com.kau.capstone.entity.point.Point;
 import com.kau.capstone.global.common.ControllerTest;
 import com.kau.capstone.global.common.ResponseDTO;
 import com.kau.capstone.global.exception.ErrorCode;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Nested;

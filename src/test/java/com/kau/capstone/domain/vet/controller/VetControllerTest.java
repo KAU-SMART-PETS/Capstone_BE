@@ -1,9 +1,9 @@
 package com.kau.capstone.domain.vet.controller;
 
-import com.kau.capstone.domain.vet.dto.MemberLocationRequest;
-import com.kau.capstone.domain.vet.dto.VetDetailResponse;
-import com.kau.capstone.domain.vet.dto.VetsResponse;
-import com.kau.capstone.domain.vet.entity.Vet;
+import com.kau.capstone.v1.vet.dto.MemberLocationRequest;
+import com.kau.capstone.v1.vet.dto.VetDetailResponse;
+import com.kau.capstone.v1.vet.dto.VetsResponse;
+import com.kau.capstone.entity.vet.Vet;
 import com.kau.capstone.global.common.ControllerTest;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;

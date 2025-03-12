@@ -1,11 +1,11 @@
 package com.kau.capstone.domain.vaccination.controller;
 
-import com.kau.capstone.domain.member.entity.Member;
-import com.kau.capstone.domain.pet.entity.Pet;
-import com.kau.capstone.domain.vaccination.dto.CreateVaccinationRequest;
-import com.kau.capstone.domain.vaccination.dto.PutVaccinationRequest;
-import com.kau.capstone.domain.vaccination.dto.VaccinationsResponse;
-import com.kau.capstone.domain.vaccination.entity.Vaccination;
+import com.kau.capstone.entity.member.Member;
+import com.kau.capstone.entity.pet.Pet;
+import com.kau.capstone.v1.vaccination.dto.CreateVaccinationRequest;
+import com.kau.capstone.v1.vaccination.dto.PutVaccinationRequest;
+import com.kau.capstone.v1.vaccination.dto.VaccinationsResponse;
+import com.kau.capstone.entity.vaccination.Vaccination;
 import com.kau.capstone.global.common.ControllerTest;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
