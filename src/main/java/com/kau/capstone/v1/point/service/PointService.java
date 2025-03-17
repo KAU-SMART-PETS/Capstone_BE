@@ -15,9 +15,6 @@ import com.kau.capstone.v1.point.dto.PayPointRequest;
 import com.kau.capstone.entity.point.Point;
 import com.kau.capstone.entity.point.History;
 import com.kau.capstone.entity.point.repository.HistoryRepository;
-import com.kau.capstone.entity.reward.Reward;
-import com.kau.capstone.entity.reward.RewardDetail;
-import com.kau.capstone.v1.reward.exception.RewardNotFoundException;
 import com.kau.capstone.entity.reward.repository.RewardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,7 +26,6 @@ import java.util.Objects;
 
 import static com.kau.capstone.global.exception.ErrorCode.FOOD_NOT_FOUND;
 import static com.kau.capstone.global.exception.ErrorCode.POINT_NOT_ENOUGH;
-import static com.kau.capstone.global.exception.ErrorCode.REWARD_NOT_FOUND;
 
 @Service
 @Transactional
@@ -42,7 +38,6 @@ public class PointService {
     private final MemberRepository memberRepository;
     private final HistoryRepository historyRepository;
     private final FoodRepository foodRepository;
-    private final RewardRepository rewardRepository;
     private final AlarmRepository alarmRepository;
 
     public void processPointPayment(Long memberId, PayPointRequest request) {
@@ -102,10 +97,6 @@ public class PointService {
         point.payment(totalPrice);
         save(member, point, -totalPrice, food.getName());
 
-        Reward reward = rewardRepository.findRewardByMemberAndType(member, RewardDetail.THREE.type());
-        if (!Objects.isNull(reward) && !reward.getIsAchieved()) {
-            reward.achievedSuccess();
-        }
 
         Alarm alarm = alarmRepository.findAlarmByMemberAndType(member, AlarmDetail.ONE.type());
         if (!Objects.isNull(alarm) && alarm.getIsVisible()) {
@@ -116,16 +107,5 @@ public class PointService {
     public void processPointEarnForReward(Long memberId, Long rewardId) {
         Member member = memberRepository.getById(memberId);
         Point point = member.getPoint();
-
-        Reward reward = rewardRepository.findById(rewardId)
-                .orElseThrow(() -> new RewardNotFoundException(REWARD_NOT_FOUND));
-        Long rewardPoint = reward.getEarnPoint();
-
-        point.deposit(rewardPoint);
-        save(member, point, rewardPoint, reward.getTitle());
-
-        if (!reward.getIsObtain()) {
-            reward.obtainSuccess();
-        }
     }
 }
