@@ -2,7 +2,7 @@ package com.kau.capstone.v1.ai.service;
 
 
 import com.kau.capstone.v1.ai.AIImage;
-import com.kau.capstone.v1.ai.client.AIModelClient;
+import com.kau.capstone.global.client.AIModelClient;
 import com.kau.capstone.v1.ai.infra.S3StorageService;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
