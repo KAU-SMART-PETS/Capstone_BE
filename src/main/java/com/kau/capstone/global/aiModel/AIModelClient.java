@@ -1,4 +1,4 @@
-package com.kau.capstone.global.client;
+package com.kau.capstone.global.aiModel;
 
 import java.util.Map;
 import java.util.regex.Matcher;

@@ -1,7 +1,7 @@
 package com.kau.capstone.v1.ai.service;
 
 
-import com.kau.capstone.global.client.AIModelClient;
+import com.kau.capstone.global.aiModel.AIModelClient;
 import com.kau.capstone.global.common.s3.FileService;
 import com.kau.capstone.v1.ai.AIImage;
 import java.util.Map;
