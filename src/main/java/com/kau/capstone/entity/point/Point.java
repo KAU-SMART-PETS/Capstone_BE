@@ -15,31 +15,33 @@ import org.hibernate.annotations.Comment;
 
 @Entity
 @Getter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Point {
-
     @Id
     @Comment("포인트 식별자")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     @OneToOne(mappedBy = "point")
     private Member member;
 
     @Comment("포인트 값")
-    private Long amount;
+    private long amount;
 
-    public void connectMember(Member member) {
+    private Point(Member member) {
         this.member = member;
+        this.amount = 0L;
     }
 
-    public void payment(Long payPoint) {
+    public static Point of(Member member) {
+        return new Point(member);
+    }
+
+    public void payment(long payPoint) {
         this.amount -= payPoint;
     }
 
-    public void deposit(Long depositPoint) {
+    public void deposit(long depositPoint) {
         this.amount += depositPoint;
     }
 }
