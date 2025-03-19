@@ -11,7 +11,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
-import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
 @Entity
