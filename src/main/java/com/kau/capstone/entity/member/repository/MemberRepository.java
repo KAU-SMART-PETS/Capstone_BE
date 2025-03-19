@@ -13,7 +13,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Optional<Member> findByPlatformId(String platformId);
 
-    default Member getMemberById(long id){
+    default Member getById(long id){
         return findById(id).orElseThrow(MemberNotFoundException::new);
     }
 

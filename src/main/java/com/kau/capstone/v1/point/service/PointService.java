@@ -23,7 +23,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -45,8 +44,8 @@ public class PointService {
     private final RewardRepository rewardRepository;
     private final AlarmRepository alarmRepository;
 
-    public void processPointPayment(Long memberId, PayPointRequest request) {
-        Member member = memberRepository.getMemberById(memberId);
+    public void processPointPayment(long memberId, PayPointRequest request) {
+        Member member = memberRepository.getById(memberId);
 
         Point point = member.getPoint();
 
@@ -58,8 +57,8 @@ public class PointService {
         save(member, point, -request.point(), PAYMENT_POINT);
     }
 
-    public void processPointEarn(Long memberId, EarnPointRequest request) {
-        Member member = memberRepository.getMemberById(memberId);
+    public void processPointEarn(long memberId, EarnPointRequest request) {
+        Member member = memberRepository.getById(memberId);
 
         Point point = member.getPoint();
 
@@ -67,8 +66,8 @@ public class PointService {
         save(member, point, request.point(), EARN_POINT);
     }
 
-    public HistoryResponse getPointHistory(Long memberId) {
-        Member member = memberRepository.getMemberById(memberId);
+    public HistoryResponse getPointHistory(long memberId) {
+        Member member = memberRepository.getById(memberId);
 
         List<History> histories = historyRepository.findHistoriesByMember(member);
 
@@ -80,8 +79,8 @@ public class PointService {
         historyRepository.save(history);
     }
 
-    public void processPointPaymentForFood(Long memberId, Long foodId, Long deliveryFee) {
-        Member member = memberRepository.getMemberById(memberId);
+    public void processPointPaymentForFood(long memberId, Long foodId, Long deliveryFee) {
+        Member member = memberRepository.getById(memberId);
         Point point = member.getPoint();
 
         Food food = foodRepository.findById(foodId)
@@ -106,8 +105,8 @@ public class PointService {
         }
     }
 
-    public void processPointEarnForReward(Long memberId, Long rewardId) {
-        Member member = memberRepository.getMemberById(memberId);
+    public void processPointEarnForReward(long memberId, Long rewardId) {
+        Member member = memberRepository.getById(memberId);
         Point point = member.getPoint();
 
         Reward reward = rewardRepository.findById(rewardId)

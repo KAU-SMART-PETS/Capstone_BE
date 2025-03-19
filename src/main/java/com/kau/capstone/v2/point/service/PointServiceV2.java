@@ -24,8 +24,8 @@ public class PointServiceV2 {
     private final HistoryRepository historyRepository;
     private final PointRepository pointRepository;
 
-    public void payPoint(Long memberId, PayPointReqV2 request) {
-        Member member = memberRepository.getMemberById(memberId);
+    public void payPoint(long memberId, PayPointReqV2 request) {
+        Member member = memberRepository.getById(memberId);
         Point point = pointRepository.getByMember(member);
 
         checkAmount(point.getAmount(), request.point());
@@ -36,8 +36,8 @@ public class PointServiceV2 {
         historyRepository.save(history);
     }
 
-    public void depositPoint(Long memberId, DepositPointReqV2 request) {
-        Member member = memberRepository.getMemberById(memberId);
+    public void depositPoint(long memberId, DepositPointReqV2 request) {
+        Member member = memberRepository.getById(memberId);
         Point point = pointRepository.getByMember(member);
 
         point.deposit(request.point());
@@ -46,8 +46,8 @@ public class PointServiceV2 {
         historyRepository.save(history);
     }
 
-    public HistoryListResV2 getPointHistory(Long memberId) {
-        Member member = memberRepository.getMemberById(memberId);
+    public HistoryListResV2 getPointHistory(long memberId) {
+        Member member = memberRepository.getById(memberId);
         return historyRepository.findHistoryListByMember(member);
     }
 
