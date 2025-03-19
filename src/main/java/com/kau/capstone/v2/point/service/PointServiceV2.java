@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class PointServiceV2 {
 
@@ -24,6 +23,7 @@ public class PointServiceV2 {
     private final HistoryRepository historyRepository;
     private final PointRepository pointRepository;
 
+    @Transactional
     public void payPoint(long memberId, PayPointReqV2 request) {
         Member member = memberRepository.getById(memberId);
         Point point = pointRepository.getByMember(member);
@@ -36,6 +36,7 @@ public class PointServiceV2 {
         historyRepository.save(history);
     }
 
+    @Transactional
     public void depositPoint(long memberId, DepositPointReqV2 request) {
         Member member = memberRepository.getById(memberId);
         Point point = pointRepository.getByMember(member);
@@ -46,6 +47,7 @@ public class PointServiceV2 {
         historyRepository.save(history);
     }
 
+    @Transactional(readOnly = true)
     public HistoryListResV2 getPointHistory(long memberId) {
         Member member = memberRepository.getById(memberId);
         return historyRepository.findHistoryListByMember(member);
