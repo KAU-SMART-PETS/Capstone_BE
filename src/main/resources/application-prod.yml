@@ -42,11 +42,5 @@ cloud:
       secretKey: ${AWS_SECRET_KEY}
 
 ai:
-  eye:
-    url: ${AI_MODEL_EYE}
-  nose:
-    train:
-      url: ${AI_MODEL_TRAIN_NOSE}
-    test:
-      url: ${AI_MODEL_TEST_NOSE}
+  url: ${AI_MODEL_URL}
 

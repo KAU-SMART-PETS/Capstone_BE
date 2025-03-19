@@ -23,20 +23,15 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequiredArgsConstructor
 public class AIModelClient {
 
-    @Value("${ai.eye.url}")
-    String eyeAiModelUrl;
-
-    @Value("${ai.nose.train.url}")
-    String noseTrainAiModelUrl;
-
-    @Value("${ai.nose.test.url}")
-    String noseTestAiModelUrl;
+    @Value("${ai.url}")
+    private String aiModelUrl;
 
     private final RestTemplate restTemplate = new RestTemplate();
 
 
     public Map<String, Object> analyzeImage(String imageUrl, String petType) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(eyeAiModelUrl)
+        String url = aiModelUrl + "/eye";
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(url)
             .queryParam("imageUrl", imageUrl)
             .queryParam("petType", petType);
 
@@ -74,7 +69,8 @@ public class AIModelClient {
     }
 
     public String registNoseImage(String imageUrl, Long petId) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(noseTrainAiModelUrl)
+        String url = aiModelUrl + "/nose/train";
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(url)
             .queryParam("imageUrl", imageUrl)
             .queryParam("petId", petId);
 
@@ -111,7 +107,8 @@ public class AIModelClient {
     }
 
     public Map<String, Object> testNoseImage(String imageUrl) {
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(noseTestAiModelUrl)
+        String url = aiModelUrl + "/nose/test";
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(url)
             .queryParam("imageUrl", imageUrl);
 
         HttpHeaders headers = new HttpHeaders();
@@ -124,7 +121,7 @@ public class AIModelClient {
                 uriBuilder.toUriString(),
                 HttpMethod.GET,
                 requestEntity,
-                new ParameterizedTypeReference<Map<String, Object>>() {
+                new ParameterizedTypeReference<>() {
                 }
             );
             return response.getBody();
