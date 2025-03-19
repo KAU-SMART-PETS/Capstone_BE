@@ -44,18 +44,10 @@ public class WalkService {
             .orElseThrow(() -> new IllegalArgumentException("해당 반려동물은 유저의 반려동물이 아닙니다"));
 
         // 엔티티 생성
-        Walk walk = Walk.create(
+        Walk walk = Walk.of(
             member,
             pet,
-            walkData.getDataInpDt(),
-            walkData.getDistance(),
-            walkData.getStep(),
-            walkData.getWalkingTime(),
-            walkData.getTLux(),
-            walkData.getAvgK(),
-            walkData.getAvgLux(),
-            walkData.getStartTime(),
-            walkData.getEndTime()
+            walkData
         );
 
         // 데이터 베이스 반영
@@ -63,8 +55,8 @@ public class WalkService {
 
         // 산책 데이터 반환
         return new WalkResponse(
-            walk.getStartTime(),    // 시작 시간
-            walk.getEndTime(),      // 종료 시간
+            walk.getWalkTime().getStartTime(),    // 시작 시간
+            walk.getWalkTime().getEndTime(),      // 종료 시간
             walk.getWalkingTime(),  // 산책 시간
             walk.getDistance(),     // 산책 거리
             walk.getKcal(),         // 칼로리 소비량
@@ -118,9 +110,19 @@ public class WalkService {
         long totalSteps = dailyWalks.stream().mapToLong(Walk::getStep).sum();
         long totalWalkingTime = dailyWalks.stream().mapToLong(Walk::getWalkingTime)
             .sum(); // 초 단위 합산
-        double totalLux = dailyWalks.stream().mapToDouble(Walk::getTLux).sum();
-        double avgK = dailyWalks.stream().mapToDouble(Walk::getAvgK).average().orElse(0);
-        double avgLux = dailyWalks.stream().mapToDouble(Walk::getAvgLux).average().orElse(0);
+        double totalLux = dailyWalks.stream()
+            .mapToDouble(walk -> walk.getWalkLightStats().getTLux())
+            .sum();
+
+        double avgK = dailyWalks.stream()
+            .mapToDouble(walk -> walk.getWalkLightStats().getAvgK())
+            .average()
+            .orElse(0);
+
+        double avgLux = dailyWalks.stream()
+            .mapToDouble(walk -> walk.getWalkLightStats().getAvgLux())
+            .average()
+            .orElse(0);
 
         // 기준 값 (예: 최대값 설정 또는 동적 계산)
         final double MAX_DISTANCE = 5000.0;  // 5km(m 단위)
@@ -200,9 +202,18 @@ public class WalkService {
                 double totalDistance = dailyWalks.stream().mapToDouble(Walk::getDistance).sum();
                 long totalSteps = dailyWalks.stream().mapToLong(Walk::getStep).sum();
                 long totalWalkingTime = dailyWalks.stream().mapToLong(Walk::getWalkingTime).sum();
-                double totalLux = dailyWalks.stream().mapToDouble(Walk::getTLux).sum();
-                double avgK = dailyWalks.stream().mapToDouble(Walk::getAvgK).average().orElse(0);
-                double avgLux = dailyWalks.stream().mapToDouble(Walk::getAvgLux).average()
+                double totalLux = dailyWalks.stream()
+                    .mapToDouble(walk -> walk.getWalkLightStats().getTLux())
+                    .sum();
+
+                double avgK = dailyWalks.stream()
+                    .mapToDouble(walk -> walk.getWalkLightStats().getAvgK())
+                    .average()
+                    .orElse(0);
+
+                double avgLux = dailyWalks.stream()
+                    .mapToDouble(walk -> walk.getWalkLightStats().getAvgLux())
+                    .average()
                     .orElse(0);
 
                 // 기준 값 설정
