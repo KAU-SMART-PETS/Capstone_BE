@@ -8,9 +8,9 @@ import java.util.List;
 public record HistoryListResV2(
         List<HistoryResV2> history
 ) {
-    public static HistoryListResV2 toResponse(List<History> histories) {
+    public static HistoryListResV2 of(List<History> histories) {
         List<HistoryResV2> responses = histories.stream()
-                .map(HistoryResV2::toResponse)
+                .map(HistoryResV2::of)
                 .toList();
 
         return new HistoryListResV2(responses);
@@ -26,7 +26,7 @@ public record HistoryListResV2(
 
         public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
-        public static HistoryResV2 toResponse(History history) {
+        public static HistoryResV2 of(History history) {
             return new HistoryResV2(
                 history.getId(),
                 history.getTotalPoint(),

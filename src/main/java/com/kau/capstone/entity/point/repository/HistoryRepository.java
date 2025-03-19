@@ -16,6 +16,6 @@ public interface HistoryRepository extends JpaRepository<History, Long> {
 
     default HistoryListResV2 findHistoryListByMember(Member member){
         List<History> res = findHistoriesByMember(member);
-        return HistoryListResV2.toResponse(res);
+        return HistoryListResV2.of(res);
     }
 }
