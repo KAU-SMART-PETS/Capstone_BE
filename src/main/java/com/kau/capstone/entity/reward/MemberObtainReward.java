@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 @Entity
 @Getter
@@ -21,21 +22,17 @@ public class MemberObtainReward {
     @EmbeddedId
     private MemberRewardId id;
 
-    @Comment("리워드 달성 여부")
-    private boolean isAchieved;
-
-    @Comment("포인트 획득 여부")
-    private boolean isObtained;
-
     @Comment("리워드 달성 일자")
-    private DateTime achievedAt;
+    private LocalDate achievedAt;
+
+    @Comment("리워드 획득 일자")
+    private LocalDate obtainedAt;
 
     private MemberObtainReward(Member member, Reward reward,
-        boolean isAchieved, boolean isObtained, DateTime achievedAt) {
+        LocalDate achievedAt, LocalDate obtainedAt) {
         this.id = new MemberRewardId(member, reward);
-        this.isAchieved = isAchieved;
-        this.isObtained = isObtained;
         this.achievedAt = achievedAt;
+        this.obtainedAt = obtainedAt;
     }
 
     @Embeddable
