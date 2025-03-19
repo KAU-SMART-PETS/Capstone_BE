@@ -14,8 +14,6 @@ import com.kau.capstone.entity.pet.Pet;
 import com.kau.capstone.v1.pet.exception.PetNotFoundException;
 import com.kau.capstone.entity.pet.repository.PetRepository;
 import com.kau.capstone.v1.pet.util.PetMapper;
-import com.kau.capstone.entity.reward.Reward;
-import com.kau.capstone.entity.reward.RewardDetail;
 import com.kau.capstone.entity.reward.repository.RewardRepository;
 import com.kau.capstone.global.common.s3.FileService;
 import java.io.IOException;
@@ -33,13 +31,11 @@ public class PetService {
     private final PetRepository petRepository;
     private final MemberRepository memberRepository;
     private final OwnedPetRepository ownedPetRepository;
-    private final RewardRepository rewardRepository;
     private final AlarmRepository alarmRepository;
     private final FileService fileService;
 
     @Transactional
-    public void createPetInfo(LoginInfo loginInfo, PetRegistRequest petRegistRequest)
-        throws IOException {
+    public void createPetInfo(LoginInfo loginInfo, PetRegistRequest petRegistRequest) {
         Pet pet = PetMapper.toPet(petRegistRequest);
         petRepository.save(pet);
         savedOwnedPet(loginInfo.memberId(), pet);
@@ -98,11 +94,6 @@ public class PetService {
     // 반려동물 등록하기 리워드 성공
     private void achievedCreatePetReward(Long memberId) {
         Member member = memberRepository.getById(memberId);
-
-        Reward reward = rewardRepository.findRewardByMemberAndType(member, RewardDetail.ONE.type());
-        if (!Objects.isNull(reward) && !reward.getIsAchieved()) {
-            reward.achievedSuccess();
-        }
     }
 
     // 반려동물 알람 제거
