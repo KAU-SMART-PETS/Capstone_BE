@@ -4,9 +4,13 @@ import com.kau.capstone._core.dto.ApiResponse;
 import com.kau.capstone.v1.auth.dto.LoginInfo;
 import com.kau.capstone.v1.auth.util.LoginUser;
 import com.kau.capstone.v2.reward.dto.RewardCreateReqV2;
+import com.kau.capstone.v2.reward.dto.RewardsResV2;
 import com.kau.capstone.v2.reward.service.RewardServiceV2;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +30,18 @@ public class RewardRestControllerV2 {
     ) {
         rewardService.createReward(loginInfo, rewardCreateReq);
         return ApiResponse.ok();
+    }
+
+    @GetMapping("")
+    public ResponseEntity<ApiResponse<RewardsResV2>> getRewards(
+        @LoginUser LoginInfo loginInfo
+    ) {
+        RewardsResV2 rewards = rewardService.getRewards(loginInfo);
+        if (Objects.isNull(rewards)) {
+            return ApiResponse.of(HttpStatus.NO_CONTENT, "등록된 리워드가 없습니다.", null);
+        }
+
+        return ApiResponse.ok(rewards);
     }
 
 }
