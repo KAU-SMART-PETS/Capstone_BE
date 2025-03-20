@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface RewardRepository extends JpaRepository<Reward, Long> {
 
-    List<Reward> findRewards();
+    List<Reward> findAll();
 }
