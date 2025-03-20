@@ -64,6 +64,7 @@ public class RewardServiceV2 {
         memberRepository.getById(loginInfo.memberId());
 
         Reward reward = rewardRepository.getById(rewardId);
-        rewardRepository.delete(reward);
+        reward.deleteReward();
+        rewardRepository.save(reward);
     }
 }
