@@ -57,4 +57,13 @@ public class RewardServiceV2 {
         System.out.println(reward.getId());
         rewardRepository.save(reward);
     }
+
+    @Transactional
+    public void deleteReward(LoginInfo loginInfo, long rewardId) {
+        // Member의 role이 admin인지 확인하는 과정 추가 필요
+        memberRepository.getById(loginInfo.memberId());
+
+        Reward reward = rewardRepository.getById(rewardId);
+        rewardRepository.delete(reward);
+    }
 }
