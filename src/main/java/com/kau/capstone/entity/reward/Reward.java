@@ -1,6 +1,7 @@
 package com.kau.capstone.entity.reward;
 
 import com.kau.capstone.global.common.BaseEntity;
+import com.kau.capstone.v2.reward.dto.RewardCreateReqV2;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -33,5 +34,13 @@ public class Reward extends BaseEntity {
         this.title = title;
         this.content = content;
         this.earnPoint = earnPoint;
+    }
+
+    public static Reward of(RewardCreateReqV2 request) {
+        return new Reward(
+            request.title(),
+            request.content(),
+            request.earnPoint()
+        );
     }
 }
