@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,9 +47,14 @@ public class Reward extends BaseEntity {
         );
     }
 
-    public void updateReward(RewardUpdateReqV2 request) {
+    public boolean updateReward(RewardUpdateReqV2 request) {
+        if (!Objects.isNull(this.getDeletedAt())) {
+            return false;
+        }
+
         this.title = request.title();
         this.content = request.content();
+        return true;
     }
 
     public void deleteReward() {

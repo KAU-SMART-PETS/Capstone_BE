@@ -8,6 +8,7 @@ import com.kau.capstone.v2.reward.dto.RewardCreateReqV2;
 import com.kau.capstone.v2.reward.dto.RewardResV2;
 import com.kau.capstone.v2.reward.dto.RewardUpdateReqV2;
 import com.kau.capstone.v2.reward.dto.RewardsResV2;
+import com.kau.capstone.v2.reward.exception.DeletedRewardExceptionV2;
 import com.kau.capstone.v2.reward.util.DTOMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -51,10 +52,12 @@ public class RewardServiceV2 {
         memberRepository.getById(loginInfo.memberId());
 
         Reward reward = rewardRepository.getById(rewardId);
-        System.out.println(reward.getId());
+        boolean isUpdated = reward.updateReward(request);
 
-        reward.updateReward(request);
-        System.out.println(reward.getId());
+        if (!isUpdated) {
+            throw new DeletedRewardExceptionV2();
+        }
+
         rewardRepository.save(reward);
     }
 
