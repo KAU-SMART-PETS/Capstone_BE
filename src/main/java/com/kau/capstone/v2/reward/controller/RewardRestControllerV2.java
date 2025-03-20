@@ -20,7 +20,7 @@ public class RewardRestControllerV2 {
     private final RewardServiceV2 rewardService;
 
     @PostMapping("")
-    public ResponseEntity<ApiResponse<String>> createPetInfo(
+    public ResponseEntity<ApiResponse<String>> createReward(
         @LoginUser LoginInfo loginInfo,
         @RequestBody RewardCreateReqV2 rewardCreateReq
     ) {
