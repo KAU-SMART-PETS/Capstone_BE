@@ -5,6 +5,7 @@ import com.kau.capstone.entity.reward.Reward;
 import com.kau.capstone.entity.reward.repository.RewardRepository;
 import com.kau.capstone.v1.auth.dto.LoginInfo;
 import com.kau.capstone.v2.reward.dto.RewardCreateReqV2;
+import com.kau.capstone.v2.reward.dto.RewardResV2;
 import com.kau.capstone.v2.reward.dto.RewardsResV2;
 import com.kau.capstone.v2.reward.util.DTOMapper;
 import lombok.RequiredArgsConstructor;
@@ -33,5 +34,13 @@ public class RewardServiceV2 {
         memberRepository.getById(loginInfo.memberId());
 
         return dtoMapper.toRewards();
+    }
+
+    @Transactional(readOnly = true)
+    public RewardResV2 getReward(LoginInfo loginInfo, long rewardId) {
+        // Member의 role이 admin인지 확인하는 과정 추가 필요
+        memberRepository.getById(loginInfo.memberId());
+
+        return dtoMapper.toReward(rewardId);
     }
 }
