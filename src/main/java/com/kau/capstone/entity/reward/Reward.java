@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,5 +49,9 @@ public class Reward extends BaseEntity {
     public void updateReward(RewardUpdateReqV2 request) {
         this.title = request.title();
         this.content = request.content();
+    }
+
+    public void deleteReward() {
+        this.delete(LocalDateTime.now());
     }
 }
