@@ -45,6 +45,7 @@ public class Vaccination {
         this.vaccinatedAt = vaccinatedAt;
     }
 
+    @Deprecated
     public static Vaccination of(Pet pet, CreateVaccinationRequest request) {
         return new Vaccination(
                 pet,
@@ -61,6 +62,7 @@ public class Vaccination {
         );
     }
 
+    @Deprecated
     public void modify(PutVaccinationRequest request) {
         this.name = request.name();
         this.vaccinatedAt = LocalDate.of(request.year(), request.month(), request.day());
