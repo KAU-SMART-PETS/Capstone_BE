@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface VaccinationRepository extends JpaRepository<Vaccination, Long> {
 
-    List<Vaccination> findAllByPetOrderByVaccinatedAtDesc(@Param("pet") Pet pet);
+    List<Vaccination> findAllByPetOrderByVaccinatedAtDesc(Pet pet);
 
     default @NonNull Vaccination getById(@NonNull Long id) {
         return findById(id).orElseThrow(VaccinationNotFoundExceptionV2::new);
