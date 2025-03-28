@@ -15,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class PointServiceV2 {
@@ -50,7 +52,8 @@ public class PointServiceV2 {
     @Transactional(readOnly = true)
     public HistoryListResV2 getPointHistory(long memberId) {
         Member member = memberRepository.getById(memberId);
-        return historyRepository.findHistoryListByMember(member);
+        List<History> res = historyRepository.findHistoriesByMember(member);
+        return HistoryListResV2.of(res);
     }
 
     private void checkAmount(long amount, long point){
