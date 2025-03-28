@@ -4,11 +4,11 @@ import com.kau.capstone.entity.alarm.Alarm;
 import com.kau.capstone.entity.alarm.AlarmDetail;
 import com.kau.capstone.entity.alarm.repository.AlarmRepository;
 import com.kau.capstone.entity.food.Food;
+import com.kau.capstone.entity.member.repository.MemberRepository;
 import com.kau.capstone.v1.food.exception.FoodNotFoundException;
 import com.kau.capstone.entity.food.repository.FoodRepository;
 import com.kau.capstone.entity.member.Member;
 import com.kau.capstone.v1.member.exception.PointNotEnoughException;
-import com.kau.capstone.entity.member.repository.MemberRepository;
 import com.kau.capstone.v1.point.dto.EarnPointRequest;
 import com.kau.capstone.v1.point.dto.HistoryResponse;
 import com.kau.capstone.v1.point.dto.PayPointRequest;
@@ -23,7 +23,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -45,7 +44,7 @@ public class PointService {
     private final RewardRepository rewardRepository;
     private final AlarmRepository alarmRepository;
 
-    public void processPointPayment(Long memberId, PayPointRequest request) {
+    public void processPointPayment(long memberId, PayPointRequest request) {
         Member member = memberRepository.getById(memberId);
 
         Point point = member.getPoint();
@@ -58,7 +57,7 @@ public class PointService {
         save(member, point, -request.point(), PAYMENT_POINT);
     }
 
-    public void processPointEarn(Long memberId, EarnPointRequest request) {
+    public void processPointEarn(long memberId, EarnPointRequest request) {
         Member member = memberRepository.getById(memberId);
 
         Point point = member.getPoint();
@@ -67,7 +66,7 @@ public class PointService {
         save(member, point, request.point(), EARN_POINT);
     }
 
-    public HistoryResponse getPointHistory(Long memberId) {
+    public HistoryResponse getPointHistory(long memberId) {
         Member member = memberRepository.getById(memberId);
 
         List<History> histories = historyRepository.findHistoriesByMember(member);
@@ -76,18 +75,11 @@ public class PointService {
     }
 
     public void save(Member member, Point point, Long changePoint, String name) {
-        History history = History.builder()
-                .member(member)
-                .point(point)
-                .totalPoint(point.getAmount())
-                .changePoint(changePoint)
-                .name(name)
-                .date(LocalDateTime.now())
-                .build();
+        History history = History.of(member, point, changePoint, name);
         historyRepository.save(history);
     }
 
-    public void processPointPaymentForFood(Long memberId, Long foodId, Long deliveryFee) {
+    public void processPointPaymentForFood(long memberId, Long foodId, Long deliveryFee) {
         Member member = memberRepository.getById(memberId);
         Point point = member.getPoint();
 
@@ -113,7 +105,7 @@ public class PointService {
         }
     }
 
-    public void processPointEarnForReward(Long memberId, Long rewardId) {
+    public void processPointEarnForReward(long memberId, Long rewardId) {
         Member member = memberRepository.getById(memberId);
         Point point = member.getPoint();
 
