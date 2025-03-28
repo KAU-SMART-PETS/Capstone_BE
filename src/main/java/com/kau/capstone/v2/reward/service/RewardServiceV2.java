@@ -24,7 +24,7 @@ public class RewardServiceV2 {
 
     @Transactional
     public void createReward(LoginInfo loginInfo, RewardCreateReqV2 rewardCreateReq) {
-        // Member의 role이 admin인지 확인하는 과정 추가 필요
+        //TODO(준희) Member의 role이 admin인지 확인하는 과정 추가 필요
         memberRepository.getById(loginInfo.memberId());
         Reward reward = Reward.of(rewardCreateReq);
         rewardRepository.save(reward);
@@ -32,7 +32,7 @@ public class RewardServiceV2 {
 
     @Transactional(readOnly = true)
     public RewardsResV2 getRewards(LoginInfo loginInfo) {
-        // Member의 role이 admin인지 확인하는 과정 추가 필요
+        //TODO(준희) Member의 role이 admin인지 확인하는 과정 추가 필요
         memberRepository.getById(loginInfo.memberId());
 
         return dtoMapper.toRewards();
@@ -40,7 +40,7 @@ public class RewardServiceV2 {
 
     @Transactional(readOnly = true)
     public RewardResV2 getReward(LoginInfo loginInfo, long rewardId) {
-        // Member의 role이 admin인지 확인하는 과정 추가 필요
+        //TODO(준희) Member의 role이 admin인지 확인하는 과정 추가 필요
         memberRepository.getById(loginInfo.memberId());
 
         return dtoMapper.toReward(rewardId);
@@ -48,7 +48,7 @@ public class RewardServiceV2 {
 
     @Transactional
     public void updateReward(LoginInfo loginInfo, long rewardId, RewardUpdateReqV2 request) {
-        // Member의 role이 admin인지 확인하는 과정 추가 필요
+        //TODO(준희) Member의 role이 admin인지 확인하는 과정 추가 필요
         memberRepository.getById(loginInfo.memberId());
 
         Reward reward = rewardRepository.getById(rewardId);
@@ -63,7 +63,7 @@ public class RewardServiceV2 {
 
     @Transactional
     public void deleteReward(LoginInfo loginInfo, long rewardId) {
-        // Member의 role이 admin인지 확인하는 과정 추가 필요
+        //TODO(준희) Member의 role이 admin인지 확인하는 과정 추가 필요
         memberRepository.getById(loginInfo.memberId());
 
         Reward reward = rewardRepository.getById(rewardId);
