@@ -5,7 +5,6 @@ import lombok.Builder;
 
 import java.util.List;
 
-@Builder
 public record HistoryResponse(
         List<OneHistoryResponse> history
 ) {
@@ -15,8 +14,6 @@ public record HistoryResponse(
                 .map(OneHistoryResponse::toResponse)
                 .toList();
 
-        return HistoryResponse.builder()
-                .history(responses)
-                .build();
+        return new HistoryResponse(responses);
     }
 }

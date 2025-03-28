@@ -55,16 +55,12 @@ public class MemberService {
     }
 
     private SignUserDto save(String site, UserInfoDto userInfoDto) {
-        // 포인트, 멤버 연결
-        Point point = Point.builder()
-                .amount(0L)
-                .build();
-        pointRepository.save(point);
 
         Member member = MemberMapper.toMember(site, userInfoDto);
         memberRepository.save(member);
 
-        point.connectMember(member);
+        Point point = Point.of(member);
+
         member.connectPoint(point);
 
         // 리워드 내용 초기 세팅 (모두 미달성으로 표기하기 위해)

@@ -5,7 +5,6 @@ import lombok.Builder;
 
 import java.time.format.DateTimeFormatter;
 
-@Builder
 public record OneHistoryResponse(
         Long id,
         Long totalPoint,
@@ -17,12 +16,12 @@ public record OneHistoryResponse(
     public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     public static OneHistoryResponse toResponse(History history) {
-        return OneHistoryResponse.builder()
-                .id(history.getId())
-                .totalPoint(history.getTotalPoint())
-                .changePoint(history.getChangePoint())
-                .name(history.getName())
-                .date(DateTimeFormatter.ofPattern(DATE_FORMAT).format(history.getDate()))
-                .build();
+        return new OneHistoryResponse(
+                history.getId(),
+                history.getTotalPoint(),
+                history.getChangePoint(),
+                history.getName(),
+                DateTimeFormatter.ofPattern(DATE_FORMAT).format(history.getDate())
+        );
     }
 }
