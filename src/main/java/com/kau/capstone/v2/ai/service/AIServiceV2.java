@@ -2,8 +2,8 @@ package com.kau.capstone.v2.ai.service;
 
 
 import com.kau.capstone.entity.member.repository.MemberRepository;
+import com.kau.capstone.global.aiModel.AIModelClient;
 import com.kau.capstone.global.common.s3.FileService;
-import com.kau.capstone.v1.ai.client.AIModelClient;
 import com.kau.capstone.v1.auth.dto.LoginInfo;
 import com.kau.capstone.v2.ai.dto.request.EyeReqV2;
 import java.util.Map;
