@@ -7,9 +7,9 @@ import com.kau.capstone.v2.ai.dto.request.EyeReqV2;
 import com.kau.capstone.v2.ai.service.AIServiceV2;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,13 +21,13 @@ public class AiRestControllerV2 {
 
     private final AIServiceV2 aiService;
 
-    @PostMapping("/eye")
+    @PostMapping("/eye/{petId}")
     public ResponseEntity<ApiResponse<EyeReqV2>> analyzeEye(
         @LoginUser LoginInfo loginInfo,
-        @RequestPart("AnimalImage") MultipartFile image,
-        @RequestParam("PetType") String petType
+        @PathVariable Long petId,
+        @RequestPart("AnimalImage") MultipartFile image
     ) {
-        EyeReqV2 eyeProbs = aiService.analyzeEye(loginInfo, image, petType);
+        EyeReqV2 eyeProbs = aiService.analyzeEye(loginInfo, petId, image);
         return ApiResponse.ok(eyeProbs);
     }
 

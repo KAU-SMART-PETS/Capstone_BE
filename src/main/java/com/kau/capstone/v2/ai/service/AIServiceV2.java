@@ -1,7 +1,12 @@
 package com.kau.capstone.v2.ai.service;
 
 
+import com.kau.capstone.entity.AI.Eyes;
+import com.kau.capstone.entity.AI.Repository.EyesRepository;
+import com.kau.capstone.entity.member.Member;
 import com.kau.capstone.entity.member.repository.MemberRepository;
+import com.kau.capstone.entity.pet.Pet;
+import com.kau.capstone.entity.pet.repository.PetRepository;
 import com.kau.capstone.global.aiModel.AIModelClient;
 import com.kau.capstone.global.common.s3.FileService;
 import com.kau.capstone.v1.auth.dto.LoginInfo;
@@ -22,15 +27,19 @@ public class AIServiceV2 {
         "eyelid_tumor", "incontinence", "nuclear_sclerosis", "corneal_dystrophy", "corneal_ulcer"};
 
     private final MemberRepository memberRepository;
+    private final PetRepository petRepository;
+    private final EyesRepository eyesRepository;
     private final AIModelClient aiModelClient;
     private final FileService fileService;
 
-    public EyeReqV2 analyzeEye(LoginInfo loginInfo, MultipartFile imageFile, String petType) {
-        memberRepository.getById(loginInfo.memberId());
+    public EyeReqV2 analyzeEye(LoginInfo loginInfo, Long petId, MultipartFile imageFile) {
+        Member member = memberRepository.getById(loginInfo.memberId());
+        Pet pet = petRepository.getByIdAndDeletedAtIsNullAndMember(petId, member);
 
         String imageUrl = fileService.uploadImage(imageFile, "ai/eyes/");
-
-        Map<String, Object> aiResponse = aiModelClient.analyzeImage(imageUrl, petType);
+        Map<String, Object> aiResponse = aiModelClient.analyzeImage(imageUrl,
+            pet.getPetType().toString());
+        fileService.deleteImage(imageUrl);
 
         Float[] prob = new Float[diseases.length];
         for (int i = 0; i < diseases.length; ++i) {
@@ -47,7 +56,8 @@ public class AIServiceV2 {
             prob[idx++], prob[idx++], prob[idx++], prob[idx++], prob[idx++], prob[idx]
         );
 
-        fileService.deleteImage(imageUrl);
+        Eyes eyes = Eyes.of(eyeRes, pet);
+        eyesRepository.save(eyes);
 
         return eyeRes;
     }
