@@ -42,10 +42,6 @@ public class RewardRestControllerV2 {
         @LoginUser LoginInfo loginInfo
     ) {
         RewardsResV2 rewards = rewardService.getRewards(loginInfo);
-        if (Objects.isNull(rewards)) {
-            return ApiResponse.of(HttpStatus.NO_CONTENT, "등록된 리워드가 없습니다.", null);
-        }
-
         return ApiResponse.ok(rewards);
     }
 
