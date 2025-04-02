@@ -1,6 +1,7 @@
 package com.kau.capstone.entity.AI;
 
-import com.kau.capstone.entity.member.Member;
+import com.kau.capstone.entity.pet.Pet;
+import com.kau.capstone.v2.ai.dto.request.EyeReqV2;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -59,14 +60,13 @@ public class Eyes {
     private Float cornealDystrophy;
 
     @ManyToOne
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @JoinColumn(name = "pet_id")
+    private Pet pet;
 
     private Eyes(Float conjunctivitis, Float ulcerativeKeratitis, Float cataract,
-        Float nonUlcerativeKeratitis,
-        Float pigmentaryKeratitis, Float entropion, Float blepharitis, Float eyelidTumor,
-        Float incontinence,
-        Float nuclearSclerosis, Float cornealDystrophy, Float cornealUlcer) {
+        Float nonUlcerativeKeratitis, Float pigmentaryKeratitis, Float entropion,
+        Float blepharitis, Float eyelidTumor, Float incontinence,
+        Float nuclearSclerosis, Float cornealDystrophy, Float cornealUlcer, Pet pet) {
         this.conjunctivitis = conjunctivitis;
         this.ulcerativeKeratitis = ulcerativeKeratitis;
         this.cataract = cataract;
@@ -79,6 +79,14 @@ public class Eyes {
         this.nuclearSclerosis = nuclearSclerosis;
         this.cornealDystrophy = cornealDystrophy;
         this.cornealUlcer = cornealUlcer;
+        this.pet = pet;
+    }
+
+    public static Eyes of(EyeReqV2 eyeReq, Pet pet){
+        return new Eyes(eyeReq.conjunctivitis(), eyeReq.ulcerativeKeratitis(),  eyeReq.cataract(),
+            eyeReq.nonUlcerativeKeratitis(), eyeReq.pigmentaryKeratitis(), eyeReq.entropion(),
+            eyeReq.blepharitis(), eyeReq.eyelidTumor(), eyeReq.incontinence(),
+            eyeReq.nuclearSclerosis(), eyeReq.cornealDystrophy(), eyeReq.cornealUlcer(), pet);
     }
 
 }
