@@ -171,7 +171,7 @@ public class WalkService {
 
         // 주간 데이터를 날짜별로 조회
         List<LocalDate> weekDates = startOfWeek.datesUntil(endOfWeek.plusDays(1))
-            .collect(Collectors.toList());
+            .toList();
         List<WalkDailySummaryResponse> dailySummaries = weekDates.stream()
             .map(day -> {
                 List<Walk> dailyWalks = walkRepository.findByPetAndDataIntDt(pet, day);
