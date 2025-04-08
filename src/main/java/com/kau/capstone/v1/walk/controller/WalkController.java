@@ -30,25 +30,31 @@ public class WalkController {
 
     // 산책 기록하기
     @PostMapping("/register/{petId}")
-    public ResponseEntity<WalkResponse> registerWalk(@RequestBody @Valid WalkRequest walkData,
+    public ResponseEntity<WalkResponse> registerWalk(
+        @RequestBody @Valid WalkRequest walkData,
         @LoginUser LoginInfo loginUser,
-        @PathVariable Long petId) {
+        @PathVariable Long petId
+    ) {
         WalkResponse response = walkService.saveWalkData(walkData, loginUser.memberId(), petId);
         return ResponseEntity.ok(response);
     }
 
     // 최근 산책 기록 가져오기
     @GetMapping("/recent")
-    public ResponseEntity<WalkRecentDataListResponse> latestWalk(@LoginUser LoginInfo loginUser) {
+    public ResponseEntity<WalkRecentDataListResponse> latestWalk(
+        @LoginUser LoginInfo loginUser
+    ) {
         WalkRecentDataListResponse response = walkService.getWalkRecentData(loginUser.memberId());
         return ResponseEntity.ok(response);
     }
 
     // 일간 산책 기록 가져오기
     @GetMapping("/daily/{petId}")
-    public ResponseEntity<WalkDailySummaryResponse> dailyWalk(@LoginUser LoginInfo loginUser,
+    public ResponseEntity<WalkDailySummaryResponse> dailyWalk(
+        @LoginUser LoginInfo loginUser,
         @PathVariable Long petId,
-        @RequestParam LocalDate date) {
+        @RequestParam LocalDate date
+    ) {
 
         WalkDailySummaryResponse response = walkService.getDailySummary(loginUser.memberId(), petId,
             date);
