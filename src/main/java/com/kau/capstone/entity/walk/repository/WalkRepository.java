@@ -16,13 +16,10 @@ public interface WalkRepository extends JpaRepository<Walk,Long> {
 
     List<Walk> findByPetAndDataIntDt(Pet pet, LocalDate dataIntDt);
 
-    @Query("SELECT w FROM Walk w WHERE w.pet = :pet AND YEAR(w.dataIntDt) = :year AND MONTH(w.dataIntDt) = :month")
+    @Query("SELECT w FROM Walk w WHERE w.pet = :pet AND YEAR(w.startTime) = :year AND MONTH(w.startTime) = :month")
     List<Walk> findByPetAndYearAndMonth(@Param("pet") Pet pet, @Param("year") int year, @Param("month") int month);
 
-    @Query("SELECT w FROM Walk w WHERE w.pet = :pet AND w.dataIntDt BETWEEN :startDate AND :endDate")
-    List<Walk> findByPetAndDateBetween(@Param("pet") Pet pet, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
-
-    @Query("SELECT w FROM Walk w WHERE w.pet = :pet ORDER BY w.dataIntDt DESC")
+    @Query("SELECT w FROM Walk w WHERE w.pet = :pet ORDER BY w.startTime DESC")
     List<Walk> findTop5ByPetOrderByDataIntDtDesc(@Param("pet") Pet pet, Pageable pageable);
 }
 
