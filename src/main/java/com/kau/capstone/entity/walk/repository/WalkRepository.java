@@ -2,17 +2,14 @@ package com.kau.capstone.entity.walk.repository;
 
 import com.kau.capstone.entity.pet.Pet;
 import com.kau.capstone.entity.walk.Walk;
+import java.time.LocalDate;
+import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-
 public interface WalkRepository extends JpaRepository<Walk,Long> {
-    Optional<Walk> findTopByPetOrderByDataIntDtDesc(Pet pet);
 
     List<Walk> findByPetAndDataIntDt(Pet pet, LocalDate dataIntDt);
 
