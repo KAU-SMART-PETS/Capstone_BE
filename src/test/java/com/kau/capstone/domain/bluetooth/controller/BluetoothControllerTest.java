@@ -1,10 +1,10 @@
 package com.kau.capstone.domain.bluetooth.controller;
 
-import com.kau.capstone.domain.bluetooth.dto.BluetoothRegistryRequest;
-import com.kau.capstone.domain.bluetooth.dto.OwnedBluetoothResponse;
-import com.kau.capstone.domain.bluetooth.entity.Bluetooth;
-import com.kau.capstone.domain.bluetooth.entity.member.OwnedBluetooth;
-import com.kau.capstone.domain.member.entity.Member;
+import com.kau.capstone.v1.bluetooth.dto.BluetoothRegistryRequest;
+import com.kau.capstone.v1.bluetooth.dto.OwnedBluetoothResponse;
+import com.kau.capstone.entity.bluetooth.Bluetooth;
+import com.kau.capstone.entity.bluetooth.OwnedBluetooth;
+import com.kau.capstone.entity.member.Member;
 import com.kau.capstone.global.common.ControllerTest;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;

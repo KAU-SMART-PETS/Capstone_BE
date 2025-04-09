@@ -1,14 +1,14 @@
 package com.kau.capstone.global.common;
 
-import com.kau.capstone.domain.bluetooth.repository.BluetoothRepository;
-import com.kau.capstone.domain.bluetooth.repository.OwnedBluetoothRepository;
-import com.kau.capstone.domain.food.repository.FoodRepository;
-import com.kau.capstone.domain.member.repository.MemberRepository;
-import com.kau.capstone.domain.member.repository.OwnedPetRepository;
-import com.kau.capstone.domain.pet.repository.PetRepository;
-import com.kau.capstone.domain.point.repository.PointRepository;
-import com.kau.capstone.domain.vaccination.repository.VaccinationRepository;
-import com.kau.capstone.domain.vet.repository.VetRepository;
+import com.kau.capstone.entity.bluetooth.repository.BluetoothRepository;
+import com.kau.capstone.entity.bluetooth.repository.OwnedBluetoothRepository;
+import com.kau.capstone.entity.food.repository.FoodRepository;
+import com.kau.capstone.entity.member.repository.MemberRepository;
+import com.kau.capstone.entity.member.repository.OwnedPetRepository;
+import com.kau.capstone.entity.pet.repository.PetRepository;
+import com.kau.capstone.entity.point.repository.PointRepository;
+import com.kau.capstone.entity.vaccination.repository.VaccinationRepository;
+import com.kau.capstone.entity.vet.repository.VetRepository;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
