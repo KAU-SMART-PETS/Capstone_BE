@@ -3,7 +3,6 @@ package com.kau.capstone.v2.ai.controller;
 import com.kau.capstone._core.dto.ApiResponse;
 import com.kau.capstone.v1.auth.dto.LoginInfo;
 import com.kau.capstone.v1.auth.util.LoginUser;
-import com.kau.capstone.v2.ai.dto.request.EyeReqV2;
 import com.kau.capstone.v2.ai.service.AIServiceV2;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,12 +21,12 @@ public class AiRestControllerV2 {
     private final AIServiceV2 aiService;
 
     @PostMapping("/eye/{petId}")
-    public ResponseEntity<ApiResponse<EyeReqV2>> analyzeEye(
+    public ResponseEntity<ApiResponse<Object>> analyzeEye(
         @LoginUser LoginInfo loginInfo,
         @PathVariable Long petId,
         @RequestPart("AnimalImage") MultipartFile image
     ) {
-        EyeReqV2 eyeProbs = aiService.analyzeEye(loginInfo, petId, image);
+        Object eyeProbs = aiService.analyzeEye(loginInfo, petId, image);
         return ApiResponse.ok(eyeProbs);
     }
 
