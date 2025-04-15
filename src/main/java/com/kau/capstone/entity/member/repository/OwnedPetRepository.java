@@ -3,6 +3,7 @@ package com.kau.capstone.entity.member.repository;
 import com.kau.capstone.entity.member.Member;
 import com.kau.capstone.entity.member.OwnedPet;
 import com.kau.capstone.entity.pet.Pet;
+import com.kau.capstone.v2.walk.exception.PetOwnershipException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,4 +23,9 @@ public interface OwnedPetRepository extends JpaRepository<OwnedPet, Long> {
     @Query("SELECT COUNT(o) > 0 FROM OwnedPet o WHERE o.member = :member AND o.pet = :pet")
     Boolean existsByMemberAndPet(@Param("member") Member member, @Param("pet") Pet pet);
 
+    List<OwnedPet> pet(Pet pet);
+
+    default Pet getPetByMemberAndPetId(Member member, Long petId) {
+        return findPetByMemberAndPetId(member.getId(), petId).orElseThrow(PetOwnershipException::new);
+    }
 }
