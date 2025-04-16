@@ -1,10 +1,14 @@
 package com.kau.capstone.entity.reward;
 
 import com.kau.capstone.global.common.BaseEntity;
+import com.kau.capstone.v2.reward.dto.RewardCreateReqV2;
+import com.kau.capstone.v2.reward.dto.RewardUpdateReqV2;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.time.LocalDateTime;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,5 +37,27 @@ public class Reward extends BaseEntity {
         this.title = title;
         this.content = content;
         this.earnPoint = earnPoint;
+    }
+
+    public static Reward of(RewardCreateReqV2 request) {
+        return new Reward(
+            request.title(),
+            request.content(),
+            request.earnPoint()
+        );
+    }
+
+    public boolean updateReward(RewardUpdateReqV2 request) {
+        if (!Objects.isNull(this.getDeletedAt())) {
+            return false;
+        }
+
+        this.title = request.title();
+        this.content = request.content();
+        return true;
+    }
+
+    public void deleteReward() {
+        this.delete(LocalDateTime.now());
     }
 }

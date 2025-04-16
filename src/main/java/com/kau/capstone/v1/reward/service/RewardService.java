@@ -22,7 +22,7 @@ public class RewardService {
     public RewardsResponse getRewardsInfo(Long memberId) {
         Member member = memberRepository.getById(memberId);
 
-        List<Reward> rewards = rewardRepository.findRewards();
+        List<Reward> rewards = rewardRepository.findAll();
 
         return RewardsResponse.toResponse(rewards);
     }
