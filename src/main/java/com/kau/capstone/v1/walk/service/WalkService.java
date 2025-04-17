@@ -97,7 +97,7 @@ public class WalkService {
             .orElseThrow(() -> new IllegalArgumentException("해당 반려동물은 유저의 반려동물이 아닙니다"));
 
         // 해당 날짜의 산책 데이터 조회
-        List<Walk> dailyWalks = walkRepository.findByPetAndDataIntDt(pet, date);
+        List<Walk> dailyWalks = walkRepository.getDailyWalks(pet, date);
 
         // 일일 데이터 합산
         double totalDistance = dailyWalks.stream().mapToDouble(Walk::getDistance).sum();
@@ -174,7 +174,7 @@ public class WalkService {
             .toList();
         List<WalkDailySummaryResponse> dailySummaries = weekDates.stream()
             .map(day -> {
-                List<Walk> dailyWalks = walkRepository.findByPetAndDataIntDt(pet, day);
+                List<Walk> dailyWalks = walkRepository.getDailyWalks(pet, day);
 
                 // 일별 통계 계산
                 double totalDistance = dailyWalks.stream().mapToDouble(Walk::getDistance).sum();

@@ -13,8 +13,6 @@ import org.springframework.data.repository.query.Param;
 
 public interface WalkRepository extends JpaRepository<Walk,Long> {
 
-    List<Walk> findByPetAndDataIntDt(Pet pet, LocalDate dataIntDt);
-
     @Query("SELECT w FROM Walk w WHERE w.pet = :pet AND YEAR(w.startTime) = :year AND MONTH(w.startTime) = :month")
     List<Walk> findByPetAndYearAndMonth(@Param("pet") Pet pet, @Param("year") int year, @Param("month") int month);
 
