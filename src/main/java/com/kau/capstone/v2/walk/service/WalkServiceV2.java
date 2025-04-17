@@ -1,5 +1,7 @@
 package com.kau.capstone.v2.walk.service;
 
+import static java.time.DayOfWeek.*;
+
 import com.kau.capstone.entity.member.Member;
 import com.kau.capstone.entity.member.repository.MemberRepository;
 import com.kau.capstone.entity.member.repository.OwnedPetRepository;
@@ -15,6 +17,7 @@ import com.kau.capstone.v2.walk.dto.response.WalkRecentResV2;
 import com.kau.capstone.v2.walk.util.TimeUtils;
 import jakarta.validation.Valid;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -83,20 +86,41 @@ public class WalkServiceV2 {
     public WalkDailyResV2 getDailyWalk(LoginInfo loginInfo, Long petId, LocalDate walkDate) {
         Member member = memberRepository.getById(loginInfo.memberId());
         Pet pet = ownedPetRepository.getPetByMemberAndPetId(member, petId);
-        List<Walk> dailyWalks = walkRepository.getDailyWalksByPetAndWalkDate(pet, walkDate);
+        List<Walk> dailyWalks = walkRepository.getDailyWalks(pet, walkDate);
 
+        return sumWalks(dailyWalks);
+    }
+
+    // 주간 산책 데이터 가져오기
+    @Transactional(readOnly = true)
+    public WalkDailyResV2 getWeeklyWalk(LoginInfo loginInfo, Long petId, LocalDate walkDate) {
+        Member member = memberRepository.getById(loginInfo.memberId());
+        Pet pet = ownedPetRepository.getPetByMemberAndPetId(member, petId);
+
+        LocalDate weekStart = walkDate.with(MONDAY);
+        LocalDate weekEnd = weekStart.plusDays(6);
+
+        LocalDateTime monday = weekStart.atStartOfDay();
+        LocalDateTime sunday = weekEnd.atTime(23, 59, 59);
+        List<Walk> weeklyWalks = walkRepository.getWeeklyWalks(pet, monday, sunday);
+
+        return sumWalks(weeklyWalks);
+    }
+
+    // 누적 통계 처리 메소드
+    private WalkDailyResV2 sumWalks(List<Walk> walks) {
         long timeSum = 0;
         double distanceSum = 0;
         double kcalSum = 0;
         long stepSum = 0;
 
-        for (Walk walk : dailyWalks) {
+        for (Walk walk : walks) {
             timeSum += walk.getDuration();
             distanceSum += walk.getDistance();
             kcalSum += walk.getKcal();
             stepSum += walk.getStep();
         }
+
         return WalkDailyResV2.of(TimeUtils.formatDuration(timeSum), distanceSum, kcalSum, stepSum);
     }
-
 }

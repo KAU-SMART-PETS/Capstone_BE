@@ -4,6 +4,7 @@ import com.kau.capstone.entity.member.Member;
 import com.kau.capstone.entity.pet.Pet;
 import com.kau.capstone.entity.walk.Walk;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,6 +24,10 @@ public interface WalkRepository extends JpaRepository<Walk,Long> {
     @Query("SELECT w FROM Walk w WHERE w.pet = :pet AND FUNCTION('DATE', w.startTime) = :walkDate")
     List<Walk> findDailyWalksByPetAndWalkDate(@Param("pet") Pet pet, @Param("walkDate") LocalDate walkDate);
 
+    @Query("SELECT w FROM Walk w WHERE w.pet = :pet AND w.startTime BETWEEN :startDateTime AND :endDateTime")
+    List<Walk> findWeeklyWalks(@Param("pet") Pet pet, @Param("startDateTime") LocalDateTime startDateTime, @Param("endDateTime") LocalDateTime endDateTime
+    );
+
     List<Walk> findTop20ByMemberOrderByStartTimeDesc(Member member);
 
 
@@ -31,7 +36,7 @@ public interface WalkRepository extends JpaRepository<Walk,Long> {
         return findTop20ByMemberOrderByStartTimeDesc(member);
     }
 
-    default List<Walk> getDailyWalksByPetAndWalkDate(Pet pet, LocalDate walkDate) {
+    default List<Walk> getDailyWalks(Pet pet, LocalDate walkDate) {
         return findDailyWalksByPetAndWalkDate(pet, walkDate);
     }
 
@@ -39,6 +44,8 @@ public interface WalkRepository extends JpaRepository<Walk,Long> {
         return findByPetAndYearAndMonth(pet, year, month);
     }
 
-
+    default List<Walk> getWeeklyWalks(Pet pet, LocalDateTime monday, LocalDateTime sunday){
+        return findWeeklyWalks(pet, monday, sunday);
+    }
 }
 

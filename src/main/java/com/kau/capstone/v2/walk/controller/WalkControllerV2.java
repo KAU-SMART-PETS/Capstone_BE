@@ -44,7 +44,7 @@ public class WalkControllerV2 {
     @GetMapping("")
     public ResponseEntity<ApiResponse<List<WalkRecentResV2>>> getRecentWalk(
         @LoginUser LoginInfo loginInfo
-    ){
+    ) {
         List<WalkRecentResV2> walkRecentRes = walkServiceV2.getRecentWalk(loginInfo);
         return ApiResponse.ok(walkRecentRes);
     }
@@ -55,7 +55,7 @@ public class WalkControllerV2 {
         @LoginUser LoginInfo loginInfo,
         @PathVariable Long petId,
         @RequestParam LocalDate date
-    ){
+    ) {
         List<WalkCalendarV2> walkCalendar = walkServiceV2.getWalkCalendar(loginInfo, petId, date);
         return ApiResponse.ok(walkCalendar);
     }
@@ -73,7 +73,14 @@ public class WalkControllerV2 {
         return ApiResponse.ok(walkDailyRes);
     }
 
-
     // 주간 산책 기록 가져오기
-
+    @GetMapping("/weekly/{petId}")
+    public ResponseEntity<ApiResponse<WalkDailyResV2>> getWeeklyWalk(
+        @LoginUser LoginInfo loginInfo,
+        @PathVariable Long petId,
+        @RequestParam LocalDate walkDate
+    ) {
+        WalkDailyResV2 walkWeeklyRes = walkServiceV2.getWeeklyWalk(loginInfo, petId, walkDate);
+        return ApiResponse.ok(walkWeeklyRes);
+    }
 }
