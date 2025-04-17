@@ -9,9 +9,11 @@ import com.kau.capstone.entity.walk.repository.WalkRepository;
 import com.kau.capstone.v1.auth.dto.LoginInfo;
 import com.kau.capstone.v2.walk.dto.request.WalkCreateReqV2;
 import com.kau.capstone.v2.walk.dto.response.WalkCreateResV2;
+import com.kau.capstone.v2.walk.dto.response.WalkDailyResV2;
 import com.kau.capstone.v2.walk.dto.response.WalkRecentResV2;
 import com.kau.capstone.v2.walk.util.TimeUtils;
 import jakarta.validation.Valid;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -54,5 +56,25 @@ public class WalkServiceV2 {
         }
 
         return walkRecentRes;
+    }
+
+    @Transactional(readOnly = true)
+    public WalkDailyResV2 getDailyWalk(LoginInfo loginInfo, Long petId, LocalDate walkDate) {
+        Member member = memberRepository.getById(loginInfo.memberId());
+        Pet pet = ownedPetRepository.getPetByMemberAndPetId(member, petId);
+        List<Walk> dailyWalks = walkRepository.getDailyWalksByPetAndWalkDate(pet, walkDate);
+
+        long timeSum = 0;
+        double distanceSum = 0;
+        double kcalSum = 0;
+        long stepSum = 0;
+
+        for (Walk walk : dailyWalks) {
+            timeSum += walk.getDuration();
+            distanceSum += walk.getDistance();
+            kcalSum += walk.getKcal();
+            stepSum += walk.getStep();
+        }
+        return WalkDailyResV2.of(TimeUtils.formatDuration(timeSum), distanceSum, kcalSum, stepSum);
     }
 }
