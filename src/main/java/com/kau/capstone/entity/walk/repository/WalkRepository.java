@@ -4,7 +4,6 @@ import com.kau.capstone.entity.member.Member;
 import com.kau.capstone.entity.pet.Pet;
 import com.kau.capstone.entity.walk.Walk;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
