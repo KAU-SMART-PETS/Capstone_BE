@@ -6,7 +6,7 @@ import com.kau.capstone.v1.auth.util.LoginUser;
 import com.kau.capstone.v2.walk.dto.request.WalkCreateReqV2;
 import com.kau.capstone.v2.walk.dto.response.WalkCalendarV2;
 import com.kau.capstone.v2.walk.dto.response.WalkCreateResV2;
-import com.kau.capstone.v2.walk.dto.response.WalkDailyResV2;
+import com.kau.capstone.v2.walk.dto.response.WalkSumResV2;
 import com.kau.capstone.v2.walk.dto.response.WalkRecentResV2;
 import com.kau.capstone.v2.walk.service.WalkServiceV2;
 import jakarta.validation.Valid;
@@ -63,24 +63,24 @@ public class WalkControllerV2 {
 
     // 일일 산책 기록 가져오기
     @GetMapping("/daily/{petId}")
-    public ResponseEntity<ApiResponse<WalkDailyResV2>> getDailyWalk(
+    public ResponseEntity<ApiResponse<WalkSumResV2>> getDailyWalk(
         @LoginUser LoginInfo loginInfo,
         @PathVariable Long petId,
         @RequestParam LocalDate walkDate
     ) {
 
-        WalkDailyResV2 walkDailyRes = walkServiceV2.getDailyWalk(loginInfo, petId, walkDate);
+        WalkSumResV2 walkDailyRes = walkServiceV2.getDailyWalk(loginInfo, petId, walkDate);
         return ApiResponse.ok(walkDailyRes);
     }
 
     // 주간 산책 기록 가져오기
     @GetMapping("/weekly/{petId}")
-    public ResponseEntity<ApiResponse<WalkDailyResV2>> getWeeklyWalk(
+    public ResponseEntity<ApiResponse<WalkSumResV2>> getWeeklyWalk(
         @LoginUser LoginInfo loginInfo,
         @PathVariable Long petId,
         @RequestParam LocalDate walkDate
     ) {
-        WalkDailyResV2 walkWeeklyRes = walkServiceV2.getWeeklyWalk(loginInfo, petId, walkDate);
+        WalkSumResV2 walkWeeklyRes = walkServiceV2.getWeeklyWalk(loginInfo, petId, walkDate);
         return ApiResponse.ok(walkWeeklyRes);
     }
 }

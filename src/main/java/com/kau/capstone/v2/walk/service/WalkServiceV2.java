@@ -12,7 +12,7 @@ import com.kau.capstone.v1.auth.dto.LoginInfo;
 import com.kau.capstone.v2.walk.dto.request.WalkCreateReqV2;
 import com.kau.capstone.v2.walk.dto.response.WalkCalendarV2;
 import com.kau.capstone.v2.walk.dto.response.WalkCreateResV2;
-import com.kau.capstone.v2.walk.dto.response.WalkDailyResV2;
+import com.kau.capstone.v2.walk.dto.response.WalkSumResV2;
 import com.kau.capstone.v2.walk.dto.response.WalkRecentResV2;
 import com.kau.capstone.v2.walk.util.TimeUtils;
 import jakarta.validation.Valid;
@@ -83,7 +83,7 @@ public class WalkServiceV2 {
 
     // 일일 산책 데이터 가져오기
     @Transactional(readOnly = true)
-    public WalkDailyResV2 getDailyWalk(LoginInfo loginInfo, Long petId, LocalDate walkDate) {
+    public WalkSumResV2 getDailyWalk(LoginInfo loginInfo, Long petId, LocalDate walkDate) {
         Member member = memberRepository.getById(loginInfo.memberId());
         Pet pet = ownedPetRepository.getPetByMemberAndPetId(member, petId);
         List<Walk> dailyWalks = walkRepository.getDailyWalks(pet, walkDate);
@@ -93,7 +93,7 @@ public class WalkServiceV2 {
 
     // 주간 산책 데이터 가져오기
     @Transactional(readOnly = true)
-    public WalkDailyResV2 getWeeklyWalk(LoginInfo loginInfo, Long petId, LocalDate walkDate) {
+    public WalkSumResV2 getWeeklyWalk(LoginInfo loginInfo, Long petId, LocalDate walkDate) {
         Member member = memberRepository.getById(loginInfo.memberId());
         Pet pet = ownedPetRepository.getPetByMemberAndPetId(member, petId);
 
@@ -108,7 +108,7 @@ public class WalkServiceV2 {
     }
 
     // 누적 통계 처리 메소드
-    private WalkDailyResV2 sumWalks(List<Walk> walks) {
+    private WalkSumResV2 sumWalks(List<Walk> walks) {
         long timeSum = 0;
         double distanceSum = 0;
         double kcalSum = 0;
@@ -121,6 +121,6 @@ public class WalkServiceV2 {
             stepSum += walk.getStep();
         }
 
-        return WalkDailyResV2.of(TimeUtils.formatDuration(timeSum), distanceSum, kcalSum, stepSum);
+        return WalkSumResV2.of(TimeUtils.formatDuration(timeSum), distanceSum, kcalSum, stepSum);
     }
 }
