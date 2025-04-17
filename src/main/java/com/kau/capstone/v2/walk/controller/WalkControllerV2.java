@@ -5,10 +5,13 @@ import com.kau.capstone.v1.auth.dto.LoginInfo;
 import com.kau.capstone.v1.auth.util.LoginUser;
 import com.kau.capstone.v2.walk.dto.request.WalkCreateReqV2;
 import com.kau.capstone.v2.walk.dto.response.WalkCreateResV2;
+import com.kau.capstone.v2.walk.dto.response.WalkRecentResV2;
 import com.kau.capstone.v2.walk.service.WalkServiceV2;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,6 +37,13 @@ public class WalkControllerV2 {
     }
 
     // 최근 산책 기록 가져오기
+    @GetMapping("")
+    public ResponseEntity<ApiResponse<List<WalkRecentResV2>>> getRecentWalk(
+        @LoginUser LoginInfo loginInfo
+    ){
+        List<WalkRecentResV2> walkRecentRes = walkServiceV2.getRecentWalk(loginInfo);
+        return ApiResponse.ok(walkRecentRes);
+    }
 
     // 일일 산책 기록 가져오기
 

@@ -9,8 +9,11 @@ import com.kau.capstone.entity.walk.repository.WalkRepository;
 import com.kau.capstone.v1.auth.dto.LoginInfo;
 import com.kau.capstone.v2.walk.dto.request.WalkCreateReqV2;
 import com.kau.capstone.v2.walk.dto.response.WalkCreateResV2;
+import com.kau.capstone.v2.walk.dto.response.WalkRecentResV2;
 import com.kau.capstone.v2.walk.util.TimeUtils;
 import jakarta.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,5 +35,24 @@ public class WalkServiceV2 {
         Walk walk = Walk.of(member, pet, walkCreateReq);
         walkRepository.save(walk);
         return WalkCreateResV2.of(walk.getStartTime(),walk.getEndTime(), TimeUtils.formatDuration(walk.getDuration()),walk.getDistance(),walk.getKcal(),walk.getStep());
+    }
+
+    @Transactional(readOnly = true)
+    public List<WalkRecentResV2> getRecentWalk(LoginInfo loginInfo) {
+
+        Member member = memberRepository.getById(loginInfo.memberId());
+        List<Walk> recentWalks = walkRepository.getRecentWalksByMember(member);
+        List<WalkRecentResV2> walkRecentRes = new ArrayList<>();
+
+        for (Walk walk : recentWalks) {
+            String petName = walk.getPet().getName();
+            String walkDate = walk.getStartTime().toLocalDate().toString();
+            String duration = TimeUtils.formatDuration(walk.getDuration());
+            double distance = walk.getDistance();
+
+            walkRecentRes.add(WalkRecentResV2.of(petName, walkDate, duration, distance));
+        }
+
+        return walkRecentRes;
     }
 }
