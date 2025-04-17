@@ -46,7 +46,7 @@ public class WalkServiceV2 {
     public List<WalkRecentResV2> getRecentWalk(LoginInfo loginInfo) {
 
         Member member = memberRepository.getById(loginInfo.memberId());
-        List<Walk> recentWalks = walkRepository.getRecentWalksByMember(member);
+        List<Walk> recentWalks = walkRepository.getRecentWalks(member);
         List<WalkRecentResV2> walkRecentRes = new ArrayList<>();
 
         for (Walk walk : recentWalks) {

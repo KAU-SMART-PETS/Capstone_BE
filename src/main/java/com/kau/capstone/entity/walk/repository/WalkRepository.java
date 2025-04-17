@@ -27,7 +27,7 @@ public interface WalkRepository extends JpaRepository<Walk,Long> {
 
 
 
-    default List<Walk> getRecentWalksByMember(Member member) {
+    default List<Walk> getRecentWalks(Member member) {
         return findTop20ByMemberOrderByStartTimeDesc(member);
     }
 
