@@ -29,15 +29,16 @@ public class VaccinationControllerV2 implements VaccinationApiV2 {
         @PathVariable Long petId,
         @RequestBody CreateVaccinationReqV2 request
     ) {
-        vaccinationService.createVaccinationInfo(petId, request);
+        vaccinationService.createVaccinationInfo(loginInfo, petId, request);
         return ApiResponse.create();
     }
 
     @GetMapping("/api/v2/pets/{petId}/vaccination")
     public ResponseEntity<ApiResponse<VaccinationsResV2>> getVaccinationInfoForPet(
+        @LoginUser LoginInfo loginInfo,
         @PathVariable Long petId
     ) {
-        VaccinationsResV2 response = vaccinationService.getVaccinationInfo(petId);
+        VaccinationsResV2 response = vaccinationService.getVaccinationInfo(loginInfo, petId);
         return ApiResponse.ok(response);
     }
 
@@ -48,7 +49,7 @@ public class VaccinationControllerV2 implements VaccinationApiV2 {
         @PathVariable Long vaccinationId,
         @RequestBody PutVaccinationReqV2 request
     ) {
-        vaccinationService.putVaccinationInfo(vaccinationId, request);
+        vaccinationService.putVaccinationInfo(loginInfo, vaccinationId, request);
         return ApiResponse.ok();
     }
 
@@ -58,7 +59,7 @@ public class VaccinationControllerV2 implements VaccinationApiV2 {
         @PathVariable Long petId,
         @PathVariable Long vaccinationId
     ) {
-        vaccinationService.deleteVaccinationInfo(vaccinationId);
+        vaccinationService.deleteVaccinationInfo(loginInfo, vaccinationId);
         return ApiResponse.ok();
     }
 

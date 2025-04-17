@@ -2,6 +2,7 @@ package com.kau.capstone.v2.vaccination.service;
 
 import com.kau.capstone.entity.pet.Pet;
 import com.kau.capstone.entity.pet.repository.PetRepository;
+import com.kau.capstone.v1.auth.dto.LoginInfo;
 import com.kau.capstone.v1.pet.exception.PetNotFoundException;
 import com.kau.capstone.v2.vaccination.dto.CreateVaccinationReqV2;
 import com.kau.capstone.v2.vaccination.dto.PutVaccinationReqV2;
@@ -21,7 +22,7 @@ public class VaccinationServiceV2 {
     private final VaccinationRepository vaccinationRepository;
 
     @Transactional
-    public void createVaccinationInfo(Long petId, CreateVaccinationReqV2 request) {
+    public void createVaccinationInfo(LoginInfo loginInfo, Long petId, CreateVaccinationReqV2 request) {
         Pet pet = petRepository.findById(petId)
             .orElseThrow(PetNotFoundException::new);
 
@@ -30,7 +31,7 @@ public class VaccinationServiceV2 {
     }
 
     @Transactional(readOnly = true)
-    public VaccinationsResV2 getVaccinationInfo(Long petId) {
+    public VaccinationsResV2 getVaccinationInfo(LoginInfo loginInfo, Long petId) {
         Pet pet = petRepository.findById(petId)
                 .orElseThrow(PetNotFoundException::new);
 
@@ -39,13 +40,13 @@ public class VaccinationServiceV2 {
     }
 
     @Transactional
-    public void putVaccinationInfo(Long vaccinationId, PutVaccinationReqV2 request) {
+    public void putVaccinationInfo(LoginInfo loginInfo, Long vaccinationId, PutVaccinationReqV2 request) {
         Vaccination vaccination = vaccinationRepository.getById(vaccinationId);
         vaccination.modify(request);
     }
 
     @Transactional
-    public void deleteVaccinationInfo(Long vaccinationId) {
+    public void deleteVaccinationInfo(LoginInfo loginInfo, Long vaccinationId) {
         Vaccination vaccination = vaccinationRepository.getById(vaccinationId);
         vaccinationRepository.delete(vaccination);
     }

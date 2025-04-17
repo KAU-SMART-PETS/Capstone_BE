@@ -42,6 +42,7 @@ public interface VaccinationApiV2 {
     )
     @GetMapping("/api/v2/pets/{petId}/vaccination")
     ResponseEntity<ApiResponse<VaccinationsResV2>> getVaccinationInfoForPet(
+        @Parameter(description = "로그인 정보") @LoginUser LoginInfo loginInfo,
         @Parameter(description = "반려동물 ID") @PathVariable Long petId
     );
 
