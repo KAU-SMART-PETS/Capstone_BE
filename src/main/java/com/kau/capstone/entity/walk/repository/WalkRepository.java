@@ -1,5 +1,6 @@
 package com.kau.capstone.entity.walk.repository;
 
+import com.kau.capstone.entity.member.Member;
 import com.kau.capstone.entity.pet.Pet;
 import com.kau.capstone.entity.walk.Walk;
 import java.time.LocalDate;
@@ -18,5 +19,12 @@ public interface WalkRepository extends JpaRepository<Walk,Long> {
 
     @Query("SELECT w FROM Walk w WHERE w.pet = :pet ORDER BY w.startTime DESC")
     List<Walk> findTop5ByPetOrderByDataIntDtDesc(@Param("pet") Pet pet, Pageable pageable);
+
+    List<Walk> findTop20ByMemberOrderByStartTimeDesc(Member member);
+
+
+    default List<Walk> getRecentWalksByMember(Member member) {
+        return findTop20ByMemberOrderByStartTimeDesc(member);
+    }
 }
 
