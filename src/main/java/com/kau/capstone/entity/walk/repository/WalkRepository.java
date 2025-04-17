@@ -26,12 +26,17 @@ public interface WalkRepository extends JpaRepository<Walk,Long> {
     List<Walk> findTop20ByMemberOrderByStartTimeDesc(Member member);
 
 
+
     default List<Walk> getRecentWalksByMember(Member member) {
         return findTop20ByMemberOrderByStartTimeDesc(member);
     }
 
     default List<Walk> getDailyWalksByPetAndWalkDate(Pet pet, LocalDate walkDate) {
         return findDailyWalksByPetAndWalkDate(pet, walkDate);
+    }
+
+    default List<Walk> getWalkCalendar(Pet pet, int year, int month) {
+        return findByPetAndYearAndMonth(pet, year, month);
     }
 
 

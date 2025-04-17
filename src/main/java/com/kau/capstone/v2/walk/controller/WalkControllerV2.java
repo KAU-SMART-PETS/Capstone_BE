@@ -4,6 +4,7 @@ import com.kau.capstone._core.dto.ApiResponse;
 import com.kau.capstone.v1.auth.dto.LoginInfo;
 import com.kau.capstone.v1.auth.util.LoginUser;
 import com.kau.capstone.v2.walk.dto.request.WalkCreateReqV2;
+import com.kau.capstone.v2.walk.dto.response.WalkCalendarV2;
 import com.kau.capstone.v2.walk.dto.response.WalkCreateResV2;
 import com.kau.capstone.v2.walk.dto.response.WalkDailyResV2;
 import com.kau.capstone.v2.walk.dto.response.WalkRecentResV2;
@@ -49,10 +50,19 @@ public class WalkControllerV2 {
     }
 
     // 월간 달력 산책 기록 가져오기
+    @GetMapping("{petId}")
+    public ResponseEntity<ApiResponse<List<WalkCalendarV2>>> getWalkCalendar(
+        @LoginUser LoginInfo loginInfo,
+        @PathVariable Long petId,
+        @RequestParam LocalDate date
+    ){
+        List<WalkCalendarV2> walkCalendar = walkServiceV2.getWalkCalendar(loginInfo, petId, date);
+        return ApiResponse.ok(walkCalendar);
+    }
 
 
     // 일일 산책 기록 가져오기
-    @GetMapping("/{petId}")
+    @GetMapping("/daily/{petId}")
     public ResponseEntity<ApiResponse<WalkDailyResV2>> getDailyWalk(
         @LoginUser LoginInfo loginInfo,
         @PathVariable Long petId,

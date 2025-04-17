@@ -8,6 +8,7 @@ import com.kau.capstone.entity.walk.Walk;
 import com.kau.capstone.entity.walk.repository.WalkRepository;
 import com.kau.capstone.v1.auth.dto.LoginInfo;
 import com.kau.capstone.v2.walk.dto.request.WalkCreateReqV2;
+import com.kau.capstone.v2.walk.dto.response.WalkCalendarV2;
 import com.kau.capstone.v2.walk.dto.response.WalkCreateResV2;
 import com.kau.capstone.v2.walk.dto.response.WalkDailyResV2;
 import com.kau.capstone.v2.walk.dto.response.WalkRecentResV2;
@@ -28,6 +29,7 @@ public class WalkServiceV2 {
     private final MemberRepository memberRepository;
     private final OwnedPetRepository ownedPetRepository;
 
+    // 산책 기록하기
     @Transactional
     public WalkCreateResV2 createWalk(LoginInfo loginInfo, Long petId, @Valid WalkCreateReqV2 walkCreateReq) {
 
@@ -39,6 +41,7 @@ public class WalkServiceV2 {
         return WalkCreateResV2.of(walk.getStartTime(),walk.getEndTime(), TimeUtils.formatDuration(walk.getDuration()),walk.getDistance(),walk.getKcal(),walk.getStep());
     }
 
+    // 최근 산책 기록 가져오기
     @Transactional(readOnly = true)
     public List<WalkRecentResV2> getRecentWalk(LoginInfo loginInfo) {
 
@@ -58,6 +61,24 @@ public class WalkServiceV2 {
         return walkRecentRes;
     }
 
+    // 월간 산책 날짜 가져오기
+    @Transactional(readOnly = true)
+    public List<WalkCalendarV2> getWalkCalendar(LoginInfo loginInfo, Long petId, LocalDate date) {
+        Member member = memberRepository.getById(loginInfo.memberId());
+        Pet pet = ownedPetRepository.getPetByMemberAndPetId(member, petId);
+        int year = date.getYear();
+        int month = date.getMonthValue();
+        List<Walk> walks = walkRepository.getWalkCalendar(pet, year, month);
+
+        List<WalkCalendarV2> walkCalendar = new ArrayList<>();
+        for (Walk walk : walks) {
+            walkCalendar.add(WalkCalendarV2.of(walk.getStartTime().toLocalDate()));
+        }
+
+        return walkCalendar;
+    }
+
+    // 일일 산책 데이터 가져오기
     @Transactional(readOnly = true)
     public WalkDailyResV2 getDailyWalk(LoginInfo loginInfo, Long petId, LocalDate walkDate) {
         Member member = memberRepository.getById(loginInfo.memberId());
@@ -77,4 +98,5 @@ public class WalkServiceV2 {
         }
         return WalkDailyResV2.of(TimeUtils.formatDuration(timeSum), distanceSum, kcalSum, stepSum);
     }
+
 }
