@@ -51,7 +51,7 @@ public class WalkServiceV2 {
 
         for (Walk walk : recentWalks) {
             String petName = walk.getPet().getName();
-            String walkDate = walk.getStartTime().toLocalDate().toString();
+            String walkDate = walk.getStartTime().toLocalDate();
             String duration = TimeUtils.formatDuration(walk.getDuration());
             double distance = walk.getDistance();
 
