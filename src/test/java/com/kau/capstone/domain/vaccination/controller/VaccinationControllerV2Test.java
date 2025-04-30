@@ -3,13 +3,16 @@ package com.kau.capstone.domain.vaccination.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-import com.kau.capstone.domain.member.entity.Member;
-import com.kau.capstone.domain.pet.entity.Pet;
-import com.kau.capstone.domain.vaccination.dto.CreateVaccinationReqV2;
-import com.kau.capstone.domain.vaccination.dto.PutVaccinationReqV2;
-import com.kau.capstone.domain.vaccination.dto.VaccinationsResV2;
-import com.kau.capstone.domain.vaccination.entity.Vaccination;
+import com.kau.capstone.entity.member.Member;
+import com.kau.capstone.entity.pet.Gender;
+import com.kau.capstone.entity.pet.Pet;
+import com.kau.capstone.entity.pet.PetType;
+import com.kau.capstone.entity.vaccination.Vaccination;
 import com.kau.capstone.global.common.ControllerTest;
+import com.kau.capstone.v2.pet.dto.request.PetRegistReqV2;
+import com.kau.capstone.v2.vaccination.dto.CreateVaccinationReqV2;
+import com.kau.capstone.v2.vaccination.dto.PutVaccinationReqV2;
+import com.kau.capstone.v2.vaccination.dto.VaccinationsResV2;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -36,10 +39,8 @@ class VaccinationControllerV2Test extends ControllerTest {
                     .build();
             memberRepository.save(member);
 
-            Pet pet = Pet.builder()
-                    .name("하늘이")
-                    .age(1)
-                    .build();
+            PetRegistReqV2 petRegistReqV2 = new PetRegistReqV2("하늘이", 1, 1, 5.4, 1, null, null);
+            Pet pet = Pet.of(petRegistReqV2, member);
             petRepository.save(pet);
 
             LocalDate vaccinatedDate = LocalDate.of(2024, 10, 16);
@@ -74,10 +75,8 @@ class VaccinationControllerV2Test extends ControllerTest {
                     .build();
             memberRepository.save(member);
 
-            Pet pet = Pet.builder()
-                    .name("하늘이")
-                    .age(1)
-                    .build();
+            PetRegistReqV2 petRegistReqV2 = new PetRegistReqV2("하늘이", 1, 1, 5.4, 1, null, null);
+            Pet pet = Pet.of(petRegistReqV2, member);
             petRepository.save(pet);
 
             LocalDate vaccinatedDate = LocalDate.of(2024, 10, 16);
@@ -118,10 +117,8 @@ class VaccinationControllerV2Test extends ControllerTest {
                     .build();
             memberRepository.save(member);
 
-            Pet pet = Pet.builder()
-                    .name("하늘이")
-                    .age(1)
-                    .build();
+            PetRegistReqV2 petRegistReqV2 = new PetRegistReqV2("하늘이", 1, 1, 5.4, 1, null, null);
+            Pet pet = Pet.of(petRegistReqV2, member);
             petRepository.save(pet);
 
             LocalDate vaccinatedDate = LocalDate.of(2024, 10, 16);
@@ -160,10 +157,8 @@ class VaccinationControllerV2Test extends ControllerTest {
                     .build();
             memberRepository.save(member);
 
-            Pet pet = Pet.builder()
-                    .name("하늘이")
-                    .age(1)
-                    .build();
+            PetRegistReqV2 petRegistReqV2 = new PetRegistReqV2("하늘이", 1, 1, 5.4, 1, null, null);
+            Pet pet = Pet.of(petRegistReqV2, member);
             petRepository.save(pet);
 
             LocalDate vaccinatedDate = LocalDate.of(2024, 10, 16);
