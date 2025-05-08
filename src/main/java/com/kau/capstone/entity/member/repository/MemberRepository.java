@@ -17,7 +17,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     void updateRefreshTokenByMemberId(@Param("memberId") Long memberId,
         @Param("refreshToken") String refreshToken);
 
-    default Member getById(long id) {
+    default Member getById(Long id) {
         return findById(id).orElseThrow(MemberNotFoundException::new);
     }
 }
