@@ -20,7 +20,6 @@ public interface OwnedPetRepository extends JpaRepository<OwnedPet, Long> {
     @Query("SELECT op.pet FROM OwnedPet op WHERE op.member.id = :memberId AND op.pet.id = :petId")
     Optional<Pet> findPetByMemberAndPetId(@Param("memberId") Long memberId, @Param("petId") Long petId);
 
-    List<OwnedPet> pet(Pet pet);
 
     default Pet getPetByMemberAndPetId(Member member, Long petId) {
         return findPetByMemberAndPetId(member.getId(), petId).orElseThrow(PetOwnershipException::new);
