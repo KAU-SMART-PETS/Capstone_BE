@@ -50,7 +50,7 @@ public class WalkControllerV2 {
     }
 
     // 월간 달력 산책 기록 가져오기
-    @GetMapping("{petId}")
+    @GetMapping("/{petId}")
     public ResponseEntity<ApiResponse<List<WalkCalendarV2>>> getWalkCalendar(
         @LoginUser LoginInfo loginInfo,
         @PathVariable Long petId,
