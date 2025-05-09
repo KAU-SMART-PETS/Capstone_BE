@@ -78,14 +78,7 @@ class VaccinationControllerTest extends ControllerTest {
                     .build();
             petRepository.save(pet);
 
-            Vaccination vaccination = Vaccination.builder()
-                    .member(member)
-                    .pet(pet)
-                    .name("광견병")
-                    .timeYear(2024)
-                    .timeMonth(10)
-                    .timeDay(16)
-                    .build();
+            Vaccination vaccination = Vaccination.of(pet, new CreateVaccinationRequest("광견병", 2024, 10, 16));
             vaccinationRepository.save(vaccination);
 
             // when
@@ -128,14 +121,7 @@ class VaccinationControllerTest extends ControllerTest {
                     .build();
             petRepository.save(pet);
 
-            Vaccination vaccination = Vaccination.builder()
-                    .member(member)
-                    .pet(pet)
-                    .name("광견병")
-                    .timeYear(2024)
-                    .timeMonth(10)
-                    .timeDay(16)
-                    .build();
+            Vaccination vaccination = Vaccination.of(pet, new CreateVaccinationRequest("광견병", 2024, 10, 16));
             vaccinationRepository.save(vaccination);
 
             PutVaccinationRequest request = new PutVaccinationRequest("켄넬코프", 2025, 11, 17);
@@ -175,14 +161,7 @@ class VaccinationControllerTest extends ControllerTest {
                     .build();
             petRepository.save(pet);
 
-            Vaccination vaccination = Vaccination.builder()
-                    .member(member)
-                    .pet(pet)
-                    .name("광견병")
-                    .timeYear(2024)
-                    .timeMonth(10)
-                    .timeDay(16)
-                    .build();
+            Vaccination vaccination = Vaccination.of(pet, new CreateVaccinationRequest("광견병", 2024, 10, 16));
             vaccinationRepository.save(vaccination);
 
             // when

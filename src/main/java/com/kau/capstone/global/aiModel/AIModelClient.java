@@ -1,10 +1,11 @@
-package com.kau.capstone.v1.ai.client;
+package com.kau.capstone.global.aiModel;
 
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -22,12 +23,15 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequiredArgsConstructor
 public class AIModelClient {
 
+    @Value("${ai.url}")
+    private String aiModelUrl;
+
     private final RestTemplate restTemplate = new RestTemplate();
 
-    public Map<String, Object> analyzeImage(String imageUrl, String petType) {
-        String aiModelUrl = "http://43.201.197.176:5000/eye";
 
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(aiModelUrl)
+    public Map<String, Object> analyzeImage(String imageUrl, String petType) {
+        String url = aiModelUrl + "/eye";
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(url)
             .queryParam("imageUrl", imageUrl)
             .queryParam("petType", petType);
 
@@ -42,7 +46,7 @@ public class AIModelClient {
                 uriBuilder.toUriString(),
                 HttpMethod.GET,
                 requestEntity,
-                new ParameterizedTypeReference<Map<String, Object>>() {
+                new ParameterizedTypeReference<>() {
                 }
             );
             return response.getBody();
@@ -65,8 +69,8 @@ public class AIModelClient {
     }
 
     public String registNoseImage(String imageUrl, Long petId) {
-        String aiModelUrl = "http://3.35.41.30:5000/nose/train";
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(aiModelUrl)
+        String url = aiModelUrl + "/nose/train";
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(url)
             .queryParam("imageUrl", imageUrl)
             .queryParam("petId", petId);
 
@@ -103,8 +107,8 @@ public class AIModelClient {
     }
 
     public Map<String, Object> testNoseImage(String imageUrl) {
-        String aiModelUrl = "http://3.35.41.30:5000/nose/test";
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(aiModelUrl)
+        String url = aiModelUrl + "/nose/test";
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(url)
             .queryParam("imageUrl", imageUrl);
 
         HttpHeaders headers = new HttpHeaders();
@@ -117,7 +121,7 @@ public class AIModelClient {
                 uriBuilder.toUriString(),
                 HttpMethod.GET,
                 requestEntity,
-                new ParameterizedTypeReference<Map<String, Object>>() {
+                new ParameterizedTypeReference<>() {
                 }
             );
             return response.getBody();

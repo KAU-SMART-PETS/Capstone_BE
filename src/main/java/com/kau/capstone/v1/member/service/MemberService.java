@@ -15,9 +15,6 @@ import com.kau.capstone.v1.member.util.MemberMapper;
 import com.kau.capstone.entity.pet.Pet;
 import com.kau.capstone.entity.point.Point;
 import com.kau.capstone.entity.point.repository.PointRepository;
-import com.kau.capstone.entity.reward.Reward;
-import com.kau.capstone.entity.reward.RewardDetail;
-import com.kau.capstone.entity.reward.repository.RewardRepository;
 import java.util.ArrayList;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +36,6 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final OwnedPetRepository ownedPetRepository;
     private final PointRepository pointRepository;
-    private final RewardRepository rewardRepository;
     private final AlarmRepository alarmRepository;
 
     @Transactional(propagation = REQUIRES_NEW)
@@ -62,10 +58,6 @@ public class MemberService {
         Point point = Point.of(member);
 
         member.connectPoint(point);
-
-        // 리워드 내용 초기 세팅 (모두 미달성으로 표기하기 위해)
-        List<Reward> rewards = RewardDetail.getRewards(member);
-        rewardRepository.saveAll(rewards);
 
         // 알람 내용 초기 세팅 (모든 알람을 보여주기 위해)
         List<Alarm> alarms = AlarmDetail.getAlarms(member);
