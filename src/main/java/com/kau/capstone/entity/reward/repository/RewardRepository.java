@@ -1,19 +1,15 @@
 package com.kau.capstone.entity.reward.repository;
 
-import com.kau.capstone.entity.member.Member;
 import com.kau.capstone.entity.reward.Reward;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-
+import com.kau.capstone.v2.reward.exception.RewardNotFoundExceptionV2;
 import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RewardRepository extends JpaRepository<Reward, Long> {
 
-    @Query("SELECT r FROM Reward r WHERE r.member = :member ORDER BY r.type ASC")
-    List<Reward> findRewardsByMember(@Param("member") Member member);
+    List<Reward> findAll();
 
-    @Query("SELECT r FROM Reward r WHERE r.member = :member AND r.type = :type")
-    Reward findRewardByMemberAndType(@Param("member") Member member,
-                                     @Param("type") Long type);
+    default Reward getById(long id) {
+        return findById(id).orElseThrow(RewardNotFoundExceptionV2::new);
+    }
 }
