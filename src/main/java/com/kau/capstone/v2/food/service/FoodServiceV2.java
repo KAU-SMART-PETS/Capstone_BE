@@ -39,7 +39,7 @@ public class FoodServiceV2 {
         return FoodsResponseV2.of(foods);
     }
 
-    public void processPointPaymentForFood(Long memberId, Long foodId, Long deliveryFee) {
+    public void payFoodWithPoints(Long memberId, Long foodId, Long deliveryFee) {
         Member member = memberRepository.getById(memberId);
         Point point = member.getPoint();
 

@@ -28,7 +28,7 @@ public class FoodControllerV2 {
     public ResponseEntity<ApiResponse<Void>> payFoodWithPoints(@LoginUser LoginInfo loginInfo,
                                                   @PathVariable Long foodId,
                                                   @RequestBody DeliveryFeeRequest request) {
-        foodServiceV2.processPointPaymentForFood(loginInfo.memberId(), foodId, request.deliveryFee());
+        foodServiceV2.payFoodWithPoints(loginInfo.memberId(), foodId, request.deliveryFee());
 
         return ApiResponse.ok();
     }
