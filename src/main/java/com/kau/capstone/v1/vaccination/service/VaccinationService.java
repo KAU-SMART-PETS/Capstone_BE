@@ -1,6 +1,5 @@
 package com.kau.capstone.v1.vaccination.service;
 
-import com.kau.capstone.entity.member.Member;
 import com.kau.capstone.entity.member.repository.MemberRepository;
 import com.kau.capstone.entity.pet.Pet;
 import com.kau.capstone.v1.pet.exception.PetNotFoundException;
@@ -32,25 +31,16 @@ public class VaccinationService {
         Pet pet = petRepository.findById(petId)
                 .orElseThrow(() -> new PetNotFoundException());
 
-        List<Vaccination> vaccinations = vaccinationRepository.findAllByMemberAndPet(pet);
+        List<Vaccination> vaccinations = vaccinationRepository.findAllByPetOrderByVaccinatedAtDesc(pet);
 
         return VaccinationsResponse.toResponse(pet, vaccinations);
     }
 
-    public void createVaccinationInfo(Long memberId, Long petId, CreateVaccinationRequest request) {
-        Member member = memberRepository.getById(memberId);
-
+    public void createVaccinationInfo(Long petId, CreateVaccinationRequest request) {
         Pet pet = petRepository.findById(petId)
                 .orElseThrow(() -> new PetNotFoundException());
 
-        Vaccination vaccination = Vaccination.builder()
-                .member(member)
-                .pet(pet)
-                .name(request.name())
-                .timeYear(request.year())
-                .timeMonth(request.month())
-                .timeDay(request.day())
-                .build();
+        Vaccination vaccination = Vaccination.of(pet, request);
         vaccinationRepository.save(vaccination);
     }
 
@@ -58,7 +48,7 @@ public class VaccinationService {
         Vaccination vaccination = vaccinationRepository.findById(vaccinationId)
                 .orElseThrow(() -> new VaccinationNotFoundException(VACCINATION_NOT_FOUND));
 
-        vaccination.modify(request.name(), request.year(), request.month(), request.day());
+        vaccination.modify(request);
     }
 
     public void deleteVaccinationInfo(Long vaccinationId) {
