@@ -1,17 +1,15 @@
-package com.kau.capstone.v1.food.dto;
+package com.kau.capstone.v2.food.dto.response;
 
 import com.kau.capstone.entity.food.Food;
-import lombok.Builder;
 
-@Builder
-public record FoodResponse(
+public record FoodResponseV2(
         Long id,
         String imageUrl,
         Long price
 ) {
 
-    public static FoodResponse toResponse(Food food) {
-        return new FoodResponse(
+    public static FoodResponseV2 of(Food food) {
+        return new FoodResponseV2(
                 food.getId(),
                 food.getImageUrl(),
                 food.getPrice()

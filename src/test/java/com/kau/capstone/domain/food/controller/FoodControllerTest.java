@@ -1,6 +1,6 @@
 //package com.kau.capstone.domain.food.controller;
 //
-//import com.kau.capstone.v1.food.dto.FoodsResponse;
+//import com.kau.capstone.v1.food.dto.FoodsResponseV2;
 //import com.kau.capstone.entity.food.Food;
 //import com.kau.capstone.entity.member.Member;
 //import com.kau.capstone.v1.point.dto.DeliveryFeeRequest;
@@ -51,7 +51,7 @@
 //                    .get("/api/v1/foods")
 //                    .then()
 //                    .extract();
-//            FoodsResponse response = res.jsonPath().getObject("", FoodsResponse.class);
+//            FoodsResponseV2 response = res.jsonPath().getObject("", FoodsResponseV2.class);
 //
 //            // then
 //            assertSoftly(soft -> {

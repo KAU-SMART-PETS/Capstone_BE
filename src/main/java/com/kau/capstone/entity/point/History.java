@@ -51,6 +51,9 @@ public class History {
         this.name = name;
     }
 
+    public static History of(Point point, Long changePoint, String name) {
+        return new History(point, point.getAmount(), changePoint, name);
+    }
     public static History of(Point point, PayPointReqV2 req, PointType type) {
         return new History(point, point.getAmount(), -req.point(), type.description);
     }

@@ -78,8 +78,7 @@ public class PointService {
         Member member = memberRepository.getById(memberId);
         Point point = member.getPoint();
 
-        Food food = foodRepository.findById(foodId)
-                .orElseThrow(() -> new FoodNotFoundException(FOOD_NOT_FOUND));
+        Food food = foodRepository.getById(foodId);
         Long totalPrice = food.getPrice() + deliveryFee;
 
         if (point.getAmount() < totalPrice) {
