@@ -2,14 +2,17 @@ package com.kau.capstone.entity.vaccination.repository;
 
 import com.kau.capstone.entity.pet.Pet;
 import com.kau.capstone.entity.vaccination.Vaccination;
+import com.kau.capstone.v2.vaccination.exception.VaccinationNotFoundExceptionV2;
+import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
 public interface VaccinationRepository extends JpaRepository<Vaccination, Long> {
 
-    @Query("SELECT v FROM Vaccination v WHERE v.pet = :pet ORDER BY v.timeYear DESC, v.timeMonth DESC, v.timeDay DESC")
-    List<Vaccination> findAllByMemberAndPet(@Param("pet") Pet pet);
+    List<Vaccination> findAllByPetOrderByVaccinatedAtDesc(Pet pet);
+
+    default @NonNull Vaccination getById(@NonNull Long id) {
+        return findById(id).orElseThrow(VaccinationNotFoundExceptionV2::new);
+    }
 }

@@ -40,7 +40,7 @@ public class PetServiceV2 {
     @Transactional(readOnly = true)
     public PetResV2 getPetInfo(LoginInfo loginInfo, Long petId) {
         Member member = memberRepository.getById(loginInfo.memberId());
-        Pet pet = petRepository.getByIdAndDeletedAtIsNullAndMember(petId, member);
+        Pet pet = petRepository.getByIdAndMemberAndDeletedAtIsNull(petId, member);
         return PetResV2.toResponse(pet);
     }
 
@@ -54,7 +54,7 @@ public class PetServiceV2 {
     @Transactional
     public void updatePetInfo(LoginInfo loginInfo, Long petId, PetReqV2 petRequest) {
         Member member = memberRepository.getById(loginInfo.memberId());
-        Pet pet = petRepository.getByIdAndDeletedAtIsNullAndMember(petId, member);
+        Pet pet = petRepository.getByIdAndMemberAndDeletedAtIsNull(petId, member);
         pet.updatePetV2(petRequest);
         petRepository.save(pet);
     }
@@ -62,7 +62,7 @@ public class PetServiceV2 {
     @Transactional
     public void updatePetImage(LoginInfo loginInfo, Long petId, MultipartFile image) {
         Member member = memberRepository.getById(loginInfo.memberId());
-        Pet pet = petRepository.getByIdAndDeletedAtIsNullAndMember(petId, member);
+        Pet pet = petRepository.getByIdAndMemberAndDeletedAtIsNull(petId, member);
         String dirName = petId + "/profile";
         String url = fileService.uploadImage(image, dirName);
         pet.updateImageUrl(url);
@@ -72,7 +72,7 @@ public class PetServiceV2 {
     @Transactional
     public void deletePet(LoginInfo loginInfo, Long petId) {
         Member member = memberRepository.getById(loginInfo.memberId());
-        Pet pet = petRepository.getByIdAndDeletedAtIsNullAndMember(petId, member);
+        Pet pet = petRepository.getByIdAndMemberAndDeletedAtIsNull(petId, member);
         pet.deletePet();
         petRepository.save(pet);
     }

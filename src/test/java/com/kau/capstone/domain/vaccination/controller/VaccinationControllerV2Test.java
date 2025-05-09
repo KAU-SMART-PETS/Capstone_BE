@@ -1,27 +1,31 @@
 package com.kau.capstone.domain.vaccination.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
+
 import com.kau.capstone.entity.member.Member;
+import com.kau.capstone.entity.pet.Gender;
 import com.kau.capstone.entity.pet.Pet;
-import com.kau.capstone.v1.vaccination.dto.CreateVaccinationRequest;
-import com.kau.capstone.v1.vaccination.dto.PutVaccinationRequest;
-import com.kau.capstone.v1.vaccination.dto.VaccinationsResponse;
+import com.kau.capstone.entity.pet.PetType;
 import com.kau.capstone.entity.vaccination.Vaccination;
 import com.kau.capstone.global.common.ControllerTest;
+import com.kau.capstone.v2.pet.dto.request.PetRegistReqV2;
+import com.kau.capstone.v2.vaccination.dto.CreateVaccinationReqV2;
+import com.kau.capstone.v2.vaccination.dto.PutVaccinationReqV2;
+import com.kau.capstone.v2.vaccination.dto.VaccinationsResV2;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.SoftAssertions.assertSoftly;
-
 @SuppressWarnings("NonAsciiCharacters")
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-class VaccinationControllerTest extends ControllerTest {
+class VaccinationControllerV2Test extends ControllerTest {
 
     @Nested
     class createVaccinationInfoForPet_성공_테스트 {
@@ -35,13 +39,12 @@ class VaccinationControllerTest extends ControllerTest {
                     .build();
             memberRepository.save(member);
 
-            Pet pet = Pet.builder()
-                    .name("하늘이")
-                    .age(1)
-                    .build();
+            PetRegistReqV2 petRegistReqV2 = new PetRegistReqV2("하늘이", 1, 1, 5.4, 1, null, null);
+            Pet pet = Pet.of(petRegistReqV2, member);
             petRepository.save(pet);
 
-            CreateVaccinationRequest request = new CreateVaccinationRequest("광견병", 2024, 10, 16);
+            LocalDate vaccinatedDate = LocalDate.of(2024, 10, 16);
+            CreateVaccinationReqV2 request = new CreateVaccinationReqV2("광견병", vaccinatedDate);
 
             // when
             String cookie = getCookie("1");
@@ -51,7 +54,7 @@ class VaccinationControllerTest extends ControllerTest {
                     .contentType("application/json")
                     .body(request)
                     .when()
-                    .post("/api/v1/pets/1/vaccination")
+                    .post("/api/v2/pets/1/vaccination")
                     .then()
                     .extract();
 
@@ -72,13 +75,12 @@ class VaccinationControllerTest extends ControllerTest {
                     .build();
             memberRepository.save(member);
 
-            Pet pet = Pet.builder()
-                    .name("하늘이")
-                    .age(1)
-                    .build();
+            PetRegistReqV2 petRegistReqV2 = new PetRegistReqV2("하늘이", 1, 1, 5.4, 1, null, null);
+            Pet pet = Pet.of(petRegistReqV2, member);
             petRepository.save(pet);
 
-            Vaccination vaccination = Vaccination.of(pet, new CreateVaccinationRequest("광견병", 2024, 10, 16));
+            LocalDate vaccinatedDate = LocalDate.of(2024, 10, 16);
+            Vaccination vaccination = Vaccination.of(pet, new CreateVaccinationReqV2("광견병", vaccinatedDate));
             vaccinationRepository.save(vaccination);
 
             // when
@@ -88,10 +90,10 @@ class VaccinationControllerTest extends ControllerTest {
                     .cookie("JSESSIONID", cookie)
                     .contentType("application/json")
                     .when()
-                    .get("/api/v1/pets/1/vaccination")
+                    .get("/api/v2/pets/1/vaccination")
                     .then()
                     .extract();
-            VaccinationsResponse response = res.jsonPath().getObject("", VaccinationsResponse.class);
+            VaccinationsResV2 response = res.jsonPath().getObject("data", VaccinationsResV2.class);
 
             // then
             assertSoftly(soft -> {
@@ -115,16 +117,16 @@ class VaccinationControllerTest extends ControllerTest {
                     .build();
             memberRepository.save(member);
 
-            Pet pet = Pet.builder()
-                    .name("하늘이")
-                    .age(1)
-                    .build();
+            PetRegistReqV2 petRegistReqV2 = new PetRegistReqV2("하늘이", 1, 1, 5.4, 1, null, null);
+            Pet pet = Pet.of(petRegistReqV2, member);
             petRepository.save(pet);
 
-            Vaccination vaccination = Vaccination.of(pet, new CreateVaccinationRequest("광견병", 2024, 10, 16));
+            LocalDate vaccinatedDate = LocalDate.of(2024, 10, 16);
+            Vaccination vaccination = Vaccination.of(pet, new CreateVaccinationReqV2("광견병", vaccinatedDate));
             vaccinationRepository.save(vaccination);
 
-            PutVaccinationRequest request = new PutVaccinationRequest("켄넬코프", 2025, 11, 17);
+            LocalDate newVaccinatedDate = LocalDate.of(2025, 11, 17);
+            PutVaccinationReqV2 request = new PutVaccinationReqV2("켄넬코프", newVaccinatedDate);
 
             // when
             String cookie = getCookie("1");
@@ -134,12 +136,12 @@ class VaccinationControllerTest extends ControllerTest {
                     .contentType("application/json")
                     .body(request)
                     .when()
-                    .put("/api/v1/pets/1/vaccination/1")
+                    .put("/api/v2/pets/1/vaccination/1")
                     .then()
                     .extract();
 
             // then
-            assertThat(res.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+            assertThat(res.statusCode()).isEqualTo(HttpStatus.OK.value());
         }
     }
 
@@ -155,13 +157,12 @@ class VaccinationControllerTest extends ControllerTest {
                     .build();
             memberRepository.save(member);
 
-            Pet pet = Pet.builder()
-                    .name("하늘이")
-                    .age(1)
-                    .build();
+            PetRegistReqV2 petRegistReqV2 = new PetRegistReqV2("하늘이", 1, 1, 5.4, 1, null, null);
+            Pet pet = Pet.of(petRegistReqV2, member);
             petRepository.save(pet);
 
-            Vaccination vaccination = Vaccination.of(pet, new CreateVaccinationRequest("광견병", 2024, 10, 16));
+            LocalDate vaccinatedDate = LocalDate.of(2024, 10, 16);
+            Vaccination vaccination = Vaccination.of(pet, new CreateVaccinationReqV2("광견병", vaccinatedDate));
             vaccinationRepository.save(vaccination);
 
             // when
@@ -171,12 +172,12 @@ class VaccinationControllerTest extends ControllerTest {
                     .cookie("JSESSIONID", cookie)
                     .contentType("application/json")
                     .when()
-                    .delete("/api/v1/pets/1/vaccination/1")
+                    .delete("/api/v2/pets/1/vaccination/1")
                     .then()
                     .extract();
 
             // then
-            assertThat(res.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+            assertThat(res.statusCode()).isEqualTo(HttpStatus.OK.value());
         }
     }
 }
