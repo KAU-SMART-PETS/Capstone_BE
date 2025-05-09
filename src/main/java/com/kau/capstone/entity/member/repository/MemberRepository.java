@@ -2,7 +2,6 @@ package com.kau.capstone.entity.member.repository;
 
 import com.kau.capstone.entity.member.Member;
 import com.kau.capstone.v1.member.exception.MemberNotFoundException;
-import java.util.Optional;
 import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
